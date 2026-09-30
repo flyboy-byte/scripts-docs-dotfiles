@@ -2,7 +2,7 @@
 """
 sysinfo-wallpaper: live fastfetch wallpaper for niri.
 
-Port of flyboy-byte/scripts-and-docs wallpaper/neofetch_wallpaper_kde.py:
+Port of flyboy-byte/scripts-docs-dotfiles wallpaper/neofetch_wallpaper_kde.py:
 fastfetch instead of neofetch, awww instead of plasma-apply-wallpaperimage,
 screen size read from niri, output kept in ~/.cache.
 """
