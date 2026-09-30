@@ -32,6 +32,7 @@ sudo sh -c 'visudo -cf system/battctl.sudoers.example && install -m 440 system/b
 Edit the username in `battctl.sudoers.example` first. `earlyoom`, the SDDM theme and the GRUB lines are copied as-is for reference.
 
 ## Notes
-- The SDDM/GRUB themes are Catppuccin Mocha with a custom background. The background image is **not** included (licence unknown); drop your own in as `background.png` (GRUB) and `backgrounds/tux.png` (SDDM).
+- The SDDM/GRUB themes are Catppuccin Mocha with a custom Tux-vs-Windows background (included).
+- All fuzzel menus close when you click another window (`keyboard-focus=on-demand`).
 - Keybinds avoid Mod+Shift chords on purpose. Press Scroll Lock for the cheat sheet.
 - `battmenu` charge limit sets start/end thresholds (75/80) via `thinkpad_acpi`; profiles use `tlp bat|ac|start`.
