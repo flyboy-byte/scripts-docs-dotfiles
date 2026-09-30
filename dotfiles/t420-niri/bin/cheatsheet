@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+"""Keybinding cheat sheet: parses ~/.config/niri/config.kdl, shows it in fuzzel (type to filter).
+Press the same key again to close."""
+import os, re, subprocess, sys
+
+subprocess.run(['pkill', '-x', 'fuzzel']).returncode == 0 and sys.exit(0)
+
+cfg = open(os.path.expanduser('~/.config/niri/config.kdl')).read().split('\n')
+NAMES = {
+    'XF86AudioRaiseVolume': 'Volume up', 'XF86AudioLowerVolume': 'Volume down',
+    'XF86AudioMute': 'Mute speakers', 'XF86AudioMicMute': 'Mute microphone',
+    'XF86AudioPlay': 'Media play/pause', 'XF86AudioStop': 'Media stop',
+    'XF86AudioPrev': 'Media previous', 'XF86AudioNext': 'Media next',
+    'XF86MonBrightnessUp': 'Brightness up', 'XF86MonBrightnessDown': 'Brightness down',
+    'Super+Alt+S': 'Toggle screen reader (orca)',
+}
+rows, inside, section = [], False, ''
+for line in cfg:
+    if not inside:
+        inside = re.match(r'^binds\s*\{', line) is not None
+        continue
+    if line.startswith('}'):
+        break
+    s = line.strip()
+    if s.startswith('//'):
+        c = s.lstrip('/ ').strip()
+        if c and len(c) < 60 and not c.endswith('.') and ':' not in c:
+            section = c
+        continue
+    if not s or s.startswith('/-') or '{' not in s:
+        continue
+    head, body = s.split('{', 1)
+    parts = head.split()
+    if not parts:
+        continue
+    key = parts[0]
+    m = re.search(r'hotkey-overlay-title="([^"]*)"', head)
+    action = body.rsplit('}', 1)[0].strip().rstrip(';').strip()
+    action = re.sub(r'\s+', ' ', action)
+    label = m.group(1) if m else NAMES.get(key, action)
+    rows.append((key, label))
+
+w = max(len(k) for k, _ in rows)
+text = '\n'.join(f'{k:<{w}}  {l}' for k, l in rows)
+subprocess.run(['fuzzel', '--dmenu', '--prompt', '󰌌 ', '--width', '62', '--lines', '16'],
+               input=text, text=True, capture_output=True)

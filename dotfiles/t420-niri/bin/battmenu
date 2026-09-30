@@ -1,0 +1,48 @@
+#!/bin/sh
+# fuzzel battery dropdown (waybar battery pill): info rows + charge limit + power profile
+pkill -x fuzzel && exit 0
+B=/sys/class/power_supply/BAT0
+rd() { cat "$B/$1" 2>/dev/null || echo 0; }
+
+cap=$(rd capacity); status=$(rd status)
+now=$(rd charge_now); full=$(rd charge_full); design=$(rd charge_full_design)
+cur=$(rd current_now); volt=$(rd voltage_now)
+end=$(rd charge_control_end_threshold)
+gov=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 2>/dev/null)
+mhz=$(( $(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq 2>/dev/null || echo 0) / 1000 ))
+
+watts=$(awk -v c="$cur" -v v="$volt" 'BEGIN{printf "%.1f", c*v/1e12}')
+health=$(awk -v f="$full" -v d="$design" 'BEGIN{printf "%d", d?f*100/d:0}')
+left=$(awk -v s="$status" -v n="$now" -v f="$full" -v c="$cur" 'BEGIN{
+    if (c<1000) {print "—"; exit}
+    h = (s=="Charging") ? (f-n)/c : n/c
+    printf "%dh %02dm", h, (h-int(h))*60 }')
+case "$status" in Charging) lbl="to full";; Discharging) lbl="remaining";; *) lbl="";; esac
+
+if [ "$end" -le 80 ]; then
+    limit="󰁹  Charge limit: 80%  (select → 100%)"
+else
+    limit="󰁹  Charge limit: off  (select → 80%)"
+fi
+
+choice=$(printf '%s\n' \
+    "󰂄  $cap%  ·  $status" \
+    "󱎫  $left $lbl  ·  $watts W" \
+    "󰣐  Health $health%" \
+    "󰻠  $gov  ·  $mhz MHz" \
+    "$limit" \
+    "󰾆  Profile: Auto" \
+    "󰌪  Profile: Power saver" \
+    "󰓅  Profile: Performance" |
+    fuzzel --dmenu --anchor top-right --x-margin 10 --y-margin 40 \
+           --width 40 --lines 8 --prompt '')
+
+case "$choice" in
+    *"Charge limit: 80"*) sudo -n /usr/local/bin/battctl limit 100 ;;
+    *"Charge limit: off"*) sudo -n /usr/local/bin/battctl limit 80 ;;
+    *"Profile: Auto") sudo -n /usr/local/bin/battctl profile auto ;;
+    *"Power saver")   sudo -n /usr/local/bin/battctl profile saver ;;
+    *"Performance")   sudo -n /usr/local/bin/battctl profile perf ;;
+    *) exit 0 ;;
+esac
+notify-send -t 2500 "Battery" "Applied: $(echo "$choice" | sed 's/^[^ ]*  //')" 2>/dev/null

@@ -1,0 +1,130 @@
+/* Catppuccin Mocha — floating pills */
+@define-color base     #1e1e2e;
+@define-color mantle   #181825;
+@define-color crust    #11111b;
+@define-color surface0 #313244;
+@define-color surface1 #45475a;
+@define-color overlay0 #6c7086;
+@define-color text     #cdd6f4;
+@define-color subtext  #a6adc8;
+@define-color blue     #89b4fa;
+@define-color lavender #b4befe;
+@define-color sapphire #74c7ec;
+@define-color teal     #94e2d5;
+@define-color green    #a6e3a1;
+@define-color yellow   #f9e2af;
+@define-color peach    #fab387;
+@define-color red      #f38ba8;
+@define-color mauve    #cba6f7;
+
+* {
+    font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", "DejaVu Sans Mono", monospace;
+    font-size: 12px;
+    font-weight: 600;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+}
+
+window#waybar {
+    background: transparent;
+    color: @text;
+}
+
+tooltip {
+    background: @base;
+    border: 1px solid @surface1;
+    border-radius: 8px;
+}
+tooltip label { color: @text; }
+
+/* every top-level block is a pill */
+#custom-arch,
+#workspaces,
+#window,
+#clock,
+#tray,
+#system,
+#controls,
+#battery,
+#custom-power {
+    background: alpha(@base, 0.92);
+    border: 1px solid alpha(@surface1, 0.6);
+    border-radius: 14px;
+    padding: 0 12px;
+    margin: 0 3px;
+}
+
+/* hide the title pill when no window is focused */
+window#waybar.empty #window {
+    background: transparent;
+    border-color: transparent;
+}
+
+#custom-arch {
+    color: @blue;
+    font-size: 15px;
+    padding: 0 13px 0 11px;
+}
+#custom-arch:hover { color: @lavender; }
+
+#workspaces { padding: 0 5px; }
+#workspaces button {
+    color: @overlay0;
+    padding: 0 5px;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+#workspaces button.active { color: @mauve; }
+#workspaces button.urgent { color: @red; }
+#workspaces button:hover {
+    color: @text;
+    background: transparent;
+    box-shadow: none;
+}
+
+#window { color: @subtext; font-weight: 500; }
+
+#clock { color: @lavender; padding: 0 16px; }
+
+#tray { padding: 0 10px; }
+#tray > .needs-attention { background: @red; border-radius: 8px; }
+
+/* grouped modules: spacing inside the pill */
+#custom-updates, #cpu, #memory, #temperature,
+#custom-caffeine, #custom-nightlight, #backlight, #pulseaudio, #network, #bluetooth {
+    padding: 0 7px;
+}
+
+#custom-updates { color: @peach; }
+#cpu            { color: @green; }
+#memory         { color: @teal; }
+#temperature    { color: @sapphire; }
+#custom-caffeine.off { color: @overlay0; }
+#custom-caffeine.on  { color: @peach; }
+#custom-nightlight.off { color: @overlay0; }
+#custom-nightlight.on  { color: @yellow; }
+#backlight      { color: @yellow; }
+#pulseaudio     { color: @peach; }
+#pulseaudio.muted { color: @overlay0; }
+#network        { color: @blue; }
+#network.disconnected { color: @red; }
+#bluetooth      { color: @lavender; }
+#bluetooth.off, #bluetooth.disabled { color: @overlay0; }
+
+#cpu.warning, #memory.warning     { color: @yellow; }
+#cpu.critical, #memory.critical,
+#temperature.critical             { color: @red; }
+
+#battery { color: @green; }
+#battery.charging, #battery.plugged { color: @teal; }
+#battery.warning:not(.charging)   { color: @yellow; }
+#battery.critical:not(.charging)  {
+    color: @crust;
+    background: @red;
+    animation: blink 1s steps(2) infinite;
+}
+@keyframes blink { to { background: alpha(@red, 0.5); } }
+
+#custom-power { color: @red; padding: 0 13px 0 11px; }
+#custom-power:hover { background: @red; color: @crust; }

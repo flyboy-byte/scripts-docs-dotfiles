@@ -1,0 +1,19 @@
+#!/bin/sh
+# Toggle: jump to the empty workspace (wallpaper visible), press again to return.
+ws=$(niri msg --json workspaces)
+focused_empty=$(printf '%s' "$ws" | python3 -c '
+import json,sys
+w=json.load(sys.stdin)
+f=[x for x in w if x["is_focused"]][0]
+print("yes" if f["active_window_id"] is None else "no")')
+if [ "$focused_empty" = yes ]; then
+    niri msg action focus-workspace-previous
+else
+    idx=$(printf '%s' "$ws" | python3 -c '
+import json,sys
+w=json.load(sys.stdin)
+f=[x for x in w if x["is_focused"]][0]
+e=[x["idx"] for x in w if x["output"]==f["output"] and x["active_window_id"] is None]
+print(e[0] if e else "")')
+    [ -n "$idx" ] && niri msg action focus-workspace "$idx"
+fi

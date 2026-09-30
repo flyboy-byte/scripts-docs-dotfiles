@@ -88,7 +88,7 @@ def create_wallpaper(text, width, height, output_file):
     overlay = Image.new('RGBA', (width, height), (0, 0, 0, 0))
     ImageDraw.Draw(overlay).rounded_rectangle(
         [start_x - pad, start_y - pad, start_x + max_width + pad, start_y + total_height + pad],
-        radius=15, fill=(30, 30, 46, 180))
+        radius=18, fill=(49, 50, 68, 235), outline=(108, 112, 134, 255), width=2)
     img = Image.alpha_composite(img.convert('RGBA'), overlay).convert('RGB')
     draw = ImageDraw.Draw(img)
 

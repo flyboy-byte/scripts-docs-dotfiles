@@ -1,0 +1,22 @@
+#!/bin/sh
+# caffeine          -> toggle (bind to a key)
+# caffeine status   -> JSON for waybar
+state="${XDG_RUNTIME_DIR:-/tmp}/caffeine-on"
+cfg=~/.config/swayidle
+if [ "$1" = status ]; then
+    if [ -e "$state" ]; then
+        printf '{"text":"\xf3\xb0\x85\xb6","class":"on","tooltip":"Caffeine ON: screen stays awake"}\n'
+    else
+        printf '{"text":"\xf3\xb0\x9b\x8a","class":"off","tooltip":"Caffeine off: idle lock active"}\n'
+    fi
+    exit 0
+fi
+if [ -e "$state" ]; then
+    rm -f "$state"; use="$cfg/config"
+else
+    : > "$state"; use="$cfg/caffeine"
+fi
+pkill -x swayidle
+setsid swayidle -w -C "$use" >/dev/null 2>&1 &
+sleep 0.2
+pkill -RTMIN+9 waybar

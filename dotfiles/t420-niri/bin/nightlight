@@ -1,0 +1,20 @@
+#!/bin/sh
+# nightlight          -> toggle warm screen tint (wlsunset)
+# nightlight status   -> JSON for waybar
+# Warm temperature is constant while on: no schedule.
+TEMP=3800
+if [ "$1" = status ]; then
+    if pgrep -x wlsunset >/dev/null; then
+        printf '{"text":"\xf3\xb0\x96\x94","class":"on","tooltip":"Night light ON (%sK)"}\n' "$TEMP"
+    else
+        printf '{"text":"\xf3\xb0\x96\x99","class":"off","tooltip":"Night light off"}\n'
+    fi
+    exit 0
+fi
+if pgrep -x wlsunset >/dev/null; then
+    pkill -x wlsunset
+else
+    setsid wlsunset -t "$TEMP" -T "$((TEMP+1))" >/dev/null 2>&1 &
+fi
+sleep 0.3
+pkill -RTMIN+10 waybar

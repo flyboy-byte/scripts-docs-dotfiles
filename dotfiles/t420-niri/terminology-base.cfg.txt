@@ -1,0 +1,853 @@
+group "Config" struct {
+    group "keys" list {
+        group "Config_Keys" struct {
+            value "keyname" string: "F11";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 0;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "win_fullscreen";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Prior";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "term_prev";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Next";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "term_next";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "0";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "tab_10";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "1";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "tab_1";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "2";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "tab_2";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "3";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "tab_3";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "4";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "tab_4";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "5";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "tab_5";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "6";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "tab_6";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "7";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "tab_7";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "8";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "tab_8";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "9";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "tab_9";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Home";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 1;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "cmd_box";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "w";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 1;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "copy_primary";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Return";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 1;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "paste_primary";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Up";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 1;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "term_up";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Down";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 1;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "term_down";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Left";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 1;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "term_left";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Right";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 1;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "term_right";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "g";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 1;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "visible_group";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Prior";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "split_h";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Next";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "split_v";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "t";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "tab_new";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "End";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "exited";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Home";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "tab_select";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "c";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "copy_clipboard";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "v";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "paste_clipboard";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "h";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "miniview";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Insert";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "paste_clipboard";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "n";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "term_new";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "equal";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 1;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "increase_font_size";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "minus";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 1;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "decrease_font_size";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "0";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 1;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "reset_font_size";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "9";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 1;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "big_font_size";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "t";
+            value "ctrl" uchar: 1;
+            value "alt" uchar: 1;
+            value "shift" uchar: 0;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "tab_title";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Prior";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "one_page_up";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Next";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "one_page_down";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Up";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "one_line_up";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Down";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "one_line_down";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Insert";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "paste_primary";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "KP_Add";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "increase_font_size";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "KP_Subtract";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "decrease_font_size";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "KP_Multiply";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "reset_font_size";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "KP_Divide";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "copy_clipboard";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Left";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "term_prev";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Right";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "term_next";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "Home";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "top_backlog";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "End";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 0;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "reset_scroll";
+        }
+        group "Config_Keys" struct {
+            value "keyname" string: "g";
+            value "ctrl" uchar: 0;
+            value "alt" uchar: 1;
+            value "shift" uchar: 1;
+            value "win" uchar: 0;
+            value "meta" uchar: 0;
+            value "hyper" uchar: 0;
+            value "cb" string: "all_group";
+        }
+    }
+    value "version" int: 27;
+    value "font.name" string: "terminus-14-bold.pcf";
+    value "font.size" int: 22;
+    value "font.bitmap" uchar: 1;
+    value "font.bolditalic" uchar: 1;
+    value "helper.email" string: "xdg-email";
+    value "helper.url.general" string: "xdg-open";
+    value "helper.url.video" string: "xdg-open";
+    value "helper.url.image" string: "xdg-open";
+    value "helper.local.general" string: "xdg-open";
+    value "helper.local.video" string: "xdg-open";
+    value "helper.local.image" string: "xdg-open";
+    value "helper.inline_please" uchar: 1;
+    value "theme" string: "default.edj";
+    value "color_scheme_name" string: "Cobalt2";
+    value "scrollback" int: 65536;
+    value "tab_zoom" double: 0.5000000000000000000000000;
+    value "vidmod" int: 0;
+    value "jump_on_change" uchar: 0;
+    value "jump_on_keypress" uchar: 1;
+    value "flicker_on_key" uchar: 0;
+    value "disable_cursor_blink" uchar: 0;
+    value "cursor_shape" int: 0;
+    value "disable_visual_bell" uchar: 0;
+    value "active_links" uchar: 0;
+    value "active_links_email" uchar: 1;
+    value "active_links_file" uchar: 1;
+    value "active_links_url" uchar: 1;
+    value "active_links_escape" uchar: 1;
+    value "active_links_color" uchar: 1;
+    value "translucent" uchar: 0;
+    value "opacity" int: 50;
+    value "mute" uchar: 0;
+    value "visualize" uchar: 1;
+    value "urg_bell" uchar: 1;
+    value "multi_instance" uchar: 0;
+    value "xterm_256color" uchar: 1;
+    value "erase_is_del" uchar: 0;
+    value "custom_geometry" uchar: 1;
+    value "cg_width" int: 131;
+    value "cg_height" int: 67;
+    value "drag_links" uchar: 0;
+    value "login_shell" uchar: 0;
+    value "mouse_over_focus" uchar: 1;
+    value "disable_focus_visuals" uchar: 0;
+    value "colors_use" uchar: 0;
+    group "colors" array {
+        count 48;
+        group "Config_Color" struct {
+            value "r" uchar: 170;
+            value "g" uchar: 170;
+            value "b" uchar: 170;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 0;
+            value "g" uchar: 0;
+            value "b" uchar: 0;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 192;
+            value "g" uchar: 0;
+            value "b" uchar: 0;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 0;
+            value "g" uchar: 192;
+            value "b" uchar: 0;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 192;
+            value "g" uchar: 192;
+            value "b" uchar: 0;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 0;
+            value "g" uchar: 0;
+            value "b" uchar: 192;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 192;
+            value "g" uchar: 0;
+            value "b" uchar: 192;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 0;
+            value "g" uchar: 192;
+            value "b" uchar: 192;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 192;
+            value "g" uchar: 192;
+            value "b" uchar: 192;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 0;
+            value "g" uchar: 0;
+            value "b" uchar: 0;
+            value "a" uchar: 0;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 34;
+            value "g" uchar: 34;
+            value "b" uchar: 34;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 170;
+            value "g" uchar: 170;
+            value "b" uchar: 170;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 238;
+            value "g" uchar: 238;
+            value "b" uchar: 238;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 204;
+            value "g" uchar: 204;
+            value "b" uchar: 204;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 204;
+            value "g" uchar: 136;
+            value "b" uchar: 136;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 136;
+            value "g" uchar: 204;
+            value "b" uchar: 136;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 204;
+            value "g" uchar: 170;
+            value "b" uchar: 136;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 136;
+            value "g" uchar: 136;
+            value "b" uchar: 204;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 204;
+            value "g" uchar: 136;
+            value "b" uchar: 204;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 136;
+            value "g" uchar: 204;
+            value "b" uchar: 204;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 204;
+            value "g" uchar: 204;
+            value "b" uchar: 204;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 0;
+            value "g" uchar: 0;
+            value "b" uchar: 0;
+            value "a" uchar: 0;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 17;
+            value "g" uchar: 17;
+            value "b" uchar: 17;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 238;
+            value "g" uchar: 238;
+            value "b" uchar: 238;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 128;
+            value "g" uchar: 128;
+            value "b" uchar: 128;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 8;
+            value "g" uchar: 8;
+            value "b" uchar: 8;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 152;
+            value "g" uchar: 8;
+            value "b" uchar: 8;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 8;
+            value "g" uchar: 152;
+            value "b" uchar: 8;
+            value "a" uchar: 152;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 152;
+            value "g" uchar: 152;
+            value "b" uchar: 8;
+            value "a" uchar: 152;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 8;
+            value "g" uchar: 8;
+            value "b" uchar: 152;
+            value "a" uchar: 152;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 152;
+            value "g" uchar: 8;
+            value "b" uchar: 152;
+            value "a" uchar: 152;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 8;
+            value "g" uchar: 152;
+            value "b" uchar: 152;
+            value "a" uchar: 152;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 152;
+            value "g" uchar: 152;
+            value "b" uchar: 152;
+            value "a" uchar: 152;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 0;
+            value "g" uchar: 0;
+            value "b" uchar: 0;
+            value "a" uchar: 0;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 33;
+            value "g" uchar: 33;
+            value "b" uchar: 33;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 135;
+            value "g" uchar: 135;
+            value "b" uchar: 135;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 186;
+            value "g" uchar: 186;
+            value "b" uchar: 186;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 84;
+            value "g" uchar: 84;
+            value "b" uchar: 84;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 199;
+            value "g" uchar: 84;
+            value "b" uchar: 84;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 84;
+            value "g" uchar: 199;
+            value "b" uchar: 84;
+            value "a" uchar: 199;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 199;
+            value "g" uchar: 199;
+            value "b" uchar: 84;
+            value "a" uchar: 199;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 84;
+            value "g" uchar: 84;
+            value "b" uchar: 199;
+            value "a" uchar: 199;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 199;
+            value "g" uchar: 84;
+            value "b" uchar: 199;
+            value "a" uchar: 199;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 84;
+            value "g" uchar: 199;
+            value "b" uchar: 199;
+            value "a" uchar: 199;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 199;
+            value "g" uchar: 199;
+            value "b" uchar: 199;
+            value "a" uchar: 199;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 0;
+            value "g" uchar: 0;
+            value "b" uchar: 0;
+            value "a" uchar: 0;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 20;
+            value "g" uchar: 20;
+            value "b" uchar: 20;
+            value "a" uchar: 255;
+        }
+        group "Config_Color" struct {
+            value "r" uchar: 186;
+            value "g" uchar: 186;
+            value "b" uchar: 186;
+            value "a" uchar: 255;
+        }
+    }
+    value "bell_rings" uchar: 1;
+    value "gravatar" uchar: 1;
+    value "notabs" uchar: 0;
+    value "show_tabs" uchar: 1;
+    value "mv_always_show" uchar: 0;
+    value "ty_escapes" uchar: 1;
+    value "selection_escapes" uchar: 1;
+    value "changedir_to_current" uchar: 1;
+    value "emoji_dbl_width" uchar: 0;
+    value "shine" int: 0;
+    value "hide_cursor" double: 5.0000000000000000000000000;
+    value "group_all" uchar: 0;
+}

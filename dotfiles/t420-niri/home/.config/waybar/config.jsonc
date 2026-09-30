@@ -1,0 +1,182 @@
+// Waybar — T420 / niri, Catppuccin Mocha pills
+{
+    "layer": "top",
+    "position": "top",
+    "height": 28,
+    "margin-top": 6,
+    "margin-left": 10,
+    "margin-right": 10,
+    "spacing": 0,
+
+    "modules-left": ["custom/arch", "niri/workspaces", "niri/window"],
+    "modules-center": ["clock"],
+    "modules-right": [
+        "tray",
+        "group/system",
+        "group/controls",
+        "battery",
+        "custom/power"
+    ],
+
+    "group/system": {
+        "orientation": "horizontal",
+        "modules": ["custom/updates", "cpu", "memory", "temperature"]
+    },
+    "group/controls": {
+        "orientation": "horizontal",
+        "modules": ["custom/caffeine", "custom/nightlight", "backlight", "pulseaudio", "network", "bluetooth"]
+    },
+
+    "custom/arch": {
+        "format": "󰣇",
+        "tooltip": false,
+        "on-click": "fuzzel"
+    },
+
+    "niri/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "active": "󰝥",
+            "default": "󰝦"
+        }
+    },
+
+    "niri/window": {
+        "format": "{title}",
+        "max-length": 40,
+        "rewrite": {
+            "(.*) — Brave": "󰖟  $1",
+            "(.*) - Brave": "󰖟  $1",
+            "(.*) - Zed": "󰅩  $1"
+        }
+    },
+
+    "clock": {
+        "format": "{:%a %d  %H:%M}",
+        "format-alt": "{:%A, %B %d %Y}",
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "calendar": {
+            "mode": "month",
+            "weeks-pos": "",
+            "on-scroll": 1,
+            "format": {
+                "months":   "<span color='#f5e0dc'><b>{}</b></span>",
+                "weekdays": "<span color='#f9e2af'><b>{}</b></span>",
+                "today":    "<span color='#f38ba8'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+
+    "tray": {
+        "icon-size": 15,
+        "spacing": 8
+    },
+
+    "custom/updates": {
+        "format": "󰏗 {}",
+        "exec": "n=$(checkupdates 2>/dev/null | wc -l); [ \"$n\" -gt 0 ] && echo $n || echo ''",
+        "interval": 1800,
+        "tooltip": false,
+        "on-click": "terminology -e sh -c 'yay; echo; read -r -p \"done — press enter\"'",
+        "signal": 8
+    },
+
+    "cpu": {
+        "format": "󰻠 {usage}%",
+        "interval": 3,
+        "states": { "warning": 70, "critical": 90 },
+        "on-click": "terminology -e btop"
+    },
+
+    "memory": {
+        "format": "󰍛 {percentage}%",
+        "interval": 5,
+        "tooltip-format": "RAM {used:0.1f}/{total:0.1f} GiB\nSwap {swapUsed:0.1f}/{swapTotal:0.1f} GiB",
+        "states": { "warning": 75, "critical": 90 },
+        "on-click": "terminology -e btop"
+    },
+
+    "temperature": {
+        "hwmon-path-abs": "/sys/devices/platform/coretemp.0/hwmon",
+        "input-filename": "temp1_input",
+        "critical-threshold": 85,
+        "format": "󰔏 {temperatureC}°",
+        "format-critical": "󰈸 {temperatureC}°",
+        "interval": 5
+    },
+
+    "custom/caffeine": {
+        "exec": "/home/logan/.local/bin/caffeine status",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 9,
+        "on-click": "/home/logan/.local/bin/caffeine"
+    },
+
+    "custom/nightlight": {
+        "exec": "/home/logan/.local/bin/nightlight status",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 10,
+        "on-click": "/home/logan/.local/bin/nightlight"
+    },
+
+    "backlight": {
+        "device": "acpi_video0",
+        "format": "{icon} {percent}%",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "on-scroll-up": "brightnessctl --class=backlight set +5%",
+        "on-scroll-down": "brightnessctl --class=backlight set 5%-"
+    },
+
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰝟 mute",
+        "format-icons": { "headphone": "󰋋", "default": ["󰕿", "󰖀", "󰕾"] },
+        "scroll-step": 5,
+        "on-click": "pavucontrol",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    },
+
+    "network": {
+        "format-wifi": "{icon}",
+        "format-ethernet": "󰈀",
+        "format-disconnected": "󰤮",
+        "format-icons": ["󰤟", "󰤢", "󰤥", "󰤨"],
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)\n{ipaddr}  ⇣{bandwidthDownBytes} ⇡{bandwidthUpBytes}",
+        "tooltip-format-ethernet": "{ifname} {ipaddr}",
+        "interval": 5,
+        "on-click": "terminology -e nmtui"
+    },
+
+    "bluetooth": {
+        "format": "󰂯",
+        "format-off": "󰂲",
+        "format-disabled": "󰂲",
+        "format-connected": "󰂱 {num_connections}",
+        "tooltip-format-connected": "{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "on-click": "terminology -e bluetui"
+    },
+
+    "battery": {
+        "states": { "warning": 25, "critical": 12 },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰚥 {capacity}%",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "tooltip-format": "{timeTo}\n{power:.1f} W  ·  health {health}%",
+        "interval": 30,
+        "on-click": "/home/logan/.local/bin/battmenu"
+    },
+
+    "custom/power": {
+        "format": "⏻",
+        "tooltip": false,
+        "on-click": "~/.local/bin/powermenu"
+    }
+}

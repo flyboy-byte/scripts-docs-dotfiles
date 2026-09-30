@@ -1,0 +1,6 @@
+#!/bin/sh
+# Toggle the clipboard history picker: 1st press opens it, 2nd press closes it.
+# Only copies if something was actually chosen (closing must not blank the clipboard).
+pkill -x fuzzel && exit 0
+sel=$(cliphist list | fuzzel --dmenu --prompt 'clip ') || exit 0
+[ -n "$sel" ] && printf '%s' "$sel" | cliphist decode | wl-copy

@@ -1,0 +1,1 @@
+YOURUSER ALL=(root) NOPASSWD: /usr/local/bin/battctl

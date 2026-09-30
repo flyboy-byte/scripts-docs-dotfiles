@@ -160,6 +160,16 @@ sudo python3 pkgfilter.py               # needed for a full filesystem scan outs
 ```
 Run it from its own empty folder — that's where `revisionN.txt` files accumulate.
 
+### dotfiles/t420-niri/
+Full dotfiles for an Arch + niri ThinkPad T420 (Catppuccin Mocha): niri, waybar, fuzzel, mako, swayidle/swaylock, Terminology, plus helper scripts (keybind cheat sheet, caffeine and night-light toggles, clipboard picker, battery dropdown with charge-limit toggle) and reference copies of the root-level config (zram, earlyoom, SDDM/GRUB themes).
+
+```bash
+cd dotfiles/t420-niri
+./install.sh    # backs up anything it replaces as *.pre-dotfiles
+```
+
+See `dotfiles/t420-niri/README.md` for the sudo steps.
+
 ---
 
 MIT licensed — see `LICENSE`.

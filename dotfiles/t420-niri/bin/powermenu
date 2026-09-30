@@ -1,0 +1,11 @@
+#!/bin/sh
+# fuzzel power menu (waybar ⏻ button)
+choice=$(printf '󰌾  Lock\n󰍃  Logout\n󰤄  Suspend\n󰜉  Reboot\n⏻  Shutdown\n' |
+    fuzzel --dmenu --lines 5 --width 18 --prompt '')
+case "$choice" in
+    *Lock)     loginctl lock-session ;;
+    *Logout)   niri msg action quit --skip-confirmation ;;
+    *Suspend)  systemctl suspend ;;
+    *Reboot)   systemctl reboot ;;
+    *Shutdown) systemctl poweroff ;;
+esac

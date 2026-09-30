@@ -1,0 +1,3 @@
+# caffeine ON: no dim / screen-off / suspend timers; still lock before any suspend (lid close)
+before-sleep 'swaylock -f'
+lock 'swaylock -f'

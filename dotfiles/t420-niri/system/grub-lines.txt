@@ -1,0 +1,4 @@
+GRUB_DEFAULT=saved
+GRUB_SAVEDEFAULT=true
+GRUB_THEME="/boot/grub/themes/catppuccin-mocha-tux/theme.txt"
+GRUB_GFXMODE=1366x768,auto
