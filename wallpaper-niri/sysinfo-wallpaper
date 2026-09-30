@@ -1,0 +1,158 @@
+#!/usr/bin/env python3
+"""
+sysinfo-wallpaper: live fastfetch wallpaper for niri.
+
+Port of flyboy-byte/scripts-and-docs wallpaper/neofetch_wallpaper_kde.py:
+fastfetch instead of neofetch, awww instead of plasma-apply-wallpaperimage,
+screen size read from niri, output kept in ~/.cache.
+"""
+import json
+import os
+import subprocess
+import sys
+import textwrap
+import time
+from datetime import datetime
+
+from PIL import Image, ImageDraw, ImageFont
+
+INTERVAL = 15  # seconds between checks
+CACHE_DIR = os.path.join(os.environ.get('XDG_CACHE_HOME', os.path.expanduser('~/.cache')), 'sysinfo-wallpaper')
+OUTPUT = os.path.join(CACHE_DIR, 'wallpaper.png')
+
+# fastfetch modules to show (no Terminal: under systemd it just says "systemd";
+# no Colors: those are ANSI blocks that don't render in an image)
+MODULES = ('Title:Separator:OS:Host:Kernel:Uptime:Packages:Shell:Display:WM:'
+           'CPU:GPU:Memory:Swap:Disk:LocalIp:Battery:Locale')
+
+FONT_PATHS = [
+    '/usr/share/fonts/TTF/DejaVuSansMono.ttf',
+    '/usr/share/fonts/TTF/JetBrainsMono-Regular.ttf',
+    '/usr/share/fonts/TTF/FiraCode-Regular.ttf',
+    '/usr/share/fonts/liberation/LiberationMono-Regular.ttf',
+    '/usr/share/fonts/noto/NotoSansMono-Regular.ttf',
+]
+
+
+def get_fastfetch_output():
+    result = subprocess.run(
+        ['fastfetch', '--pipe', '--logo', 'none', '--structure', MODULES],
+        capture_output=True, text=True, check=True)
+    # fastfetch reports its parent process as the shell; show the login shell instead
+    shell = os.path.basename(os.environ.get('SHELL', 'sh'))
+    return '\n'.join(f'Shell: {shell}' if l.startswith('Shell:') else l
+                     for l in result.stdout.strip().split('\n'))
+
+
+def get_screen_size():
+    """Logical size of the first niri output; falls back to the T420 panel."""
+    try:
+        result = subprocess.run(['niri', 'msg', '--json', 'outputs'],
+                                capture_output=True, text=True, check=True, timeout=5)
+        for out in json.loads(result.stdout).values():
+            logical = out.get('logical')
+            if logical:
+                return logical['width'], logical['height']
+    except Exception:
+        pass
+    return 1366, 768
+
+
+def get_font(height):
+    size = max(12, min(16, height // 50))
+    for path in FONT_PATHS:
+        if os.path.exists(path):
+            return ImageFont.truetype(path, size)
+    return ImageFont.load_default()
+
+
+def create_wallpaper(text, width, height, output_file):
+    img = Image.new('RGB', (width, height), color='#1e1e2e')
+    draw = ImageDraw.Draw(img)
+    font = get_font(height)
+
+    text += '\n\n' + datetime.now().strftime('%A, %B %d, %Y - %I:%M %p')
+
+    max_chars = width // 8
+    lines = []
+    for line in text.split('\n'):
+        lines.extend(textwrap.wrap(line, width=max_chars) or [''])
+
+    line_height = font.getbbox('A')[3] + 4
+    total_height = len(lines) * line_height
+    max_width = max(draw.textbbox((0, 0), l, font=font)[2] for l in lines)
+    start_x = (width - max_width) // 2
+    start_y = (height - total_height) // 2
+
+    pad = 40
+    overlay = Image.new('RGBA', (width, height), (0, 0, 0, 0))
+    ImageDraw.Draw(overlay).rounded_rectangle(
+        [start_x - pad, start_y - pad, start_x + max_width + pad, start_y + total_height + pad],
+        radius=15, fill=(30, 30, 46, 180))
+    img = Image.alpha_composite(img.convert('RGBA'), overlay).convert('RGB')
+    draw = ImageDraw.Draw(img)
+
+    y = start_y
+    for line in lines:
+        key = line.split(':', 1)[0].lower() if ':' in line else ''
+        color = '#cdd6f4'
+        if any(k in key for k in ('os', 'host', 'kernel')):
+            color = '#89b4fa'
+        elif any(k in key for k in ('cpu', 'gpu', 'memory', 'swap', 'disk')):
+            color = '#a6e3a1'
+        elif any(k in key for k in ('shell', 'display', 'wm', 'window manager')):
+            color = '#fab387'
+        elif any(d in line for d in ('Monday', 'Tuesday', 'Wednesday', 'Thursday',
+                                     'Friday', 'Saturday', 'Sunday')):
+            color = '#f9e2af'
+        draw.text((start_x, y), line, fill=color, font=font)
+        y += line_height
+
+    # write-then-rename so awww never reads a half-written file
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+    tmp = output_file + '.tmp.png'
+    img.save(tmp, 'PNG')
+    os.replace(tmp, output_file)
+
+
+def wait_for_awww(timeout=30):
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        if subprocess.run(['awww', 'query'], capture_output=True).returncode == 0:
+            return True
+        time.sleep(1)
+    return False
+
+
+def apply_wallpaper(path):
+    subprocess.run(['awww', 'img', path,
+                    '--transition-type', 'fade',
+                    '--transition-duration', '0.7',
+                    '--transition-fps', '30'],
+                   capture_output=True, timeout=10)
+
+
+def main():
+    once = '--once' in sys.argv
+    if not wait_for_awww():
+        sys.exit('awww-daemon is not running')
+
+    last = None
+    while True:
+        start = time.time()
+        try:
+            text = get_fastfetch_output()
+            if text != last:
+                width, height = get_screen_size()
+                create_wallpaper(text, width, height, OUTPUT)
+                apply_wallpaper(OUTPUT)
+                last = text
+        except Exception as e:
+            print(f'sysinfo-wallpaper: {e}', file=sys.stderr)
+        if once:
+            break
+        time.sleep(max(0, INTERVAL - (time.time() - start)))
+
+
+if __name__ == '__main__':
+    main()

@@ -112,6 +112,23 @@ systemctl --user enable --now wallpaper.service
 ```
 Edit the `ExecStart` path in the file to match wherever you place the script.
 
+### wallpaper-niri/sysinfo-wallpaper
+Wayland/niri port of the KDE wallpaper loop above. Every ~15s it runs `fastfetch`, and if the output changed, renders it onto a Catppuccin-style PNG sized to the screen (read from `niri msg`) and cross-fades it in with `awww`. No hardcoded paths — the image lives in `~/.cache/sysinfo-wallpaper/`. Requires `awww`, `fastfetch`, and Pillow.
+
+```bash
+install -Dm755 wallpaper-niri/sysinfo-wallpaper ~/.local/bin/sysinfo-wallpaper
+sysinfo-wallpaper --once      # render and apply one frame
+```
+See `wallpaper-niri/README.md` for full setup.
+
+### wallpaper-niri/sysinfo-wallpaper.service
+Systemd user service that runs `sysinfo-wallpaper` for the length of a niri session (`graphical-session.target`), restarting on failure.
+
+```bash
+cp wallpaper-niri/sysinfo-wallpaper.service ~/.config/systemd/user/
+systemctl --user enable --now sysinfo-wallpaper.service
+```
+
 ### claude-paper/whitepaper-formatter.html
 Single-file HTML tool (no build step, no server) that turns raw research text into a structured white paper — adds a title, table of contents, and headings via the Claude API without rewriting or reordering any of your original content. Runs entirely client-side.
 
