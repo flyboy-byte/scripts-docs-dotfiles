@@ -33,6 +33,10 @@ package table marks matching rows `KEEP` or `CAUTION`.
   confirm what was freed afterwards. Anything needing root (`sudo pacman -Rns`, `sudo paccache`) is for
   the user's own terminal; give the command, do not run it.
 - Do not delete a cache while its app is running (browsers, the Claude desktop app, Steam): ask the user to close it first.
+  Check with `pgrep -x <process name>`, never `pgrep -f`, which also matches your own command line and always says "running".
+- Some caches contain read-only directories (unpacked downloads), so `rm -rf` leaves them behind with "Permission denied".
+  For a cache the user already approved, `chmod -R u+w <that cache>` and remove it again. Never `chmod` outside the approved path.
+- After deleting, report the real result: free space before and after (`df`), not the sum of the sizes you listed.
 - Run scans as `nice -n 10 ionice -c3 python3 <script> ...`. A scan of a large home can take a
   minute or two; say so before starting, and do not repeat a scan you already have.
 - Sizes are space used on disk (blocks), so sparse files count for what they take.
