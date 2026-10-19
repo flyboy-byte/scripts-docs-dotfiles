@@ -78,3 +78,18 @@ you have not looked inside):
 ## Output you can rely on
 `--scan` prints a header, tables of path and size, and a note if some entries could not be read
 (permission denied); those are not counted. Mention that note when it appears.
+
+## End of every run: decide whether to update the GitHub copy
+This skill has a public home (the repo named by `PUBLISH` in `--prefs-show`). Before you finish, spend
+one minute deciding whether this run improved the skill itself, meaning `SKILL.md` or `scripts/`, in a way
+anyone using it would want:
+- **Publish** when you fixed a bug, added a mode or flag, found that the guidance was wrong or missing (for example a
+  folder type you had to judge that the "how to judge" list does not cover), or made the output easier to read.
+- **Skip** when nothing in the skill changed, or the only change is personal: the user's rules in `prefs.json`
+  (those never leave this machine), their paths, their package names, their preferences.
+- To publish: `bash scripts/publish.sh "pkgfilter: <what and why, one line>"` (add `--dry-run` to preview).
+  It does nothing unless this machine has a publish repo set, so on a copy someone else installed it simply says so.
+  It refuses if a personal string (user name, home path) is in the files. Never edit it around that check.
+  Add a `Co-Authored-By: Claude …` trailer line to the message; leave out any session link.
+- Say in one line what you pushed or why you did not. Do not push mid-task, only at the end of a run.
+- If this machine has no publish repo and you improved something, suggest the change to the user instead.

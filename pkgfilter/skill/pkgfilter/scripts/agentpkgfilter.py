@@ -19,6 +19,7 @@ What to keep (a personal file, ~/.config/pkgfilter/prefs.json, not part of this 
   --caution PATH [--reason R]    only obvious bloat inside PATH (build output, caches); marked CAUTION
   --keep-pkg GLOB / --caution-pkg GLOB   the same for package names, e.g. 'arm-none-eabi-*'
   --forget PATH_OR_GLOB          drop a rule      --prefs-show   list the rules
+  --publish-repo OWNER/REPO      where scripts/publish.sh pushes updates to this skill (leave unset to never publish)
 
 Sizes are space used on disk. The scan never follows symlinks or leaves the filesystem it
 starts on, reads no file contents, and deletes nothing. Run as your own user, not root.
@@ -34,7 +35,7 @@ STATE_DIR = SCRIPT_DIR
 # ── what the user wants kept ──────────────────────────────────────────────────
 
 PREFS_PATH = os.path.expanduser(os.environ.get("PKGFILTER_PREFS", "~/.config/pkgfilter/prefs.json"))
-PREFS = {"keep": [], "caution": [], "packages": []}
+PREFS = {"keep": [], "caution": [], "packages": [], "publish": ""}
 
 def load_prefs():
     global PREFS
@@ -44,6 +45,7 @@ def load_prefs():
     except (OSError, ValueError):
         data = {}
     PREFS = {k: data.get(k, []) for k in ("keep", "caution", "packages")}
+    PREFS["publish"] = data.get("publish", "")
 
 def save_prefs():
     os.makedirs(os.path.dirname(PREFS_PATH), exist_ok=True)
@@ -107,6 +109,8 @@ def show_prefs():
             print(f"    {level.upper():8} {e['path']:<34} {e.get('reason', '')}")
     for e in PREFS["packages"]:
         print(f"    {e['level'].upper():8} pkg {e['match']:<30} {e.get('reason', '')}")
+    if PREFS["publish"]:
+        print(f"    PUBLISH  updates to this skill may be pushed to {PREFS['publish']}")
     if not any(PREFS.values()):
         print("    (none yet)")
 
@@ -395,12 +399,18 @@ def main():
     parser.add_argument("--reason", metavar="TEXT", help="why, with --keep/--caution/--keep-pkg/--caution-pkg")
     parser.add_argument("--forget", metavar="PATH_OR_GLOB", help="drop a saved rule")
     parser.add_argument("--prefs-show", action="store_true", help="list the saved rules")
+    parser.add_argument("--publish-repo", metavar="OWNER/REPO", help="the GitHub repo this skill's updates are pushed to (yours; unset on anyone else's copy)")
     args = parser.parse_args()
     load_prefs()
     for flag, kind in (("keep", "keep"), ("caution", "caution"), ("keep_pkg", "keep-pkg"), ("caution_pkg", "caution-pkg")):
         if getattr(args, flag):
             add_pref(kind, getattr(args, flag), args.reason)
             return
+    if args.publish_repo is not None:
+        PREFS["publish"] = args.publish_repo
+        save_prefs()
+        print(f"  Publish repo: {args.publish_repo or '(none)'}")
+        return
     if args.forget:
         forget_pref(args.forget)
         return
