@@ -10,18 +10,105 @@ or an AI agent can drive it one command at a time:
   --top-packages           largest installed packages (read-only, saves nothing)
   --state-dir DIR          where the revisionN.txt package lists are kept
   --reset                  forget the revisions and start from pacman again
+  --orphans                packages nothing needs any more, with sizes (read-only)
+  --cache-report           what the pacman and yay caches hold and what paccache could reclaim (read-only)
   -k WORD / -s SIZE        as in pkgfilter.py: strip a keyword / drop packages under a size
+
+What to keep (a personal file, ~/.config/pkgfilter/prefs.json, not part of this repo):
+  --keep PATH [--reason R]       never touch PATH; every table marks it KEEP
+  --caution PATH [--reason R]    only obvious bloat inside PATH (build output, caches); marked CAUTION
+  --keep-pkg GLOB / --caution-pkg GLOB   the same for package names, e.g. 'arm-none-eabi-*'
+  --forget PATH_OR_GLOB          drop a rule      --prefs-show   list the rules
 
 Sizes are space used on disk. The scan never follows symlinks or leaves the filesystem it
 starts on, reads no file contents, and deletes nothing. Run as your own user, not root.
 Package modes need pacman (Arch); --scan works on any Linux.
 """
 
-import subprocess, sys, os, glob, re, argparse, stat
+import subprocess, sys, os, glob, re, argparse, stat, json, fnmatch
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 # Where revisionN.txt live; --state-dir changes it (default: next to the script).
 STATE_DIR = SCRIPT_DIR
+
+# ── what the user wants kept ──────────────────────────────────────────────────
+
+PREFS_PATH = os.path.expanduser(os.environ.get("PKGFILTER_PREFS", "~/.config/pkgfilter/prefs.json"))
+PREFS = {"keep": [], "caution": [], "packages": []}
+
+def load_prefs():
+    global PREFS
+    try:
+        with open(PREFS_PATH) as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        data = {}
+    PREFS = {k: data.get(k, []) for k in ("keep", "caution", "packages")}
+
+def save_prefs():
+    os.makedirs(os.path.dirname(PREFS_PATH), exist_ok=True)
+    with open(PREFS_PATH, "w") as f:
+        json.dump(PREFS, f, indent=2)
+        f.write("\n")
+
+def _abs(p):
+    return os.path.abspath(os.path.expanduser(p))
+
+def _tilde(p):
+    home = os.path.expanduser("~")
+    return "~" + p[len(home):] if p == home or p.startswith(home + "/") else p
+
+def path_tag(path):
+    """KEEP / CAUTION for a path that is, or is inside, a protected folder; 'holds KEEP' for one that contains it."""
+    ap = _abs(path)
+    for level in ("keep", "caution"):
+        for e in PREFS[level]:
+            base = _abs(e["path"]).rstrip("/")
+            if ap == base or ap.startswith(base + "/"):
+                return level.upper()
+    for e in PREFS["keep"]:
+        if _abs(e["path"]).startswith(ap.rstrip("/") + "/"):
+            return "holds KEEP"
+    return ""
+
+def pkg_tag(name):
+    for level in ("keep", "caution"):
+        for e in PREFS["packages"]:
+            if e.get("level") == level and fnmatch.fnmatch(name, e["match"]):
+                return level.upper()
+    return ""
+
+def add_pref(kind, target, reason):
+    if kind in ("keep", "caution"):
+        target = _tilde(_abs(target))
+        PREFS["keep"] = [e for e in PREFS["keep"] if e["path"] != target]
+        PREFS["caution"] = [e for e in PREFS["caution"] if e["path"] != target]
+        PREFS[kind].append({"path": target, "reason": reason or ""})
+    else:
+        level = kind.split("-")[0]
+        PREFS["packages"] = [e for e in PREFS["packages"] if e["match"] != target]
+        PREFS["packages"].append({"match": target, "level": level, "reason": reason or ""})
+    save_prefs()
+    print(f"  Saved: {kind} {target}" + (f"  ({reason})" if reason else ""))
+
+def forget_pref(target):
+    t = _tilde(_abs(target)) if ("/" in target or target.startswith("~")) else target
+    n = 0
+    for k in ("keep", "caution"):
+        before = len(PREFS[k]); PREFS[k] = [e for e in PREFS[k] if e["path"] != t]; n += before - len(PREFS[k])
+    before = len(PREFS["packages"]); PREFS["packages"] = [e for e in PREFS["packages"] if e["match"] != target]; n += before - len(PREFS["packages"])
+    save_prefs()
+    print(f"  Removed {n} rule(s) for {target}")
+
+def show_prefs():
+    print(f"  Rules in {PREFS_PATH}")
+    for level in ("keep", "caution"):
+        for e in PREFS[level]:
+            print(f"    {level.upper():8} {e['path']:<34} {e.get('reason', '')}")
+    for e in PREFS["packages"]:
+        print(f"    {e['level'].upper():8} pkg {e['match']:<30} {e.get('reason', '')}")
+    if not any(PREFS.values()):
+        print("    (none yet)")
 
 # ── size helpers ──────────────────────────────────────────────────────────────
 
@@ -128,7 +215,7 @@ def print_package_table(packages, sizes, title=""):
     print(f"  {'Package':<{col_w}} {'Size':>10}")
     print(f"  {'─'*col_w} {'─'*10}")
     for p in sorted_pkgs:
-        print(f"  {p:<{col_w}} {bytes_to_human(sizes.get(p, 0)):>10}")
+        print(f"  {p:<{col_w}} {bytes_to_human(sizes.get(p, 0)):>10}  {pkg_tag(p)}".rstrip())
     print(f"  {'─'*col_w} {'─'*10}")
     print(f"  {'TOTAL':<{col_w}} {bytes_to_human(total):>10}")
     print()
@@ -220,7 +307,7 @@ def scan_filesystem(scan_path, top_n=20, children=False):
         print(f"  {'Path':<{col}} {'Size':>10}")
         print(f"  {'─'*col} {'─'*10}")
         for path, sz in rows:
-            print(f"  {fmt(path):<{col}} {bytes_to_human(sz):>10}")
+            print(f"  {fmt(path):<{col}} {bytes_to_human(sz):>10}  {path_tag(path)}".rstrip())
         print()
 
     files_sorted = sorted(top_files, reverse=True)
@@ -237,6 +324,47 @@ def scan_filesystem(scan_path, top_n=20, children=False):
         table(f"  Top {top_n} largest files:", files_sorted)
     if skipped:
         print(f"  ({skipped} entries could not be read and are not counted)\n")
+
+def dir_bytes(path):
+    total = 0
+    for dp, _dn, fns in os.walk(path, followlinks=False):
+        for f in fns:
+            try:
+                st = os.lstat(os.path.join(dp, f))
+                total += st.st_blocks * 512
+            except OSError:
+                pass
+    return total
+
+def orphans():
+    try:
+        out = subprocess.run(["pacman", "-Qdtq"], capture_output=True, text=True).stdout
+    except FileNotFoundError:
+        print("  pacman not found (package modes need Arch)."); return
+    names = [l.strip() for l in out.splitlines() if l.strip()]
+    sizes = query_sizes(names)
+    free = [n for n in names if not pkg_tag(n)]
+    print_package_table(names, sizes, title=f"  {len(names)} orphaned packages (installed as dependencies, nothing needs them now)")
+    print(f"  Not marked KEEP or CAUTION: {len(free)} packages, {bytes_to_human(sum(sizes.get(n, 0) for n in free))}")
+    print("  Remove with:  sudo pacman -Rns <names>   (your terminal; check each with pacman -Qi first)\n")
+
+def cache_report():
+    cache = "/var/cache/pacman/pkg"
+    print(f"\n  pacman cache {cache}: {bytes_to_human(dir_bytes(cache)) if os.path.isdir(cache) else 'missing'}")
+    for label, args in (("keep the last 2 versions", ["-d", "-k2"]), ("keep only the latest version", ["-d", "-k1"]),
+                        ("drop packages no longer installed", ["-d", "-u", "-k0"])):
+        try:
+            out = subprocess.run(["paccache"] + args, capture_output=True, text=True).stdout
+        except FileNotFoundError:
+            print("  paccache not found (pacman-contrib)."); break
+        m = re.search(r"(\d+) candidates \(disk space saved: ([^)]+)\)", out)
+        print(f"    {label:<40} {m.group(2) + ' (' + m.group(1) + ' files)' if m else 'nothing to remove'}")
+    for d in ("~/.cache/yay", "~/.cache/paru"):
+        d = os.path.expanduser(d)
+        if os.path.isdir(d):
+            print(f"  AUR build cache {d}: {bytes_to_human(dir_bytes(d))}")
+    print("  Reclaim with:  sudo paccache -rk1   /   sudo paccache -ruk0   (your terminal). `pacman -Scc` also drops the")
+    print("  versions you could downgrade to; yay -Sc clears the AUR build cache.\n")
 
 # ── main ──────────────────────────────────────────────────────────────────────
 
@@ -258,7 +386,33 @@ def main():
                         help="where revisionN.txt are kept (default: next to this script)")
     parser.add_argument("--reset", action="store_true",
                         help="delete every revisionN.txt in the state dir, so the next run starts from pacman again")
+    parser.add_argument("--orphans", action="store_true", help="packages nothing needs any more, with sizes (read-only)")
+    parser.add_argument("--cache-report", action="store_true", help="pacman and yay cache sizes and what paccache could reclaim (read-only)")
+    parser.add_argument("--keep", metavar="PATH", help="never touch PATH (saved in the prefs file)")
+    parser.add_argument("--caution", metavar="PATH", help="only obvious bloat inside PATH (saved in the prefs file)")
+    parser.add_argument("--keep-pkg", metavar="GLOB", help="never remove packages matching GLOB")
+    parser.add_argument("--caution-pkg", metavar="GLOB", help="packages matching GLOB need a reason to remove")
+    parser.add_argument("--reason", metavar="TEXT", help="why, with --keep/--caution/--keep-pkg/--caution-pkg")
+    parser.add_argument("--forget", metavar="PATH_OR_GLOB", help="drop a saved rule")
+    parser.add_argument("--prefs-show", action="store_true", help="list the saved rules")
     args = parser.parse_args()
+    load_prefs()
+    for flag, kind in (("keep", "keep"), ("caution", "caution"), ("keep_pkg", "keep-pkg"), ("caution_pkg", "caution-pkg")):
+        if getattr(args, flag):
+            add_pref(kind, getattr(args, flag), args.reason)
+            return
+    if args.forget:
+        forget_pref(args.forget)
+        return
+    if args.prefs_show:
+        show_prefs()
+        return
+    if args.cache_report:
+        cache_report()
+        return
+    if args.orphans:
+        orphans()
+        return
     global STATE_DIR
     if args.state_dir:
         STATE_DIR = os.path.abspath(os.path.expanduser(args.state_dir))
