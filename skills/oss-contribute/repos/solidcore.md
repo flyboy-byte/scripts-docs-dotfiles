@@ -23,7 +23,9 @@ and re-check before every push: other PRs take numbers concurrently and clashes 
 - difftest: `cargo run --profile difftest -p difftest --features cpp -- --green` (25-40 min on a
   laptop) must stay at 0 failed; for one unit `--unit <name> --seeds 30000`.
 - The C++ reference needs `upstream/` (usd-brep) and `harness/cpp/build.sh --jobs 4`.
-- CI pins a Rust version (1.98 as of 2026-10); newer local toolchains add lints in untouched files.
+- CI pins a Rust version (`rust-toolchain.toml`, 1.98 as of 2026-10); newer local toolchains add
+  lints in untouched files (1.99: `clippy::assert_is_empty`, `clippy::explicit_iter_loop`) that stop clippy before it reaches
+  `difftest`. Without rustup, allow those lints (`-A clippy::...`) so the run covers every crate.
 - No sccache: `RUSTC_WRAPPER` unset; cap `CARGO_BUILD_JOBS` on a small machine.
 - `reports/difftest/*.json` are tracked and rewritten by runs: `git checkout -- reports/`.
 

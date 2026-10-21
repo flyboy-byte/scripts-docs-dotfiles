@@ -80,6 +80,10 @@ All of these, every time:
 - **Mirror CI exactly**: the same commands, features and lint levels as the workflows, including
   formatters CI runs on files your default formatter skips. If CI pins an older toolchain, lints
   that fire only on your newer one in files you didn't touch aren't yours; say so in the PR.
+  But make sure they don't hide anything: an error in one crate can stop the linter or build
+  before it reaches the crates you changed. Allow that one lint and re-run until the run covers
+  everything, then build and run your tests again after every merge of `main`: a merge with no
+  git conflict can still break because of an upstream signature change.
 - Restore generated or tracked files the build rewrote, unless the change needs them.
 - `git diff --stat origin/main...HEAD` and `git ls-files`: no build dirs, local notes, plans,
   scripts, secrets or personal paths.
