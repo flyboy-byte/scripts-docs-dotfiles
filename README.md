@@ -17,6 +17,7 @@ MIT licensed (see `LICENSE`), except where a folder has its own `LICENSE`: `tool
 | Skill | What it does |
 | --- | --- |
 | [pkgfilter](skills/pkgfilter/) | Finds what is eating your disk and which Arch packages are bloat, explains each big folder and how safe it is to clear, and leaves the deleting to you. Remembers what you said to keep. |
+| [oss-contribute](skills/oss-contribute/) | Contribute to other people's GitHub projects with Claude doing the work, the careful way: checks the project's AI policy, avoids duplicate PRs, reproduces before fixing, proves tests fail without the fix, runs what CI runs, keeps your email private, writes honest PRs and handles reviews. For developers new to big, fast-moving upstream projects. |
 
 ```bash
 git clone https://github.com/flyboy-byte/scripts-docs-dotfiles.git
