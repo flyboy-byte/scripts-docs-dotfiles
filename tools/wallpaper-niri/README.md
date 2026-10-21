@@ -2,7 +2,7 @@
 
 A live system-info wallpaper for [niri](https://github.com/YaLTeR/niri) (and other Wayland compositors that support layer-shell). Every 15 seconds it checks [`fastfetch`](https://github.com/fastfetch-cli/fastfetch) and, if anything changed, renders the output onto a Catppuccin-style background and cross-fades it in with `awww`.
 
-This is the Wayland/niri port of [`../wallpaper/neofetch_wallpaper_kde.py`](../wallpaper/neofetch_wallpaper_kde.py), which depended on KDE's `plasma-apply-wallpaperimage`.
+This is the Wayland/niri port of [`../wallpaper-kde/neofetch_wallpaper_kde.py`](../wallpaper-kde/neofetch_wallpaper_kde.py), which depended on KDE's `plasma-apply-wallpaperimage`.
 
 ![example](example.png)
 
@@ -69,7 +69,7 @@ Colors are in `create_wallpaper()`. The `Terminal` module is left out on purpose
 
 ## Differences from the KDE version
 
-| | `../wallpaper` (KDE) | `wallpaper-niri` |
+| | `../wallpaper-kde` (KDE) | `wallpaper-niri` |
 |---|---|---|
 | Info source | `neofetch` (unmaintained) | `fastfetch` |
 | Applies wallpaper with | `plasma-apply-wallpaperimage` | `awww` (fade transition) |

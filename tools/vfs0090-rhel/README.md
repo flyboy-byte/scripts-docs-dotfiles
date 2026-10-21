@@ -1,5 +1,8 @@
 # vfs0090-rhel
 
+> Moved here from the standalone `flyboy-byte/vfs0090-rhel` repo on 2026-10-21, history included.
+> This folder is **LGPL-2.1-or-later** (see `LICENSE` here), not MIT like the rest of the repo.
+
 Get the Validity `138a:0090` / `138a:0097` fingerprint sensor working with
 `fprintd` on **RHEL 10 / CentOS Stream 10** and derivatives.
 
@@ -86,8 +89,8 @@ drop-ins and one directory (`uninstall.sh` does this).
 ## Usage
 
 ```
-git clone <this-repo>
-cd vfs0090-rhel
+git clone https://github.com/flyboy-byte/scripts-docs-dotfiles.git
+cd scripts-docs-dotfiles/tools/vfs0090-rhel
 ./install.sh
 ```
 
@@ -191,5 +194,5 @@ worth investigating separately; it's not something this repo addresses.
 ## License
 
 `libfprint` and the `vfs0090` driver are both LGPL-2.1-or-later; this
-repo's patches and scripts are released under the same license (see
+folder's patches and scripts are released under the same license (see
 `LICENSE`).
