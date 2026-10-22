@@ -80,6 +80,7 @@ Work through these in order; read the reference file when you reach the step.
 | Fit check, placement, autoroute, 3D and mechanical checks | `reference/placement-and-routing.md` |
 | Fab files, rotation and pin-name checks, audit loop, JLC order | `reference/fab-files-audit-order.md` |
 | Radios, lithium cells, US labelling, bring-up | `reference/compliance-and-bringup.md` |
+| Limited credits, time or hardware (read this first if so) | `reference/budget-mode.md` |
 
 The pipeline there names helper scripts (`gen_sch.py`, `padmaps.py`, DSN clean-up, a finisher). They are **not
 shipped** with this skill: write them in the project as you go, and keep the ideas, not the names, if the project
@@ -90,7 +91,8 @@ differs.
 Autorouting sweeps want many cores (the author's 12-thread desktop did in ~20 min what a 4-core box did in 2 h
 `[reported]`). With only a laptop: run fewer placement seeds (3-5) with the two best cost models, give each run a
 wall-clock timeout, and let it run unattended. The result is the same quality, just slower. Do not skip the DRC
-scoring or the audit loop to save time.
+scoring or the audit loop to save time. For the full cheap path (scripts over chat, a state file, one audit
+round, stop points) read `reference/budget-mode.md`. If the user mentions limited credits, start there.
 
 ## Reporting
 

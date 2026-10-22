@@ -29,7 +29,8 @@ The author's results came from a long, patient loop, not a clever prompt. The sk
    read-only copy. This is the step that catches expensive mistakes.
 5. Order a small batch first, and commit the exact uploaded files the same day.
 
-A laptop is fine; routing is just slower (see "no-big-machine fallback" in `SKILL.md`).
+A laptop is fine; routing is just slower (see "no-big-machine fallback" in `SKILL.md`). With few credits, read
+`reference/budget-mode.md`: it keeps the checks that matter and drops the sweeps and extra audit rounds.
 
 ## Provenance
 
