@@ -60,6 +60,11 @@ you have not looked inside):
 - **App state and data** (`~/.config`, `~/.local/share`, games, VMs, containers, browser profiles,
   chat history): may hold the user's real data or sign-ins. Do not suggest clearing blindly; look
   one level deeper first.
+- **Wine prefixes and other app sandboxes** (`~/.wine`, `wineprefixes/`, Proton `compatdata`, Flatpak
+  data): before deleting one, look inside for the user's own files and installed programs: `find <prefix>
+  -type f` for documents and designs outside the app's own install folders, and `ls drive_c`. A prefix can
+  hold local copies of cloud files and programs the user still runs. Copy anything found to a backup
+  folder first, confirm it, then delete.
 - **Downloads, old projects, duplicated checkouts**: the user's call. List them and ask.
 
 ## Installed packages (Arch only)
