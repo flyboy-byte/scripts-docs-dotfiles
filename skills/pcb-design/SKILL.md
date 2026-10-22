@@ -1,16 +1,17 @@
 ---
 name: pcb-design
-description: Design, lay out, autoroute, audit and order a custom PCB with KiCad, Freerouting and JLCPCB/LCSC assembly. Use when the user says "design a PCB", "make a board", "KiCad layout", "order boards from JLC", "pick LCSC parts", "check my gerbers/BOM/CPL" or asks about a board they already built.
+description: Design, lay out, autoroute, audit and order a custom PCB (printed circuit board) with KiCad, Freerouting and JLCPCB/LCSC assembly. Use when the user says "design a PCB", "make a circuit board", "make a board", "draw a schematic", "KiCad layout", "order boards from JLC", "pick LCSC parts", "check my gerbers/BOM/CPL" or asks about a board they already built.
 ---
 
 # PCB design with KiCad + JLCPCB
 
-Scope: KiCad + JLCPCB assembly. `reference/compliance-and-bringup.md` (US compliance, battery/cellular bring-up) apply only
+Scope: KiCad + JLCPCB assembly. `reference/compliance-and-bringup.md` (US compliance, battery/cellular bring-up) applies only
 to radio, lithium or shipped products. For a one-off, a breakout board or perfboard is usually the better answer; say
 so before starting a layout.
 
 Evidence: claims here are the author's report from real boards. `[reported]` = their number, unverified; `[unchecked]`
-= web endpoint or price not re-checked (dated 2026-10-22). Say so when you quote one, and check live where you can.
+= web endpoint or price not re-checked (dated 2026-10-22); `[judgment]` = advice added here, not
+from a built board. Say so when you quote one, and check live where you can.
 
 Use this for any custom board: picking parts, sizing, placement, routing,
 3D checks, audits, fab files, ordering, and answering questions about a
@@ -65,7 +66,7 @@ question at a time, with a recommended option) before placing anything:
   flag anything that isn't rated -40 C.
 - **User-handled parts** (terminals, SIM, buttons, battery, pigtails,
   programming pads): list them. Each one gets the 3D access check in
-  the 3D check in `reference/placement-and-routing.md`.
+  `reference/placement-and-routing.md`.
 - **Production intent:** what goes on the case label, how units are
   programmed (pogo or Tag-Connect pads instead of a USB connector save
   space), and top-side-only assembly to keep cost down.

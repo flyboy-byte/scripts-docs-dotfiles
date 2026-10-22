@@ -36,8 +36,9 @@ Numbers and tool details here are `[reported]` by the skill's author from their 
    circuits from first principles, power stages, layout of what moved, fab
    files against the board, silkscreen), a "known and accepted" list so
    auditors don't re-report it, and the report format.
-2. Run **several independent auditors** (on a small budget, one is enough: see `budget-mode.md`) (different AI models or tools, or
-   people) on a read-only copy. Give them the files, not your conclusions.
+2. Run **several independent auditors** (different AI models or tools, or
+   people) on a read-only copy. On a small budget one is enough (see
+   `budget-mode.md`). Give them the files, not your conclusions.
 3. Report format: ID, severity (BLOCKER = don't order / BUG = wrong but
    workable / RISK = could bite, with the condition / NOTE), location (file
    and line, or ref and coordinates), evidence in numbers, smallest fix.

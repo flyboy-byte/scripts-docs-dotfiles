@@ -35,7 +35,7 @@ A laptop is fine; routing is just slower (see "no-big-machine fallback" in `SKIL
 ## Provenance
 
 - Written by sidewinderzz. Content is theirs; on 2026-10-22 it was split into `reference/` files, the description
-  was rewritten, and evidence tags and a laptop fallback were added. Original copy in the copy in the owner's `parking-lot` repo (received 2026-10-22), unmodified.
+  was rewritten, and evidence tags and a laptop fallback were added. The original copy is in the owner's `parking-lot` repo (received 2026-10-22), unmodified.
   MIT licensed; see `LICENSE` in this folder.
 - The lessons and numbers in `SKILL.md` (Freerouting cost pairs, cost shares, density guide, run times) are the
   author's own report from real boards. They have not been verified here.
