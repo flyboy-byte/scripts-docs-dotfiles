@@ -32,11 +32,20 @@ and re-check before every push: other PRs take numbers concurrently and clashes 
 ## Sync
 Merge `origin/main` into the branch; never rebase a pushed branch.
 
+## Fork fixes
+Issues often say a bug is "fixed in the fork" (tangency-labs/smlib) and that "the Rust port needs
+the same change". The parity target is still upstream `c9c5979`: trace upstream on the inputs the
+fork's fix refuses, port only what upstream gets wrong (UB), and check whether the port's checked
+indexing already refuses it. Copying a fork guard verbatim broke 14 `primitive.api_primitives` cases
+once (2026-10). Docs-only mismatches go in the `DOC-` series.
+
 ## Review
 The `tangency-monitor` bot reviews as PR comments ("Reviewed and good to merge once CI is
 green"). Maintainers land PRs in batch PRs that merge each PR's reviewed head sha, so the head
 rule is strict: a push after review (even a renumber the maintainer offered to do) leaves the PR
-out of the batch. Fork PR CI needs maintainer approval (`action_required`).
+out of the batch. Fork PR CI needs maintainer approval (`action_required`). Since 2026-10-21 PRs land through GitHub's merge
+queue: once queued, push nothing; a queue run builds main + every PR ahead of yours, so when it fails,
+look at the other queue runs before assuming it's your PR.
 
 ## Cleanup
 `bin/` grows to 4-6 GB after the C++ and Rust difftest builds; delete it once your PRs merge.
