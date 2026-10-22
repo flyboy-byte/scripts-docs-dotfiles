@@ -39,6 +39,15 @@ Every physical number is in mm and inches and names where it came from:
 - **scaled** off a drawing (say so);
 - **inferred** (say so).
 
+**Measure the outline from the ordered Edge_Cuts Gerber, arcs included,** then draw it with the CPL
+part positions and look at the picture. In the first test of this skill (2026-10-22, a curved
+146 x 158 mm macro-pad board), a regex over the `.kicad_pcb` said 37 x 15 mm and a raw Gerber
+coordinate min/max said 231 x 179 mm; only the drawing showed which was right.
+
+**Without KiCad installed** the Gerbers, CPL, BOM and `.kicad_pcb` are all text: parse them in Python
+for the outline, positions, rotations and part counts, render the drawing to PNG (`rsvg-convert`), and
+say plainly what still needs `kicad-cli` (DRC, ERC, 3D renders, re-plotting Gerbers to diff).
+
 Report at least: board size, area, courtyard coverage % per block, tallest part height, overhang past
 each edge, card or plug travel for user-handled parts. Heights from models are model figures, not
 measurements of a real board.

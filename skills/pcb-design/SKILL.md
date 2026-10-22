@@ -65,7 +65,9 @@ copy them and fill them in, don't redesign them.
    `fab/README.md`, `archive/README.md`, and create empty `checks/` and `renders/`.
 3. **Sort the existing files.** Ordered sets go in `fab/<rev>/` with their README filled in; designs
    that were never ordered go in `archive/` and burn their revision letter. Ask before moving
-   anything.
+   anything; if the owner keeps the existing layout (a `Production Files/` folder, say), leave the
+   files where they are and record their path in `fab/README.md` and `CLAUDE.md` instead. Keep the
+   project's own revision scheme if it has one.
 4. **Fill `STATE.md` honestly.** Mark only the stages whose exit condition is actually met, record
    the revision letters already used, and copy any decisions already made into "do not re-ask".
 5. **Fill `REQUIREMENTS.md`** from what the files answer, then ask the owner the rest one question

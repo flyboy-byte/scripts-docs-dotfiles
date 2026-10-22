@@ -1,7 +1,8 @@
 # STATE — <board name>
 
 Status: <stage> (<YYYY-MM-DD>)
-Revision in progress: <letter>   Revision letters used: <A (ordered YYYY-MM-DD), B (never built), ...>
+Revision in progress: <letter or version>   Revisions used (never reused): <A (ordered YYYY-MM-DD), B (never built), ...>
+<If the project already names revisions its own way (v1.0.0), keep its scheme.>
 Review pages: fit check <link>  renders <link>  audit <link>
 
 ## Stages
