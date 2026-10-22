@@ -62,7 +62,7 @@ copy them and fill them in, don't redesign them.
    are drafts. Say which is which and how you know; ask when it isn't clear.
 2. **Copy the templates** into the project root: `CLAUDE.md` (merge into an existing one as a
    section, don't overwrite), `STATE.md`, `REQUIREMENTS.md`, `parts_research.md`, `AUDIT.md`,
-   `fab/README.md`, `archive/README.md`.
+   `fab/README.md`, `archive/README.md`, and create empty `checks/` and `renders/`.
 3. **Sort the existing files.** Ordered sets go in `fab/<rev>/` with their README filled in; designs
    that were never ordered go in `archive/` and burn their revision letter. Ask before moving
    anything.
@@ -72,7 +72,8 @@ copy them and fill them in, don't redesign them.
    at a time, each with a recommended option.
 6. **Tell the owner** the current stage and the single next action.
 
-On later sessions in a scaffolded project, read `STATE.md` first and work the current stage.
+The scaffolded `CLAUDE.md` tells every later session in that folder to load this skill again and read
+`STATE.md` first. If a scaffold file is missing there, re-run these steps for the missing files only.
 
 ## Requirements before any layout
 
@@ -102,6 +103,7 @@ Work through these in order; read the reference file when you reach the step.
 
 | Step | Read |
 | --- | --- |
+| How the AI does the work, pictures, measurements, artifacts (read first) | `reference/ai-loop-and-visuals.md` |
 | Pick parts, check 3D models, schematic as code | `reference/parts-and-schematic.md` |
 | Fit check, placement, autoroute, 3D and mechanical checks | `reference/placement-and-routing.md` |
 | Fab files, rotation and pin-name checks, audit loop, JLC order | `reference/fab-files-audit-order.md` |
