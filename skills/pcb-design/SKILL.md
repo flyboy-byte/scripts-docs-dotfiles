@@ -1,6 +1,6 @@
 ---
 name: pcb-design
-description: Design, lay out, autoroute, audit and order a custom PCB (printed circuit board) with KiCad, Freerouting and JLCPCB/LCSC assembly. Use when the user says "design a PCB", "make a circuit board", "make a board", "draw a schematic", "KiCad layout", "order boards from JLC", "pick LCSC parts", "check my gerbers/BOM/CPL" or asks about a board they already built.
+description: Design, lay out, autoroute, audit and order a custom PCB (printed circuit board) with KiCad, Freerouting and JLCPCB/LCSC assembly. Use when the user says "start a PCB project", "set up this board project", "design a PCB", "make a circuit board", "make a board", "draw a schematic", "KiCad layout", "order boards from JLC", "pick LCSC parts", "check my gerbers/BOM/CPL" or asks about a board they already built.
 ---
 
 # PCB design with KiCad + JLCPCB
@@ -49,10 +49,35 @@ one recommendation rather than a survey of options.
    cores, a GPU), not a small cloud container. Autorouting, placement
    sweeps and renders go there (see the fallback below).
 
+## Scaffold the project first
+
+Pointed at a folder (a new idea or an existing board project), set it up before any design work so
+every later session follows the same procedure. Templates are in `templates/` next to this file:
+copy them and fill them in, don't redesign them.
+
+1. **Look at what is there.** List the folder: KiCad files (`*.kicad_pro`, `*.kicad_sch`,
+   `*.kicad_pcb`), generator scripts, Gerber zips, BOM/CPL files, STEP models, datasheets, photos,
+   notes, earlier revisions, any order emails or numbers. Read notes in full. Decide which files
+   were actually ordered (an order number, a date, a Gerber zip next to a BOM and CPL) and which
+   are drafts. Say which is which and how you know; ask when it isn't clear.
+2. **Copy the templates** into the project root: `CLAUDE.md` (merge into an existing one as a
+   section, don't overwrite), `STATE.md`, `REQUIREMENTS.md`, `parts_research.md`, `AUDIT.md`,
+   `fab/README.md`, `archive/README.md`.
+3. **Sort the existing files.** Ordered sets go in `fab/<rev>/` with their README filled in; designs
+   that were never ordered go in `archive/` and burn their revision letter. Ask before moving
+   anything.
+4. **Fill `STATE.md` honestly.** Mark only the stages whose exit condition is actually met, record
+   the revision letters already used, and copy any decisions already made into "do not re-ask".
+5. **Fill `REQUIREMENTS.md`** from what the files answer, then ask the owner the rest one question
+   at a time, each with a recommended option.
+6. **Tell the owner** the current stage and the single next action.
+
+On later sessions in a scaffolded project, read `STATE.md` first and work the current stage.
+
 ## Requirements before any layout
 
-Write these down in a `REQUIREMENTS.md` and get the owner's answers (one
-question at a time, with a recommended option) before placing anything:
+These are the questions in `templates/REQUIREMENTS.md`. Get the owner's answers (one question
+at a time, with a recommended option) before placing anything:
 
 - **Size target** and which edge is the hard limit. Show mm and inches.
 - **Wire edge:** every field wire, battery lead and plug leaves ONE edge.

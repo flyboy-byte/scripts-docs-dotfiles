@@ -21,8 +21,10 @@ JLCPCB account is only needed when you order. Package names differ per distro, s
 
 The author's results came from a long, patient loop, not a clever prompt. The skill is the loop written down:
 
-1. Start by telling Claude the board's job, size limit, where the wires leave and the temperature range. It writes
-   `REQUIREMENTS.md` and asks one question at a time.
+1. Point Claude at the project folder (empty for a new idea, or an existing board project). It copies the
+   templates (`CLAUDE.md`, `STATE.md`, `REQUIREMENTS.md`, `parts_research.md`, `AUDIT.md`, `fab/`, `archive/`), sorts
+   ordered files from drafts, and asks the requirement questions the files don't answer, one at a time. After that,
+   every session reads `STATE.md` first and works the current stage.
 2. Let it pick parts and show you the 3D models before it places anything.
 3. Approve a fit-check picture, then let it place and autoroute. Expect many rounds; that is the work.
 4. Before ordering, run the audit loop with a second, independent reviewer (another model or a person) on a
@@ -35,7 +37,8 @@ A laptop is fine; routing is just slower (see "no-big-machine fallback" in `SKIL
 ## Provenance
 
 - Written by sidewinderzz. Content is theirs; on 2026-10-22 it was split into `reference/` files, the description
-  was rewritten, and evidence tags and a laptop fallback were added. The original copy is in the owner's `parking-lot` repo (received 2026-10-22), unmodified.
+  was rewritten, evidence tags and a laptop fallback were added, and the project templates in `templates/` were
+  written from the author's rules (structure added here, rules theirs). The original copy is in the owner's `parking-lot` repo (received 2026-10-22), unmodified.
   MIT licensed; see `LICENSE` in this folder.
 - The lessons and numbers in `SKILL.md` (Freerouting cost pairs, cost shares, density guide, run times) are the
   author's own report from real boards. They have not been verified here.
