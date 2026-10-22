@@ -18,6 +18,7 @@ MIT licensed (see `LICENSE`), except where a folder has its own `LICENSE`: `tool
 | --- | --- |
 | [pkgfilter](skills/pkgfilter/) | Finds what is eating your disk and which Arch packages are bloat, explains each big folder and how safe it is to clear, and leaves the deleting to you. Remembers what you said to keep. |
 | [oss-contribute](skills/oss-contribute/) | Contribute to other people's GitHub projects with Claude doing the work, the careful way: checks the project's AI policy, avoids duplicate PRs, reproduces before fixing, proves tests fail without the fix, runs what CI runs, keeps your email private, writes honest PRs and handles reviews. For developers new to big, fast-moving upstream projects. |
+| [fdroid](skills/fdroid/) | Get an Android app into F-Droid and keep it updated: policy, the recipe, the merge request, reproducible builds signed with your own key (the two-run process), ABI splits, auto-updates, and reading CI and the real build-server logs. Deep on Expo / React Native, with a status script, APK inspect/diff and a cert-checked signer. |
 
 ```bash
 git clone https://github.com/flyboy-byte/scripts-docs-dotfiles.git

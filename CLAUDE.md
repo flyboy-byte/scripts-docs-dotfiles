@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Last updated 2026-10-21. Public repo `flyboy-byte/scripts-docs-dotfiles`, branch `master`.
+Last updated 2026-10-21 (fdroid skill added). Public repo `flyboy-byte/scripts-docs-dotfiles`, branch `master`.
 
 ## Layout
 
