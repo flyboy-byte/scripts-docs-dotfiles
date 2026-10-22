@@ -1,0 +1,4 @@
+[
+  {"name": "Pin map and firmware headers", "cmd": ["python3", "checks/pinmap.py", "check"], "files": ["pinmap.csv"]},
+  {"name": "No hand edits waiting", "cmd": ["python3", "checks/drift.py", "check"], "files": []}
+]

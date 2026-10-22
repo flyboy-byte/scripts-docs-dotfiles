@@ -17,22 +17,26 @@ Mark a stage done only when its exit condition is true. Strike through, don't de
 | 5 | Placement | Fixed parts and critical loops locked; back side checked | |
 | 6 | Routing | Best run chosen by DRC count, not router score; vias out of SMD pads | |
 | 7 | 3D and mechanical | Access check done for every user-handled part; renders looked at, then published and approved by the owner | |
-| 8 | Fab files | Fresh DRC clean; CPL rotation table and pin-name check at zero mismatches | |
+| 8 | Fab files | `checks/run_all.py` all PASS (DRC included, nothing skipped) on the current design | |
 | 9 | Audit | `AUDIT.md` round with no open BLOCKER or BUG; earlier fixes re-confirmed | |
-| 10 | Order | Files committed to `fab/<rev>/` the same day, with order number | |
-| 11 | Bring-up | RISK items from the audit tested on the real board | |
+| 10 | Order | `checks/release.py` released `fab/<rev>/`; committed the same day; row in `ORDERS.md` | |
+| 11 | Bring-up | Bring-up tests from `REQUIREMENTS.md` run and recorded below; RISK items checked; lessons in `LESSONS.md` | |
 
 ## Decisions already made (do not re-ask)
 - <YYYY-MM-DD> <decision> — <why>
 
 ## Checks
-| Check | Last result | Date | On files |
-| --- | --- | --- | --- |
-| DRC | | | |
-| CPL rotation | | | |
-| Pin-name | | | |
-| Via-in-pad | | | |
-| BOM vs stock | | | |
+<!-- checks:start -->
+Not run yet. `checks/run_all.py` writes this table from `checks/checks.json`; don't edit it by hand.
+<!-- checks:end -->
+
+## Bring-up results
+| Test | Board # | Reading | Pass? | Date |
+| --- | --- | --- | --- | --- |
+
+## Firmware tested on
+| Board revision | Firmware commit | Result |
+| --- | --- | --- |
 
 ## Open
 - <question or task, with who decides>

@@ -1,3 +1,25 @@
+# Bring-up for any board, then US compliance and battery + cellular notes
+
+## First power-up on a small bench `[judgment]`
+
+Every board, before anything else. Written for a multimeter and a soldering iron; a bench supply makes it easier but
+isn't needed.
+
+1. **Look first.** Under light and magnification: solder bridges on hand-soldered pins, part orientation (diodes,
+   LEDs, ICs, polarised caps) against the order CPL and silkscreen.
+2. **Short check, unpowered.** Meter on resistance across every rail to GND. Write the readings in `STATE.md`.
+   Near 0 ohm means stop and find the short. A low but rising reading is capacitors charging and is fine.
+3. **Current-limited first power.** Without a bench supply: a USB power meter between charger and board (watch the
+   current), a polyfuse or a series resistor on a spare cable (e.g. 10 ohm for a board expected to draw < 100 mA:
+   the drop shows the current), or a laptop USB port that cuts out on overcurrent. Write the limit you used.
+   Unplug at once if current is far above what the board should draw, or anything gets hot (finger test).
+4. **Rails.** Measure each rail's voltage against the expected value.
+5. **Then the bring-up tests** in `REQUIREMENTS.md`, in order, writing pass/fail and the reading in `STATE.md`.
+   A failure is a finding: add it to `LESSONS.md` with what caught it.
+
+Hand-fitted parts follow the owner profile: if the owner has only an iron, choose through-hole, castellated modules
+and 0805 or bigger for anything they solder; QFN and fine pitch go to the fab.
+
 # US compliance and bring-up (battery + cellular boards)
 
 Only read this for products that radiate, carry lithium cells or ship in the US. Skip it for a bench or hobby board.

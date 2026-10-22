@@ -49,6 +49,12 @@ one recommendation rather than a survey of options.
    cores, a GPU), not a small cloud container. Autorouting, placement
    sweeps and renders go there (see the fallback below).
 
+## Owner profile
+
+If `~/.config/pcb-design/owner.md` exists, read it before anything else and follow it: board types, design split,
+how the owner reviews, how hard to enforce gates, who solders what, and what test gear they have. Don't re-ask what
+it answers, and never copy it into a project or this skill. `owner.example.md` shows the shape.
+
 ## Scaffold the project first
 
 Pointed at a folder (a new idea or an existing board project), set it up before any design work so
@@ -62,7 +68,10 @@ copy them and fill them in, don't redesign them.
    are drafts. Say which is which and how you know; ask when it isn't clear.
 2. **Copy the templates** into the project root: `CLAUDE.md` (merge into an existing one as a
    section, don't overwrite), `STATE.md`, `REQUIREMENTS.md`, `parts_research.md`, `AUDIT.md`,
-   `fab/README.md`, `archive/README.md`, and create empty `checks/` and `renders/`.
+   `ORDERS.md`, `LESSONS.md`, `pinmap.csv`, `review.html`, `fab/README.md`, `archive/README.md`. Copy every file in
+   `scripts/` into the project's `checks/` and `templates/checks.json` to `checks/checks.json`, then add
+   the project's own checks to it (see "Checks and the money gate"). Create `renders/` and `firmware/`.
+   Make it a git repository if it isn't one and commit the scaffold; the release gate needs commits.
 3. **Sort the existing files.** Ordered sets go in `fab/<rev>/` with their README filled in; designs
    that were never ordered go in `archive/` and burn their revision letter. Ask before moving
    anything; if the owner keeps the existing layout (a `Production Files/` folder, say), leave the
@@ -70,12 +79,48 @@ copy them and fill them in, don't redesign them.
    project's own revision scheme if it has one.
 4. **Fill `STATE.md` honestly.** Mark only the stages whose exit condition is actually met, record
    the revision letters already used, and copy any decisions already made into "do not re-ask".
-5. **Fill `REQUIREMENTS.md`** from what the files answer, then ask the owner the rest one question
-   at a time, each with a recommended option.
-6. **Tell the owner** the current stage and the single next action.
+5. **Fill `REQUIREMENTS.md`** from what the files answer, then run the interview in
+   `reference/intent-capture.md` for the rest: core questions, risk probes chosen by what the board does, and the
+   numbered bring-up tests that define "working".
+6. **Publish the review page** (`reference/ai-loop-and-visuals.md`, "the review page") if the owner profile says
+   they review on a page, and put the open requirement questions on it.
+7. **Tell the owner** the current stage and the single next action.
 
 The scaffolded `CLAUDE.md` tells every later session in that folder to load this skill again and read
 `STATE.md` first. If a scaffold file is missing there, re-run these steps for the missing files only.
+
+## Checks and the money gate
+
+Shipped scripts (copied to the project's `checks/` at scaffold time; Python 3, no KiCad needed unless noted):
+
+| Script | What it does |
+| --- | --- |
+| `run_all.py` | Runs every check in `checks/checks.json`, writes the checks table in `STATE.md` and `checks/last_run.json`. A check whose command isn't installed is SKIPPED, never passed |
+| `cpl_vs_board.py` | CPL positions and rotations against the `.kicad_pcb`; tested on a real board |
+| `gerber_outline.py` | Board size from the Edge_Cuts Gerber (arcs included) and a drawing with part positions to look at |
+| `pinmap.py` | `pinmap.csv` -> firmware `pins.h` / `pins.py`; checks headers are current, no pin used twice, every net is on the board |
+| `drift.py` | `record` after generating KiCad files; `check` lists footprints and nets the owner changed by hand |
+| `release.py` | **The money gate.** Copies fab files to `fab/<rev>/` only if the tree is committed, every check passed on the current design files, no hand edits are waiting, the last audit round covers the current design with no open BLOCKER or BUG, and the revision is new |
+| `audit_pack.py` | Read-only folder plus a paste-ready prompt for a second model or a person to audit |
+
+Add each project's checks to `checks.json` as you write them: DRC and ERC through `kicad-cli` (exit non-zero
+on violations), via-in-pad, the EasyEDA rotation and pin-name checks, BOM against stock. Each prints one result
+line and exits 0 or non-zero. Gates: everything before `release.py` is advice the owner can skip; `release.py` is
+not. Never write into `fab/` by hand and never call a board "ready to order" without a release.
+
+## Code first, KiCad stays open to the owner
+
+Claude generates the KiCad files from code (`reference/parts-and-schematic.md`) and runs `checks/drift.py record`
+after each generation. The owner may open the project in KiCad at any time to look or change things. Before every
+regeneration run `drift.py check`; if the owner changed something, show the list and ask whether to fold it into
+the generator (pin map, placement table) first. Never overwrite an owner's edit without that answer.
+
+## Lessons back to the skill
+
+Every mistake caught on a board goes in that project's `LESSONS.md` with what caught it. At bring-up and after each
+order, propose the ones that would help any board as a line for the right file in this skill, tagged
+`[reported: <project>, <date>]`, with no personal details. Add them only after the owner agrees; if the skill came
+from a repo, say the installed copy and the repo copy both need the line.
 
 ## Requirements before any layout
 
@@ -106,6 +151,7 @@ Work through these in order; read the reference file when you reach the step.
 | Step | Read |
 | --- | --- |
 | How the AI does the work, pictures, measurements, artifacts (read first) | `reference/ai-loop-and-visuals.md` |
+| Requirements interview, risk probes, bring-up tests | `reference/intent-capture.md` |
 | Pick parts, check 3D models, schematic as code | `reference/parts-and-schematic.md` |
 | Fit check, placement, autoroute, 3D and mechanical checks | `reference/placement-and-routing.md` |
 | Fab files, rotation and pin-name checks, audit loop, JLC order | `reference/fab-files-audit-order.md` |
@@ -127,7 +173,7 @@ round, stop points) read `reference/budget-mode.md`. If the user mentions limite
 ## Reporting
 
 Lead with the result, sizes in mm and inches, a picture or render where
-possible, sources named, and one recommendation. Batch several questions
-into one review list rather than asking them one at a time in chat, and
+possible, sources named, and one recommendation. In chat ask one question per
+message; put a stage's questions together on the review page when there is one; and
 record settled design decisions in the repo (README or AGENTS.md) so the
 next session follows them.

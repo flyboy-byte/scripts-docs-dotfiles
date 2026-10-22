@@ -9,15 +9,23 @@
 - Known and accepted (don't re-report): <list>
 - Report format below.
 
+Build the pack for an outside reviewer with `checks/audit_pack.py <rev> <fab files>`.
+
 ## Report format
 Verdict first: "Would I order these files as they are?"
 
-| ID | Severity | Location | Evidence (numbers) | Smallest fix |
-| --- | --- | --- | --- | --- |
+| ID | Severity | Location | Evidence (numbers) | Smallest fix | Status |
+| --- | --- | --- | --- | --- | --- |
+
+Status: open / fixed (commit) / accepted (why). `checks/release.py` refuses while a BLOCKER or BUG is open.
 
 Severity: BLOCKER = don't order; BUG = wrong but workable; RISK = could bite (state the condition);
 NOTE. Then: what was checked and found correct, and what couldn't be checked.
 
 ## Rounds
 ### Round 1 — <YYYY-MM-DD>, <auditor>
-<findings table, then fixes with commit>
+Commit: <short hash audited>
+Verdict: <would I order these files as they are?>
+
+| ID | Severity | Location | Evidence (numbers) | Smallest fix | Status |
+| --- | --- | --- | --- | --- | --- |

@@ -17,3 +17,14 @@ Answered by <owner> on <YYYY-MM-DD>. Ask one question at a time with a recommend
 | Assembly (top side only?) | | |
 | Quantity, first batch | | |
 | Ships to others? (labels, compliance) | | If yes, read `reference/compliance-and-bringup.md` |
+
+## Risk probes asked
+Functions this board has, and the probes they triggered (`reference/intent-capture.md`):
+- <function> -> <probe>: <answer>
+
+## What working means (bring-up tests, decided before layout)
+Checkable with the owner's bench. Changing one later needs a dated reason in `STATE.md`.
+
+| # | Do | Measure / observe | Pass |
+| --- | --- | --- | --- |
+| T1 | Unpowered, meter across each rail to GND | resistance | > 1 kOhm (no short) |
