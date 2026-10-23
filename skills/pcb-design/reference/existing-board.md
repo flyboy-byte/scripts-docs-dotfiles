@@ -45,8 +45,15 @@ open-source project, an older revision) and the job is to add to it, not draw it
 - Find the real keep-outs: a stacked module's footprint can carry bottom-side courtyards and an
   Edge.Cuts cutout through the carrier. A small placer (target spot per part, nearest legal position
   checked against courtyards, cutouts, through-hole pads, existing tracks and vias) beats hand
-  coordinates when the free area is irregular.
+  coordinates when the free area is irregular, but use it only as the start for placement by net length
+  (`placement-and-routing.md`): nearest-spot alone moved parts 16 mm without saying so.
+- Give each new GND pad its own via to the other layer's pour before routing (locked), and tap a
+  power net with a via placed on its existing track next to the new parts, so neither depends on a route
+  across a crowded area. Filter footprint pads with `IsOnCopperLayer()` in any clearance check: unnumbered
+  paste apertures show up as obstacles otherwise.
 - Check the enclosure before growing the board (an STL's horizontal faces give floor and boss heights).
   Bottom-side parts can keep a case fit, at the cost of JLC's second-side assembly.
 - Hide the LCSC field on footprints added by script (it is visible by default) and shrink reference text.
-- Judge the result against upstream's own DRC baseline, listing only the new violations.
+- Judge the result against upstream's own DRC baseline, listing only the new violations: make that a
+  check script (git-show the original, `kicad-cli pcb upgrade`, DRC both, subtract by type and item
+  descriptions), not a procedure in prose.

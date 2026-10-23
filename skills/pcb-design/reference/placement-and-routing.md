@@ -67,6 +67,20 @@ Facts learned the hard way:
   and in a strip inside the edge for routing, then delete them before DRC
   so they don't flag existing copper. Set the default net class width
   before export; that is the width it routes with.
+  `--router.automatic_neckdown=false` stops the neck-down, so there's nothing to widen. It **stops by itself** once its
+  score stalls for about 10 passes, so `-mp` only caps the count and more passes don't help: vary the placement
+  (seeds) instead. Read its per-pass log lines (`N unrouted and M violations`): violations before any routing mean
+  the export clearance is stricter than the existing copper, and the router loses room to it.
+- **When the router leaves 1-3 connections open** on a dense area (different ones each run), route the leftovers
+  with a small grid finisher: A* on a 0.1 mm grid over both layers, obstacles = other nets' pads, tracks and vias
+  grown by clearance + half the width (plus 0.05 mm for grid rounding), the edge and cutouts, and rule areas.
+  Pairs come from DRC's `unconnected_items`. If it finds no path, the leftovers are walled in: route the critical
+  nets first (finisher, locked), then run the router around them. `[reported: wideband carrier, 2026-10-23]`
+- **Placement by net length, not nearest spot.** A placer that drops each part at the nearest legal spot to a target
+  can move parts 15+ mm away without saying so, and routing then fails for reasons that look like congestion. Print
+  each part's distance from its target, or better, anneal over legal spots: cost per net = half-perimeter of its new
+  pads + distance to the nearest copper the net already has, GND left to the pour. On a crowded area, 0402 passives
+  (where voltage and power allow) free more room than any router setting. `[reported: wideband carrier, 2026-10-23]`
 - DSN clean-up: strip pre-filled zones (they wall off whole layers), move
   nets into their class blocks (KiCad can export the classes empty), and
   keep a plane layer out of routing on 4-layer boards.
