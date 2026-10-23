@@ -25,12 +25,9 @@ scaffolding in a project that hasn't asked for it.
 
 ## This file is published
 
-A copy lives in the public repo `flyboy-byte/scripts-docs-dotfiles` at `dotfiles/claude-code/CLAUDE.md`
-(`~/projects/scripts-docs-dotfiles`). After editing this file, run `dotfiles/claude-code/publish.sh` there: it
-copies this file without the sections marked private and refuses if server or access details survive. Then commit
-with a `claude-code: ...` message; push only when Logan says so. Anything about servers, hosts, logins or credentials
-goes inside the private markers (HTML comments `private:start` / `private:end`, each alone on its line), and so does
-any new section of that kind. Never copy this file there with `cp`, and keep secrets and tokens out of it altogether.
+A public copy lives at `flyboy-byte/scripts-docs-dotfiles`, `dotfiles/claude-code/CLAUDE.md`. After editing
+this file, refresh it with `dotfiles/claude-code/publish.sh` (it drops the private sections) and push only when Logan
+says so. Server, host, login or credential details go inside the `private:start` / `private:end` markers.
 
 
 ## How these repos are organized
@@ -81,32 +78,16 @@ These repos are written so a cold session can pick up mid-thread. What that look
   reading data, what shipped this session and where it is live, open threads, and an explicit
   **do-not-re-raise** list. Lead with whatever would waste the most time if rediscovered. The
   durable version of this belongs in the state doc; the paste-back is the short path back in.
-- **A handoff file alongside the paste-back, only when the session was long and dense.** Context
-  comes in tiers: memory (a few lines, every session), the state doc (durable), the paste-back
-  (short path in), and a handoff file (`HANDOFF.md` next to the state doc), which is the halfway tier: more
-  than memory, much less than the transcript. Write one when a cold session would otherwise re-derive
-  a lot: a multi-hour thread, a run of attempts with results, tool quirks learned the hard way, a
-  half-finished change. Skip it for short sessions or when the state doc already says everything;
-  then the paste-back alone is enough. When it exists, the paste-back points at it and the project's
-  `CLAUDE.md` reads it right after the state doc. Contents, in this order: verify-first commands with
-  the expected output; the one thing in progress, with an attempt table (`change → result`) and the
-  **last raw output** (the numbers or printout, not only my reading of it, which can be wrong); next
-  steps in order; facts a cold session would re-derive; tool quirks; a do-not-re-raise list; open
-  questions with the default in use. Turn repeated procedures into scripts in the repo rather than prose.
-  **Replace** it at each handoff instead of appending, and move anything durable into the state doc or `docs/`.
-  `wideband-work/work/HANDOFF.md` is the first one (2026-10-23).
-- **Save the day at a pause point in long autonomous work** (context running low, a natural stop, Logan stepping away),
-  without being asked:
-  1. Commit the best state, with its measure in the message.
-  2. Replace the handoff file and update the state doc.
-  3. Write lessons, and propose the general ones for the skill that guided the work. Fold them into both the installed
-     copy and the repo copy once agreed.
-  4. Give the paste-back.
-
-  On "keep going", work through reversible steps without stopping to report each one, record open questions with the
-  default chosen in the state doc, and stop only before money, deletion, overwriting Logan's edits, or publishing.
-  The full version of this loop, written for board work but general in shape, is
-  `~/.claude/skills/pcb-design/WORKFLOW.md`.
+- **A handoff file for long, dense sessions** — `HANDOFF.md` next to the state doc, written alongside
+  the paste-back when a cold session would otherwise re-derive a lot (a run of attempts, hard-won tool
+  quirks, a half-finished change). It sits between memory and the transcript: what's in progress, the
+  attempts and their results, the last raw output (not only my reading of it), next steps. Replaced
+  each time, not appended. Short sessions don't need one. Example: `wideband-work/work/HANDOFF.md`.
+- **Saving the day at a natural stopping point** in long work: commit the best state, refresh the
+  state doc (and handoff, if warranted), note lessons, offer the paste-back.
+- **Autonomy on "keep going"** — Logan prefers I work through reversible steps without stopping to
+  report each one, noting open questions and the default I picked in the state doc. Stop for money,
+  deleting things, overwriting his edits, or publishing.
 
 ## How iteration is structured
 
