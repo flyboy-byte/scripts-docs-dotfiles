@@ -95,6 +95,18 @@ These repos are written so a cold session can pick up mid-thread. What that look
   questions with the default in use. Turn repeated procedures into scripts in the repo rather than prose.
   **Replace** it at each handoff instead of appending, and move anything durable into the state doc or `docs/`.
   `wideband-work/work/HANDOFF.md` is the first one (2026-10-23).
+- **Save the day at a pause point in long autonomous work** (context running low, a natural stop, Logan stepping away),
+  without being asked:
+  1. Commit the best state, with its measure in the message.
+  2. Replace the handoff file and update the state doc.
+  3. Write lessons, and propose the general ones for the skill that guided the work. Fold them into both the installed
+     copy and the repo copy once agreed.
+  4. Give the paste-back.
+
+  On "keep going", work through reversible steps without stopping to report each one, record open questions with the
+  default chosen in the state doc, and stop only before money, deletion, overwriting Logan's edits, or publishing.
+  The full version of this loop, written for board work but general in shape, is
+  `~/.claude/skills/pcb-design/WORKFLOW.md`.
 
 ## How iteration is structured
 
@@ -151,6 +163,7 @@ not gaps — check the project's own docs before adding anything in these direct
 | `parentclaude` | Empty scratch dir | — |
 | `playbat` | Research notebook on Android developer verification (Google 2026) | docs |
 | `portfolio` | Personal portfolio site for Logan Night (`flyboy-byte`) | Node |
+| `wideband-work` | rusEFI wideband O2 controller fork + 0-5 V analog out; AI-designed example of the pcb-design workflow — github.com/flyboy-byte/wideband-work | KiCad/Python/C++ |
 | `trans` | WAtranscribe — WhatsApp voice transcription PWA — transcribe.flyboybyte.com | Python/Flask |
 
 Starting a session in `~/projects` itself gives you the workspace root, not a codebase — `cd` into a
