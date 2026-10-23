@@ -153,7 +153,8 @@ Work through these in order; read the reference file when you reach the step.
 | --- | --- |
 | How the AI does the work, pictures, measurements, artifacts (read first) | `reference/ai-loop-and-visuals.md` |
 | Requirements interview, risk probes, bring-up tests | `reference/intent-capture.md` |
-| Pick parts, check 3D models, schematic as code | `reference/parts-and-schematic.md` |
+| Pick parts, check 3D models, simulate analog stages, schematic as code | `reference/parts-and-schematic.md` |
+| Adding to an existing board (upstream project, older revision) | `reference/existing-board.md` |
 | Fit check, placement, autoroute, 3D and mechanical checks | `reference/placement-and-routing.md` |
 | Fab files, rotation and pin-name checks, audit loop, JLC order | `reference/fab-files-audit-order.md` |
 | Radios, lithium cells, US labelling, bring-up | `reference/compliance-and-bringup.md` |

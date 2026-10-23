@@ -55,6 +55,18 @@ Facts learned the hard way:
   settings there and ignores `-mp`). Add a hard wall-clock timeout (some
   cost models loop for 900+ passes) and retry when it writes an empty
   `.ses`.
+- **Freerouting 2.5.0** `[reported: wideband carrier, 2026-10-23]`: runs
+  headless with `java -Djava.awt.headless=true -jar freerouting-2.5.0.jar
+  -de b.dsn -do b.ses -mp 40 --gui.enabled=false`, and honours `-mp`
+  (2.0.1 did not). KiCad's Python API exports and imports directly:
+  `pcbnew.ExportSpecctraDSN(board, path)` / `pcbnew.ImportSpecctraSES(board, path)`.
+  It **necks tracks down** at small pads (0.15-0.19 mm against a 0.2 mm
+  rule): widen unlocked tracks below the minimum after import and let DRC
+  confirm clearance. It **ignores inner Edge.Cuts** (cutouts) and the
+  copper-to-edge rule: add rule areas (no tracks, no vias) around cutouts
+  and in a strip inside the edge for routing, then delete them before DRC
+  so they don't flag existing copper. Set the default net class width
+  before export; that is the width it routes with.
 - DSN clean-up: strip pre-filled zones (they wall off whole layers), move
   nets into their class blocks (KiCad can export the classes empty), and
   keep a plane layer out of routing on 4-layer boards.

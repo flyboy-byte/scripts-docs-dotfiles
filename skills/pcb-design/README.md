@@ -31,7 +31,7 @@ gear, how you want to review). The skill reads it and stops asking.
 | Script | What it does |
 | --- | --- |
 | `run_all.py` | Runs every check in `checks/checks.json` and writes the results table into `STATE.md` |
-| `kicad_check.py` | DRC or ERC through `kicad-cli`, one line with counts by type |
+| `kicad_check.py` | DRC or ERC through `kicad-cli`, one line with counts by type; report per board in `checks/out/` |
 | `cpl_vs_board.py` | Pick-and-place file against the board: positions and rotations |
 | `gerber_outline.py` | Board size from the Edge_Cuts Gerber, plus a drawing with part positions |
 | `pinmap.py` | `pinmap.csv` to firmware pin headers, and checks they match the board |

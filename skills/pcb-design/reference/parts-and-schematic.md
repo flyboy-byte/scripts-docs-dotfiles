@@ -17,6 +17,18 @@ uses to place each LCSC part. Useful sources:
   checks in `fab-files-audit-order.md`.
 - LCSC/JLC product pages for datasheets, ratings and the STEP model.
 - The community `jlcparts` index for offline parametric search.
+- JLC's search endpoint can be called directly: POST
+  `https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList`
+  with `{"keyword": "<part or C-number>", "currentPage": 1, "pageSize": 10}`. Each result has
+  `componentCode` (LCSC#), `componentLibraryType` (`base` = Basic, `expand` = Extended), `stockCount`
+  and `describe` (ratings and temperature range). Search by the exact C-number to confirm a part
+  `[reported: wideband carrier, 2026-10-23; endpoint unchecked]`. A Basic part's temperature range
+  still needs reading: the Basic LM358DR2G is 0-70 C, so an engine-bay board needed the Extended LM2904.
+- MCU alternate-function numbers (which AF puts a timer channel on a pin): ST's
+  `STMicroelectronics/STM32_open_pin_data` repo, `mcu/IP/GPIO-<family>_Modes.xml`, gives
+  `GPIO_AFn_TIMx` per pin. KiCad's STM32 symbols list the alternates but not the AF numbers.
+  Before reusing a pin for PWM, check which timer channel it shares (a pin can be the complementary
+  output of a channel that already drives something else).
 - Cloud sandboxes are often blocked from LCSC, JLC PDFs and EasyEDA. Fetch
   from a local machine if so.
 
@@ -45,6 +57,17 @@ Choosing parts:
   (one common 18650 holder has three, ~3.5 mm long), pegs under modules.
   JLC's standard service doesn't drill partial-depth holes.
 
+
+## Simulate the analog stages that matter `[reported: wideband carrier, 2026-10-23]`
+
+Any op-amp stage that drives a cable gets a stability check with the maker's SPICE model before
+layout: step response across the cable capacitance it may see (1 pF to 47 nF), measuring overshoot,
+oscillation left at the end, and settling. On the wideband carrier, taking feedback after the output's
+series resistor (to cancel load error) oscillated at 10 nF and 47 nF; a dual loop (DC feedback after the
+resistor, about 1 nF from the op-amp output to its inverting input) settled cleanly at every load.
+ngspice runs TI's PSpice models with `set ngbehavior=psa` in a `.spiceinit` next to the netlist.
+Keep the script in the project (`sim/`) so the check can be rerun, and don't commit the maker's model
+file if its licence is unclear; say where to download it.
 
 ## Schematic as code
 
