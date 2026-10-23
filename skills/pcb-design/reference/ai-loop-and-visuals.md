@@ -2,8 +2,15 @@
 
 The source boards were designed by an AI assistant working through files and command-line tools, with
 the owner reviewing pictures. This file is that working method. The rules come from the author's
-boards; exact `kicad-cli` subcommands and flags are `[unchecked]` and vary by KiCad version, so run
-`kicad-cli <cmd> --help` before relying on one.
+boards. The `kicad-cli` commands below were run on KiCad 10.0.7 on 2026-10-22; flags change between versions, so
+check `kicad-cli <cmd> --help` on another version.
+
+| Job | Command (KiCad 10) |
+| --- | --- |
+| DRC / ERC | `checks/kicad_check.py drc board.kicad_pcb` / `erc board.kicad_sch` (wraps `kicad-cli pcb drc --severity-error --exit-code-violations --format json`; exits 5 on violations; ~4 s) |
+| 3D render | `kicad-cli pcb render --side top --width 1200 --height 1100 --background opaque -o renders/<rev>/top.png board.kicad_pcb` (~2 s; `--side`, `--perspective`, `--zoom`, `--use-board-stackup-colors`) |
+| Gerbers | `kicad-cli pcb export gerbers -o out/gerbers/ board.kicad_pcb` (Protel extensions: `.gtl`, `.gm1`, ...) |
+| Board STEP for the enclosure | `kicad-cli pcb export step` |
 
 ## Everything is code or a command, never GUI clicks
 
@@ -30,6 +37,12 @@ You can't judge a layout from numbers alone. After every placement or routing ch
    numbers can't: a connector mouth facing inward, a part hanging off the edge, a crowded corner,
    silkscreen under a part, a missing 3D model.
 3. Keep pictures in `renders/<rev>/<stage>-<what>.png` so earlier ones can be compared.
+
+**Older boards in a newer KiCad** `[reported: first test, 2026-10-22]`: a built, working 2021 board (KiCad 6 files)
+showed 59 error-level DRC violations and 3 ERC errors in KiCad 10, and its re-plotted Gerbers had very different
+element counts from the ordered ones (newer KiCad encodes the same pads and arcs differently). Triage such violations
+with the owner before "fixing" anything, and don't compare Gerbers across KiCad versions as text: compare the outline
+(`gerber_outline.py`) and positions (`cpl_vs_board.py`), which matched exactly, or rasterize both and compare images.
 
 ## Measurements
 

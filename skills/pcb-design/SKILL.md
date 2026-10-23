@@ -69,7 +69,8 @@ copy them and fill them in, don't redesign them.
 2. **Copy the templates** into the project root: `CLAUDE.md` (merge into an existing one as a
    section, don't overwrite), `STATE.md`, `REQUIREMENTS.md`, `parts_research.md`, `AUDIT.md`,
    `ORDERS.md`, `LESSONS.md`, `pinmap.csv`, `review.html`, `fab/README.md`, `archive/README.md`. Copy every file in
-   `scripts/` into the project's `checks/` and `templates/checks.json` to `checks/checks.json`, then add
+   `scripts/` into the project's `checks/` and `templates/checks.json` to `checks/checks.json`, replace
+   `BOARD.kicad_pcb` / `BOARD.kicad_sch` with the project's files (or drop those entries until they exist), then add
    the project's own checks to it (see "Checks and the money gate"). Create `renders/` and `firmware/`.
    Make it a git repository if it isn't one and commit the scaffold; the release gate needs commits.
 3. **Sort the existing files.** Ordered sets go in `fab/<rev>/` with their README filled in; designs
@@ -95,6 +96,7 @@ Shipped scripts (copied to the project's `checks/` at scaffold time; Python 3, n
 
 | Script | What it does |
 | --- | --- |
+| `kicad_check.py` | DRC (`drc BOARD.kicad_pcb`) or ERC (`erc BOARD.kicad_sch`) through `kicad-cli`, error level by default, one-line count by type; SKIPPED without KiCad |
 | `run_all.py` | Runs every check in `checks/checks.json`, writes the checks table in `STATE.md` and `checks/last_run.json`. A check whose command isn't installed is SKIPPED, never passed |
 | `cpl_vs_board.py` | CPL positions and rotations against the `.kicad_pcb`; tested on a real board |
 | `gerber_outline.py` | Board size from the Edge_Cuts Gerber (arcs included) and a drawing with part positions to look at |
@@ -103,8 +105,7 @@ Shipped scripts (copied to the project's `checks/` at scaffold time; Python 3, n
 | `release.py` | **The money gate.** Copies fab files to `fab/<rev>/` only if the tree is committed, every check passed on the current design files, no hand edits are waiting, the last audit round covers the current design with no open BLOCKER or BUG, and the revision is new |
 | `audit_pack.py` | Read-only folder plus a paste-ready prompt for a second model or a person to audit |
 
-Add each project's checks to `checks.json` as you write them: DRC and ERC through `kicad-cli` (exit non-zero
-on violations), via-in-pad, the EasyEDA rotation and pin-name checks, BOM against stock. Each prints one result
+DRC and ERC are in the template `checks.json`. Add each project's other checks as you write them: via-in-pad, the EasyEDA rotation and pin-name checks, BOM against stock. Each prints one result
 line and exits 0 or non-zero. Gates: everything before `release.py` is advice the owner can skip; `release.py` is
 not. Never write into `fab/` by hand and never call a board "ready to order" without a release.
 

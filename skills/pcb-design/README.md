@@ -7,6 +7,11 @@ It covers requirements, part choice from the JLC catalog, schematic as code, tig
 autorouting, 3D and mechanical checks, fab files (CPL rotation and pin-name self-checks), an audit loop before every
 order, ordering, US compliance notes and bring-up lessons for battery + cellular boards.
 
+Pointed at a folder, it also sets the project up so every later session follows the same procedure: a `STATE.md`
+with stages and exit conditions, a requirements interview that picks risk questions from what the board does and
+ends with bring-up tests, check scripts, a release gate, a pin map shared with the firmware, an audit pack for a
+second model, order and lessons logs, and a review page you can answer from your phone.
+
 ## Install
 
 ```bash
@@ -16,15 +21,33 @@ cp -r skills/pcb-design ~/.claude/skills/
 You also need the tools on the machine where Claude Code runs: [KiCad](https://www.kicad.org) 8 or newer (with its
 `kicad-cli`), Java for [Freerouting](https://github.com/freerouting/freerouting) (the 2.0.1 jar), and Python 3. A
 JLCPCB account is only needed when you order. Package names differ per distro, so install them your usual way.
+The `kicad-cli` commands in the skill were checked on KiCad 10.0.7.
+
+Optional: copy `owner.example.md` to `~/.config/pcb-design/owner.md` and fill it in (who solders what, your test
+gear, how you want to review). The skill reads it and stops asking.
+
+## Scripts (copied into each project's `checks/`, Python 3 standard library)
+
+| Script | What it does |
+| --- | --- |
+| `run_all.py` | Runs every check in `checks/checks.json` and writes the results table into `STATE.md` |
+| `kicad_check.py` | DRC or ERC through `kicad-cli`, one line with counts by type |
+| `cpl_vs_board.py` | Pick-and-place file against the board: positions and rotations |
+| `gerber_outline.py` | Board size from the Edge_Cuts Gerber, plus a drawing with part positions |
+| `pinmap.py` | `pinmap.csv` to firmware pin headers, and checks they match the board |
+| `drift.py` | Lists what someone changed by hand in a generated KiCad file |
+| `release.py` | Copies fab files to `fab/<rev>/` only when checks, audit and revision are all clean |
+| `audit_pack.py` | Read-only folder and prompt for an independent reviewer |
+
+They run without Claude too: `python3 checks/run_all.py`, `python3 checks/release.py v2 out/*.zip`.
 
 ## How to use it without a month of effort
 
 The author's results came from a long, patient loop, not a clever prompt. The skill is the loop written down:
 
 1. Point Claude at the project folder (empty for a new idea, or an existing board project). It copies the
-   templates (`CLAUDE.md`, `STATE.md`, `REQUIREMENTS.md`, `parts_research.md`, `AUDIT.md`, `fab/`, `archive/`), sorts
-   ordered files from drafts, and asks the requirement questions the files don't answer, one at a time. After that,
-   every session reads `STATE.md` first and works the current stage.
+   templates and scripts, sorts ordered files from drafts, and asks the requirement questions the files don't answer,
+   one at a time. After that, every session reads `STATE.md` first and works the current stage.
 2. Let it pick parts and show you the 3D models before it places anything.
 3. Approve a fit-check picture, then let it place and autoroute. Expect many rounds; that is the work.
 4. Before ordering, run the audit loop with a second, independent reviewer (another model or a person) on a

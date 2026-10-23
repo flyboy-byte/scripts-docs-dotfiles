@@ -5,7 +5,7 @@ STATE.md (between <!-- checks:start --> and <!-- checks:end -->). Exit 1 if any 
 checks.json: [{"name": "CPL vs board", "cmd": ["python3", "checks/cpl_vs_board.py", "board.kicad_pcb", "cpl.csv"],
                "files": ["board.kicad_pcb", "cpl.csv"]}, ...]
 Each check prints its result on its last line and exits 0 (pass) or non-zero (fail). A command that is not
-installed (kicad-cli without KiCad) is recorded as "skipped", never as passed."""
+installed, or a check that exits 77 (kicad_check.py without KiCad), is recorded as "skipped", never as passed."""
 import datetime, hashlib, json, os, re, shutil, subprocess, sys
 
 
@@ -32,7 +32,7 @@ def main():
             continue
         r = subprocess.run(c['cmd'], capture_output=True, text=True)
         lines = [l for l in (r.stdout + r.stderr).splitlines() if l.strip()]
-        results.append({'name': c['name'], 'status': 'pass' if r.returncode == 0 else 'fail',
+        results.append({'name': c['name'], 'status': 'pass' if r.returncode == 0 else 'skipped' if r.returncode == 77 else 'fail',
                         'summary': lines[-1] if lines else f'exit {r.returncode}', 'files': files})
     run = {'date': today, 'git_head': head(), 'results': results}
     json.dump(run, open('checks/last_run.json', 'w'), indent=1)
