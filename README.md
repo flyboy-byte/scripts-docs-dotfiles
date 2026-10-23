@@ -223,6 +223,11 @@ cd dotfiles/t420-niri
 
 See `dotfiles/t420-niri/README.md` for the sudo steps.
 
+### [claude-code](dotfiles/claude-code/)
+The owner's user-level `~/.claude/CLAUDE.md`, the file Claude Code loads in every session. It covers role-separated
+project docs, resuming a session without re-deriving (paste-back resume blocks plus a handoff file for long sessions),
+attempt logs, evidence tags and scope fences.
+
 ## Docs
 
 Technical writing that doesn't belong on the portfolio but is worth keeping somewhere searchable.
