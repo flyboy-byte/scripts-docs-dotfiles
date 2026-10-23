@@ -74,8 +74,21 @@ Facts learned the hard way:
 - **When the router leaves 1-3 connections open** on a dense area (different ones each run), route the leftovers
   with a small grid finisher: A* on a 0.1 mm grid over both layers, obstacles = other nets' pads, tracks and vias
   grown by clearance + half the width (plus 0.05 mm for grid rounding), the edge and cutouts, and rule areas.
-  Pairs come from DRC's `unconnected_items`. If it finds no path, the leftovers are walled in: route the critical
-  nets first (finisher, locked), then run the router around them. `[reported: wideband carrier, 2026-10-23]`
+  Pairs come from DRC's `unconnected_items`. If it finds no path, the leftovers are walled in by routes already
+  laid. `[reported: wideband carrier, 2026-10-23]`
+- **Negotiated routing for a dense local group** (`scripts/finish_routes.py`, `negotiate()`). Routing a stage's nets
+  one at a time, in any order, walled in a different net each run. PathFinder routes all of them, lets them share
+  space at a cost that rises each round (present-use factor times 1.6 per round, history cost +0.8 on cells still
+  shared), rips up and reroutes until none are closer than the clearance; 12 nets converged in 8 rounds. Lock the result
+  and let the autorouter join the group to the rest. Give a big net (+5V, a supply) only its copper inside a small box,
+  or the whole-board net drags the negotiation into deadlock. `[reported: wideband carrier, 2026-10-23]`
+- **Vias stay out of SMD pads, own net included.** Fan-out, tap vias and a finisher all happily drop a via into a pad of
+  the same net, and DRC doesn't flag it; solder wicks down it at assembly. Add `scripts/via_in_pad.py` to the checks.
+- **Ground pour pieces are real opens.** After filling, a pour piece can hold a part's ground pins and touch the main
+  pour on neither layer; DRC reports only "zone to zone unconnected". Turn on island removal, find pieces not joined
+  through vias or through-hole pads, and join each with a via where it overlaps the main pour on the other layer, or a
+  routed track. Keep a free ring (about 0.5 mm) round top-side SMD GND pads during routing so the pour reaches them.
+  `[reported: wideband carrier, 2026-10-23]`
 - **Placement by net length, not nearest spot.** A placer that drops each part at the nearest legal spot to a target
   can move parts 15+ mm away without saying so, and routing then fails for reasons that look like congestion. Print
   each part's distance from its target, or better, anneal over legal spots: cost per net = half-perimeter of its new

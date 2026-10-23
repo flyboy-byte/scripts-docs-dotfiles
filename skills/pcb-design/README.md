@@ -12,6 +12,11 @@ with stages and exit conditions, a requirements interview that picks risk questi
 ends with bring-up tests, check scripts, a release gate, a pin map shared with the firmware, an audit pack for a
 second model, order and lessons logs, and a review page you can answer from your phone.
 
+It is also a documented workflow: [`WORKFLOW.md`](WORKFLOW.md) describes how an assistant carries a board through
+those stages on its own (one change per run, attempt tables, measurement scripts, when to stop and ask, saving the day
+at a pause point, cross-model audits). [`flyboy-byte/wideband-work`](https://github.com/flyboy-byte/wideband-work)
+is a worked example: a rusEFI wideband controller extended with a 0-5 V output, designed this way.
+
 ## Install
 
 ```bash
@@ -19,14 +24,14 @@ cp -r skills/pcb-design ~/.claude/skills/
 ```
 
 You also need the tools on the machine where Claude Code runs: [KiCad](https://www.kicad.org) 8 or newer (with its
-`kicad-cli`), Java for [Freerouting](https://github.com/freerouting/freerouting) (the 2.0.1 jar), and Python 3. A
+`kicad-cli`), Java for [Freerouting](https://github.com/freerouting/freerouting) (2.5.0 tested; notes on 2.0.1 too), and Python 3. A
 JLCPCB account is only needed when you order. Package names differ per distro, so install them your usual way.
 The `kicad-cli` commands in the skill were checked on KiCad 10.0.7.
 
 Optional: copy `owner.example.md` to `~/.config/pcb-design/owner.md` and fill it in (who solders what, your test
 gear, how you want to review). The skill reads it and stops asking.
 
-## Scripts (copied into each project's `checks/`, Python 3 standard library)
+## Scripts (copied into each project's `checks/`; Python 3, standard library unless noted)
 
 | Script | What it does |
 | --- | --- |
@@ -38,6 +43,9 @@ gear, how you want to review). The skill reads it and stops asking.
 | `drift.py` | Lists what someone changed by hand in a generated KiCad file |
 | `release.py` | Copies fab files to `fab/<rev>/` only when checks, audit and revision are all clean |
 | `audit_pack.py` | Read-only folder and prompt for an independent reviewer |
+| `drc_vs_baseline.py` | DRC minus the original board's own errors, for extending an existing board |
+| `via_in_pad.py` | Vias in SMD pads, which DRC doesn't flag (needs KiCad's Python module) |
+| `finish_routes.py` | For the PCB generator: negotiated routing of a dense net group, and a finisher for what the autorouter leaves (needs KiCad's Python module) |
 
 They run without Claude too: `python3 checks/run_all.py`, `python3 checks/release.py v2 out/*.zip`.
 

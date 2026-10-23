@@ -22,6 +22,12 @@ a mistake that actually happened or a check that actually caught one.
 Explain plainly, give sizes in mm and inches for anything physical, and give
 one recommendation rather than a survey of options.
 
+**Read `WORKFLOW.md` first.** This skill is a documented workflow as much as a set of rules. That file describes the
+loop an assistant runs on its own for hours: stages with gates, one change per run with an attempt table, measurement
+scripts, when to keep going and when to stop and ask, the pause-point routine (commit the best state, replace
+`HANDOFF.md`, update `STATE.md`, write lessons, give a resume block) and audits by a second model. It links a public
+worked example (`flyboy-byte/wideband-work`).
+
 ## Rules that are never bent
 
 1. **Facts about a built board come only from the files that were ordered**
@@ -104,6 +110,9 @@ Shipped scripts (copied to the project's `checks/` at scaffold time; Python 3, n
 | `drift.py` | `record` after generating KiCad files; `check` lists footprints and nets the owner changed by hand |
 | `release.py` | **The money gate.** Copies fab files to `fab/<rev>/` only if the tree is committed, every check passed on the current design files, no hand edits are waiting, the last audit round covers the current design with no open BLOCKER or BUG, and the revision is new |
 | `audit_pack.py` | Read-only folder plus a paste-ready prompt for a second model or a person to audit |
+| `drc_vs_baseline.py` | DRC minus a baseline board's own violations (`git:<ref>:<path>` or a file), plus unconnected items; for extending an existing board |
+| `via_in_pad.py` | Vias whose drill lands in an SMD pad (DRC doesn't flag it); baseline vias listed, not failed. Needs pcbnew |
+| `finish_routes.py` | A module for the PCB generator, not a check: `negotiate()` routes a dense group of nets together (PathFinder) before the autorouter; `finish()` routes what the autorouter leaves. Needs pcbnew |
 
 DRC and ERC are in the template `checks.json`. Add each project's other checks as you write them: via-in-pad, the EasyEDA rotation and pin-name checks, BOM against stock. Each prints one result
 line and exits 0 or non-zero. Gates: everything before `release.py` is advice the owner can skip; `release.py` is
@@ -151,7 +160,8 @@ Work through these in order; read the reference file when you reach the step.
 
 | Step | Read |
 | --- | --- |
-| How the AI does the work, pictures, measurements, artifacts (read first) | `reference/ai-loop-and-visuals.md` |
+| The workflow: the loop, autonomy, pause points, audits (read first) | `WORKFLOW.md` |
+| How the AI does the work, pictures, measurements, artifacts | `reference/ai-loop-and-visuals.md` |
 | Requirements interview, risk probes, bring-up tests | `reference/intent-capture.md` |
 | Pick parts, check 3D models, simulate analog stages, schematic as code | `reference/parts-and-schematic.md` |
 | Adding to an existing board (upstream project, older revision) | `reference/existing-board.md` |
@@ -160,9 +170,9 @@ Work through these in order; read the reference file when you reach the step.
 | Radios, lithium cells, US labelling, bring-up | `reference/compliance-and-bringup.md` |
 | Limited credits, time or hardware (read this first if so) | `reference/budget-mode.md` |
 
-The pipeline there names helper scripts (`gen_sch.py`, `padmaps.py`, DSN clean-up, a finisher). They are **not
-shipped** with this skill: write them in the project as you go, and keep the ideas, not the names, if the project
-differs.
+The pipeline there names helper scripts (`gen_sch.py`, `padmaps.py`, DSN clean-up). They are **not shipped** with this
+skill: write them in the project as you go, and keep the ideas, not the names, if the project differs. The routing
+finisher is shipped (`scripts/finish_routes.py`).
 
 ## Heavy compute, and the no-big-machine fallback
 
