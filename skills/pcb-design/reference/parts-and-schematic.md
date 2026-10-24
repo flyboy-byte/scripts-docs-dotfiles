@@ -68,6 +68,12 @@ resistor, about 1 nF from the op-amp output to its inverting input) settled clea
 ngspice runs TI's PSpice models with `set ngbehavior=psa` in a `.spiceinit` next to the netlist.
 Keep the script in the project (`sim/`) so the check can be rerun, and don't commit the maker's model
 file if its licence is unclear; say where to download it.
+A vendor model with every node saved took about 1 GB per run; a dozen in parallel ran the machine out of
+memory and killed the session `[reported, 2026-10-24]`. `.save` only the nodes you measure (about 14 MB),
+run one at a time under `nice`, hold the supply fixed and ramp the input (a supply ramped from 0 V took
+over 10 minutes per run), and don't trust `.op` on these models; read a slow transient instead.
+When the load is unknown (another maker's ECU input), sweep it: pull-downs and pull-ups across the
+plausible range, and say which corners the stage does not cover.
 
 ## Schematic as code
 
