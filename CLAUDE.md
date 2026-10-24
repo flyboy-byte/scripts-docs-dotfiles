@@ -24,10 +24,15 @@ There is no build, lint or test suite at the repo root. Each skill and tool is r
 - `skills/pkgfilter/scripts/publish.sh` pushes the installed copy of a skill back into `skills/<name>/`; it refuses
   if a personal string is in the files.
 - Before committing a skill, check for personal strings: `grep -rnI "$(id -un)\|$HOME" skills/<name>`.
+- Check a skill against its installed copy: `diff -rq skills/<name> ~/.claude/skills/<name>` (pkgfilter's `README.md`
+  exists only here; its `publish.sh` carries just `SKILL.md` and `scripts/`).
+- `dotfiles/claude-code/publish.sh` strips the `private:start`/`private:end` blocks and refuses if a private-looking line
+  (`ssh `, `sudo`, `vps-`, `extraction/`) survives; mark the line private in `~/.claude/CLAUDE.md`, don't edit the copy.
 
 ## Conventions
 
 - MIT (root `LICENSE`) unless a folder has its own `LICENSE`. `tools/vfs0090-rhel/` is LGPL-2.1-or-later; keep it so.
+  `skills/pcb-design/LICENSE` is MIT under the original author (sidewinderzz); keep that notice.
 - The repo is public: no secrets, personal paths, hostnames or saved preferences in `skills/`. Dotfiles may contain the
   owner's paths; they are one machine's setup.
 - The live copy of a skill is in `~/.claude/skills/<name>/`. Edit there and publish back (see `skills/README.md`), or
