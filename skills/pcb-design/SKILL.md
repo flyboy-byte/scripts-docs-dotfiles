@@ -166,6 +166,7 @@ Work through these in order; read the reference file when you reach the step.
 | Pick parts, check 3D models, simulate analog stages, schematic as code | `reference/parts-and-schematic.md` |
 | Adding to an existing board (upstream project, older revision) | `reference/existing-board.md` |
 | Fit check, placement, autoroute, 3D and mechanical checks | `reference/placement-and-routing.md` |
+| Dense board: zones drawn by the person, nesting fit check, zone-aware placer | `reference/zoned-placement.md` |
 | Fab files, rotation and pin-name checks, audit loop, JLC order | `reference/fab-files-audit-order.md` |
 | Radios, lithium cells, US labelling, bring-up | `reference/compliance-and-bringup.md` |
 | Limited credits, time or hardware (read this first if so) | `reference/budget-mode.md` |

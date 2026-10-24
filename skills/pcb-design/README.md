@@ -69,7 +69,10 @@ A laptop is fine; routing is just slower (see "no-big-machine fallback" in `SKIL
 
 - Written by sidewinderzz. Content is theirs; on 2026-10-22 it was split into `reference/` files, the description
   was rewritten, evidence tags and a laptop fallback were added, and the project templates in `templates/` were
-  written from the author's rules (structure added here, rules theirs). The original copy is in the owner's `parking-lot` repo (received 2026-10-22), unmodified.
+  written from the author's rules (structure added here, rules theirs). The original copy is in the owner's `parking-lot` repo (received 2026-10-22), unmodified. The author's updated copy
+  (received 2026-10-24: zoned placement with a nesting fit check, Freerouting 2.0.1 headless bugs and patching, Java
+  memory caps, a correction that 2.0.1 is not repeatable) is kept beside it (`skill-v2/pcb-design/`, unmodified) and merged into
+  `reference/zoned-placement.md` and `reference/placement-and-routing.md`.
   MIT licensed; see `LICENSE` in this folder.
 - The lessons and numbers in `SKILL.md` (Freerouting cost pairs, cost shares, density guide, run times) are the
   author's own report from real boards. They have not been verified here.

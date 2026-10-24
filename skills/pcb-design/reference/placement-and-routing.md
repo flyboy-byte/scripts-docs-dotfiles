@@ -25,7 +25,10 @@ Freerouting is a Java autorouter; if you have no many-core machine, see the fall
 5. **Automatic placement:** simulated annealing on half-perimeter wire
    length. Grow each courtyard by half a gap (0.15 mm worked), refuse moves
    that touch a fixed part, a keep-out or the edge (0.4 mm), and leave GND
-   out of the wire length when a plane carries it.
+   out of the wire length when a plane carries it. On its own, an annealer
+   minimising wire length scatters functional blocks all over the board
+   (power parts mixed in with RF parts). On a dense board, steer it with
+   zones: `zoned-placement.md`.
 6. **Hand-place and lock the critical loops** before autorouting: buck and
    boost hot loops (switch node on one layer with nothing under it, input
    cap GND right at the IC GND), USB D+/D-, the RF feed with its matching
@@ -44,17 +47,36 @@ airwires -> pours, stitching and island vias -> DRC -> DRC-driven repair
 
 Facts learned the hard way:
 
-- **Freerouting is deterministic** for a given board and cost model. More
-  cores on the same layout give the same answer. Variety comes from
-  **different placements** (a sweep: N placer seeds, each routed with the
-  two best cost models) and different cost models per copy. Via /
-  undesired-direction cost pairs that converged: (50, 2.5), (30, 1.8),
-  (35, 2.3), (40, 2.0), (65, 3.0), (100, 1.5).
-- Run **one Freerouting copy per core**, each with a **private Java temp
-  dir** holding its own `freerouting/freerouting.json` (2.0.1 reads its
-  settings there and ignores `-mp`). Add a hard wall-clock timeout (some
-  cost models loop for 900+ passes) and retry when it writes an empty
-  `.ses`.
+- **Which version.** The two reports disagree, and both are real: pick by board size.
+  - The author (updated skill, 2026-10-24) uses **2.0.1** on a ~200-part board: 2.5.0 needed Java 25, its native CLI
+    crashed on that board, and it ran ~60 s per pass against ~25 s, with more open nets at the end.
+  - On the wideband carrier (2-layer, a small added stage, 2026-10-23) **2.5.0** ran headless without trouble and
+    stops by itself (below).
+  Try 2.5.0 on a small board; on a big one, or if it crashes, use 2.0.1 with the notes here.
+- **2.0.1's headless bugs** (the author checked its source): it ignores `max_passes`/`-mp`, ignores `job_timeout` (a
+  timed-out job hangs), can write an empty `.ses`, and keeps no best pass. So a run only ends on its own check or your
+  wall-clock kill, and a killed run saves nothing.
+- **Patch 2.0.1 if you can.** Swap a few classes in the stock jar (no JDK needed if you ship pre-compiled classes;
+  checksum the stock jar first) so it honours both limits, logs `PASS n incomplete=X` each pass, saves the best pass,
+  refuses to write an empty `.ses`, and stops after N passes with no improvement. On the same board and cost models,
+  6 of 6 patched copies produced a routed board in 25-38 min, while only 2 of 6 stock copies did (the other 4 burned
+  up to 90 min and saved nothing). The best pass usually came by pass 8-14, so stop after ~8 passes with no new best.
+  If you can't patch, wrap each run in a hard timeout and retry empty `.ses` files.
+- **Threads do nothing in 2.0.1.** The autorouter pass is single-threaded and its headless CLI never runs the
+  optimizer, so `-mt` is a no-op. Run **one copy per core**, single-threaded, each with a **private Java temp dir**
+  holding its own `freerouting/freerouting.json` (2.0.1 reads its settings there).
+- **Cap Java memory per copy** (`JAVA_TOOL_OPTIONS=-Xmx1g`, ~1.3 GB each in practice). A dozen uncapped JVMs overran
+  a 16 GB WSL VM and crashed it. Under WSL, give the VM more memory in `.wslconfig` or run fewer copies, and start long
+  jobs with `setsid nohup` so they survive the shell. The same goes for any parallel job: a dozen SPICE runs saving
+  every node did the same to a desktop (`parts-and-schematic.md`).
+- **2.0.1 is not exactly repeatable**: its search uses millisecond time limits, so two identical runs diverge after a
+  few passes (worse under load). (An older note here called Freerouting deterministic; the author has corrected it.)
+  Same settings on several cores give a little variety. The big variety comes from **different placements** (a sweep:
+  N placer seeds, zoned and free, each routed with the two best cost models) and from a different cost model per copy.
+  Via / undesired-direction cost pairs that converged: (50, 2.5), (30, 1.8), (35, 2.3), (40, 2.0), (65, 3.0),
+  (100, 1.5).
+- Don't run a sweep while someone needs the machine: check CPU and memory first (`pgrep`, `free`), run under `nice`,
+  and stop cleanly when asked.
 - **Freerouting 2.5.0** `[reported: wideband carrier, 2026-10-23]`: runs
   headless with `java -Djava.awt.headless=true -jar freerouting-2.5.0.jar
   -de b.dsn -do b.ses -mp 40 --gui.enabled=false`, and honours `-mp`
