@@ -10,8 +10,8 @@ Last updated 2026-10-23 (pcb-design: placement by net length, routing finisher; 
   changing one.
 - `tools/<name>/`: anything more than one file, each with its own `README.md` (`wallpaper-kde` and `whitepaper-formatter` still lack one).
 - `scripts/`: single-file scripts.
-- `dotfiles/<machine>/`: desktop setups. `dotfiles/claude-code/` is the owner's `~/.claude/CLAUDE.md` (copy; the live file is
-  in `~/.claude/`, which says to re-copy here after each edit).
+- `dotfiles/<machine>/`: desktop setups. `dotfiles/claude-code/` is the owner's `~/.claude/CLAUDE.md` without its private sections;
+  refresh it only with `dotfiles/claude-code/publish.sh`, never `cp` (the live file holds a private VPS section).
 - `README.md`: the index. Every skill, tool and script has a row there; keep it in step when adding, moving or removing.
 
 ## Commands
