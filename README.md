@@ -73,7 +73,7 @@ Fixes and desktop tools. Details in [`linux/README.md`](linux/README.md).
 |---|---|
 | [**vfs0090-rhel**](linux/vfs0090-rhel/) | Validity `138a:0090` fingerprint sensor with `fprintd` on RHEL 10 / CentOS Stream 10, without touching the system `libfprint`. LGPL-2.1-or-later. |
 | [**field-mode**](linux/field-mode/) | One command for off-AC use on LXQt: CPU governor, WiFi, brightness and TLP profile, and back. |
-| [**wallpaper**](linux/wallpaper/) | Live `fastfetch` wallpaper for niri, cross-faded with `awww`; the older KDE/neofetch version alongside. |
+| [**wallpaper**](linux/wallpaper/) | Live system-info wallpaper that redraws when your stats change, for niri or KDE Plasma. |
 | [`mouse-jiggler.py`](linux/mouse-jiggler.py) | Keeps the screen awake on KDE, X11 or Wayland. |
 | [`pkgfilter.py`](linux/pkgfilter.py) | The original interactive Arch bloat hunter that the skill grew out of. |
 

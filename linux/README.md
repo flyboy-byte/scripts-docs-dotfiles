@@ -6,7 +6,7 @@ Fixes and desktop tools for Linux laptops. Each folder has its own README; the t
 |---|---|---|
 | [**vfs0090-rhel/**](vfs0090-rhel/) | Gets the Validity `138a:0090` fingerprint sensor working with `fprintd`, without touching the system `libfprint`. **LGPL-2.1-or-later.** | RHEL 10 / CentOS Stream 10 |
 | [**field-mode/**](field-mode/) | One command for off-AC use: CPU governor, WiFi, brightness and TLP profile, and back. | LXQt |
-| [**wallpaper/**](wallpaper/) | Live `fastfetch` system-info wallpaper, cross-faded with `awww`. The older KDE/neofetch version is in `wallpaper/kde/`. | niri / Wayland, KDE |
+| [**wallpaper/**](wallpaper/) | Live system-info wallpaper that redraws when your stats change: `fastfetch` + `awww` on niri, `neofetch` on KDE Plasma. | niri / Wayland, KDE |
 | [`mouse-jiggler.py`](mouse-jiggler.py) | Keeps the screen awake during long compiles and downloads. | KDE, X11 or Wayland |
 | [`pkgfilter.py`](pkgfilter.py) | The original interactive Arch package bloat hunter. | Arch |
 

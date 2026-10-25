@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """
-Neofetch Desktop Background Generator - Live Wallpaper Service
+neofetch-wallpaper: live neofetch wallpaper for KDE Plasma.
+
+Every 15 s, if the neofetch output changed, renders it onto a PNG in
+~/.cache/neofetch-wallpaper (or $XDG_CACHE_HOME) and applies it with
+plasma-apply-wallpaperimage. Each frame gets a new file name, because Plasma
+does not reload an image whose path has not changed; older frames are removed.
 """
 import subprocess
 import sys
@@ -47,9 +52,10 @@ def get_system_font():
     return None
 
 def clear_wallpaper_directory(wallpaper_dir):
+    # Only the frames this script wrote; nothing else in the folder is touched.
     try:
         if os.path.exists(wallpaper_dir):
-            files = glob.glob(os.path.join(wallpaper_dir, '*'))
+            files = glob.glob(os.path.join(wallpaper_dir, 'wallpaper_*.png'))
             for file in files:
                 if os.path.isfile(file):
                     os.remove(file)
@@ -58,7 +64,7 @@ def clear_wallpaper_directory(wallpaper_dir):
     except Exception:
         pass
 
-def create_wallpaper(neofetch_text, width=1920, height=1080, output_file='/home/logan/Downloads/wallpaper/wallpaper_1.png'):
+def create_wallpaper(neofetch_text, width, height, output_file):
     img = Image.new('RGB', (width, height), color='#1e1e2e')
     draw = ImageDraw.Draw(img)
     
@@ -153,7 +159,8 @@ def main():
     check_dependencies()
     
     width, height = 1920, 1080
-    wallpaper_dir = '/home/logan/Downloads/wallpaper'
+    cache = os.environ.get('XDG_CACHE_HOME') or os.path.expanduser('~/.cache')
+    wallpaper_dir = os.path.join(cache, 'neofetch-wallpaper')
     
     iteration = 0
     wallpaper_counter = 1

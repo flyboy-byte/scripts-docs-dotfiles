@@ -1,14 +1,26 @@
 # wallpaper
 
-A live system-info wallpaper for [niri](https://github.com/YaLTeR/niri) (and other Wayland compositors that support layer-shell). Every 15 seconds it checks [`fastfetch`](https://github.com/fastfetch-cli/fastfetch) and, if anything changed, renders the output onto a Catppuccin-style background and cross-fades it in with `awww`.
+A live system-info wallpaper: every 15 seconds it checks your system info and, if anything changed, renders it onto a
+Catppuccin-style background and sets it as the wallpaper. Two versions, one per desktop:
 
-This is the Wayland/niri port of [`kde/neofetch_wallpaper_kde.py`](kde/neofetch_wallpaper_kde.py) (see [KDE version](#kde-version) below), which depended on KDE's `plasma-apply-wallpaperimage`.
+| | Folder | Info from | Sets it with |
+|---|---|---|---|
+| **niri** (and other layer-shell Wayland compositors) | [`niri/`](niri/) | `fastfetch` | `awww`, with a fade |
+| **KDE Plasma** | [`kde/`](kde/) | `neofetch` | `plasma-apply-wallpaperimage` |
 
-<p align="center"><img src="example.png" width="80%" alt="The wallpaper on a 1920x1080 screen: fastfetch output in a rounded card on a dark Catppuccin background"></p>
+<p align="center"><img src="niri.png" width="80%" alt="The wallpaper on a 1920x1080 screen: fastfetch output in a rounded card on a dark Catppuccin background"></p>
 
-A real frame from an HP Pavilion running niri 26.04, 49 seconds after boot.
+<p align="center"><sub>A real frame from an HP Pavilion running niri 26.04, 49 seconds after boot.</sub></p>
 
-## Requirements
+> [!TIP]
+> Whatever your fetch tool prints ends up on the screen. If your neofetch or fastfetch config shows a public IP or a
+> weather location, take those modules out before you screenshot your desktop.
+
+---
+
+## niri
+
+### Requirements
 
 | Package (Arch) | Why |
 |---|---|
@@ -22,24 +34,23 @@ A real frame from an HP Pavilion running niri 26.04, 49 seconds after boot.
 sudo pacman -S awww fastfetch python-pillow ttf-dejavu
 ```
 
-## Install
+### Install
 
 ```bash
 # 1. the script
-install -Dm755 sysinfo-wallpaper ~/.local/bin/sysinfo-wallpaper
+install -Dm755 niri/sysinfo-wallpaper ~/.local/bin/sysinfo-wallpaper
 
-# 2. start awww-daemon with niri — add this line to ~/.config/niri/config.kdl
+# 2. start awww-daemon with niri: add this line to ~/.config/niri/config.kdl
 #    spawn-at-startup "awww-daemon"
 
 # 3. run it as a systemd user service
-install -Dm644 sysinfo-wallpaper.service ~/.config/systemd/user/sysinfo-wallpaper.service
+install -Dm644 niri/sysinfo-wallpaper.service ~/.config/systemd/user/
 systemctl --user daemon-reload
 systemctl --user enable --now sysinfo-wallpaper.service
 ```
 
-The service is tied to `graphical-session.target`, so it starts and stops with your niri session. If it starts before `awww-daemon` is ready, the script waits up to 30 seconds for it.
-
-## Usage
+The service is tied to `graphical-session.target`, so it starts and stops with your niri session. If it starts before
+`awww-daemon` is ready, the script waits up to 30 seconds for it.
 
 ```bash
 sysinfo-wallpaper --once                     # render and apply one frame, then exit
@@ -47,17 +58,20 @@ systemctl --user restart sysinfo-wallpaper   # after editing the script
 journalctl --user -u sysinfo-wallpaper       # logs
 ```
 
-## How it works
+<details>
+<summary><b>How it works and what to change</b></summary>
+
+<br>
 
 - Runs `fastfetch --pipe --logo none` with a fixed module list, so the output is plain text with no ANSI codes.
-- Renders it centered on a `#1e1e2e` background at the screen's logical size, with line colors by category (system in blue, hardware in green, desktop in orange, date in yellow).
-- Only re-renders when the fastfetch text actually changed. Uptime, memory, battery and IP all change, so in practice it redraws about once a minute.
-- Writes the PNG to `~/.cache/sysinfo-wallpaper/wallpaper.png` (or `$XDG_CACHE_HOME`) through a temp file and rename, so `awww` never reads a half-written image.
-- Applies it with a 0.7 second fade.
+- Renders it centered on a `#1e1e2e` background at the screen's logical size, with line colors by category (system in
+  blue, hardware in green, desktop in orange, date in yellow).
+- Only re-renders when the text changed. Uptime, memory, battery and IP all change, so in practice it redraws about
+  once a minute.
+- Writes the PNG to `~/.cache/sysinfo-wallpaper/wallpaper.png` (or `$XDG_CACHE_HOME`) through a temp file and rename,
+  so `awww` never reads a half-written image, and applies it with a 0.7 second fade.
 
-## Configuration
-
-Edit the constants near the top of `sysinfo-wallpaper`:
+Constants near the top of `sysinfo-wallpaper`:
 
 | Setting | What it does |
 |---|---|
@@ -65,36 +79,34 @@ Edit the constants near the top of `sysinfo-wallpaper`:
 | `MODULES` | fastfetch modules shown, colon-separated (run `fastfetch --list-modules` for names) |
 | `FONT_PATHS` | fonts tried in order |
 
-Colors are in `create_wallpaper()`. The `Terminal` module is left out on purpose, because under systemd it always reports "systemd". The `Shell` line uses `$SHELL` for the same reason: fastfetch reports its parent process.
+Colors are in `create_wallpaper()`. The `Terminal` module is left out on purpose, because under systemd it always
+reports "systemd". The `Shell` line uses `$SHELL` for the same reason: fastfetch reports its parent process.
 
-## Differences from the KDE version
+Only tested on niri with a single screen. On several screens the image is sized to the first output niri reports, and
+`awww img` applies it to every output. On another compositor, `get_screen_size()` is the only niri-specific part:
+replace it (e.g. with `wlr-randr`) or rely on the 1366x768 fallback.
 
-| | `kde/` (KDE) | niri |
-|---|---|---|
-| Info source | `neofetch` (unmaintained) | `fastfetch` |
-| Applies wallpaper with | `plasma-apply-wallpaperimage` | `awww` (fade transition) |
-| Resolution | hardcoded 1920x1080 | read from niri |
-| Output | `~/Downloads/wallpaper/`, cleared each time | `~/.cache/sysinfo-wallpaper/`, single file |
-| Paths | hardcoded `/home/logan` | none hardcoded (`%h` in the service) |
+</details>
 
-## Notes
+---
 
-- Only tested on niri with a single screen. On a multi-monitor setup the image is sized to the first output niri reports, and `awww img` applies it to every output.
-- On another compositor, `get_screen_size()` is the only niri-specific part. Replace it (e.g. with `wlr-randr`) or rely on the 1366x768 fallback.
+## KDE Plasma
 
-## KDE version
+The original version. Needs `neofetch` and `python-pillow`.
 
-The original, in [`kde/`](kde/). It needs `neofetch` (unmaintained) and Pillow.
+```bash
+install -Dm755 kde/neofetch-wallpaper ~/.local/bin/neofetch-wallpaper
+install -Dm644 kde/neofetch-wallpaper.service ~/.config/systemd/user/
+systemctl --user daemon-reload
+systemctl --user enable --now neofetch-wallpaper.service
+```
 
-| File | What it does |
-|---|---|
-| `neofetch_wallpaper_simple.py` | One-shot: renders `neofetch --stdout` onto a 1080p PNG, color-coded by category, with a timestamp. |
-| `neofetch_wallpaper_kde.py` | The same as a loop: every ~15 s, if the output changed, it regenerates the wallpaper and applies it with `plasma-apply-wallpaperimage`. |
-| `wallpaper.service` | systemd user service that runs the loop with `Restart=always`. |
+Frames go to `~/.cache/neofetch-wallpaper/` (or `$XDG_CACHE_HOME`). Each frame gets a new file name, because Plasma
+doesn't reload an image whose path hasn't changed, and the script removes its own older frames; nothing else in that
+folder is touched. The image is 1920x1080; change `width, height` in `main()` for another screen.
 
-> [!WARNING]
-> `neofetch_wallpaper_kde.py` writes to a hardcoded `/home/logan/Downloads/wallpaper` and **clears that folder on every
-> run**, and `wallpaper.service` has a hardcoded `ExecStart`. Edit both before using them on another machine.
+`kde/neofetch_wallpaper_simple.py` renders one frame to the current folder and doesn't set it, which is handy for a
+quick look:
 
 ```bash
 python kde/neofetch_wallpaper_simple.py
