@@ -43,7 +43,7 @@ task calls for them. Each one is self-contained, with a README for people.
       <br><sub><b>pcb-design:</b> the wideband carrier board, a 3D render from KiCad. Schematic and layout were generated from code.</sub>
     </td>
     <td width="50%" valign="top">
-      <img src="linux/wallpaper/example.png" alt="The live fastfetch wallpaper on niri">
+      <img src=".github/images/wallpaper-card.png" alt="The live fastfetch wallpaper on niri">
       <br><sub><b>linux/wallpaper:</b> live system-info wallpaper on niri (sample values).</sub>
     </td>
   </tr>
