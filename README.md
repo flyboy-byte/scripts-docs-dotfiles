@@ -44,7 +44,7 @@ task calls for them. Each one is self-contained, with a README for people.
     </td>
     <td width="50%" valign="top">
       <img src=".github/images/wallpaper-card.png" alt="The live fastfetch wallpaper on niri">
-      <br><sub><b>linux/wallpaper:</b> live system-info wallpaper on niri (sample values).</sub>
+      <br><sub><b>linux/wallpaper:</b> live system-info wallpaper, a real frame from my laptop on niri.</sub>
     </td>
   </tr>
 </table>

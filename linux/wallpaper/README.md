@@ -4,9 +4,9 @@ A live system-info wallpaper for [niri](https://github.com/YaLTeR/niri) (and oth
 
 This is the Wayland/niri port of [`kde/neofetch_wallpaper_kde.py`](kde/neofetch_wallpaper_kde.py) (see [KDE version](#kde-version) below), which depended on KDE's `plasma-apply-wallpaperimage`.
 
-![example](example.png)
+<p align="center"><img src="example.png" width="80%" alt="The wallpaper on a 1920x1080 screen: fastfetch output in a rounded card on a dark Catppuccin background"></p>
 
-The screenshot uses sample values.
+A real frame from an HP Pavilion running niri 26.04, 49 seconds after boot.
 
 ## Requirements
 
