@@ -43,6 +43,20 @@ Look at the failing job's log before anything else:
 | Beta tag got packaged | `UpdateCheckMode: Tags` too broad; recipe reads version from a file the beta changed | Restrict regex (`Tags ^v[\d.]+$`) and keep committed version at last stable on beta tags. [seen] |
 | Maintainer commit appeared on your recipe | They fixed something the server needed | Read the diff (`fdroid-status.sh` shows recent commits), copy the change into your notes and future branches. [seen] |
 
+## Review and process situations
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Every job in a pipeline failed in seconds | No CI compute, or the pipeline needs a maintainer to start | Open one job trace; wait for a maintainer to trigger it. Don't force-push to retry. [seen] |
+| A maintainer says "why do you keep reverting the fixes?" | A rebase or sync dropped accepted changes | Diff the new head against the last reviewed commit; restore; list reviewer requests in the MR. [seen] |
+| Reviewer: "your apk is built from a different source code" | Reference APK wasn't built from the recipe's output | Sign F-Droid's unsigned APK instead (`reproducible.md`). [seen] |
+| Reviewer: "install rustup / use bookworm / move to build / set subdir, drop output" | Template parity | Do exactly that in every block. [seen] |
+| Reviewer: "enable R8" or "apply ABI split" | Size | `size-abis-r8.md`. [seen] |
+| Label `reproducible-builds` but no `Binaries` | Label doesn't match the recipe | Add verified `Binaries`, or ask a maintainer to remove the label; note the permanent key consequence (`signing-keys.md`). [seen] |
+| Release is newer than the open MR's version | MR recipe is stale | Update the MR to the latest release ("if you release a new version please update this MR"). [seen] |
+| App starts in CI screenshots but crashes on a phone | Engine swap, missing keep rules after R8, stripped class | Device pass on the release APK; keep Hermes; add keep rules. [seen/reported] |
+| Pipeline green on fork, build server fails | Fork has internet, server doesn't | Real log at `monitor.f-droid.org/builds/log/<appid>/<code>`. [seen] |
+
 ## Local environment
 
 - `apksigner` complains about the keystore type: use the key alias as listed by

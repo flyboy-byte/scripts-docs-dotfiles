@@ -58,6 +58,18 @@ From `templates/build-flutter.yml`. [docs]
 - **Something else**: start from `general.yml` and write `build:` commands. Keep commands
   short; call a script from the repo rather than embedding a long recipe. [reported]
 
+## Apps with Rust, Python or other native toolchains
+
+Heavy native stacks are possible and slow. [docs: policy allows rustup, PyPI wheels, Go, Node]
+- Use Debian packages where they exist (reviewers ask for Debian's `rustup` and a current Debian
+  release name in `sudo:`); pin toolchain versions.
+- Put compilation in `build:`, not `prebuild:`; the scanner removes binaries and anything built early
+  is cleaned away before the real build.
+- Raise `timeout:` only with a reason; the default is two hours.
+- For reproducibility read the Rust, concurrency and embedded-path items in `reproducible.md`. Plan
+  for repeated build-job retries and `cmp` before Run 2.
+- Expect more review rounds. See `casebook.md` case C.
+
 ## Questions that decide feasibility before you write anything
 
 1. Is every dependency source-available under a free licence? (`policy.md`)

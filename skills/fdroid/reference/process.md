@@ -92,6 +92,31 @@ Pre-releases: if the recipe reads the version from a committed file, keep that f
 stable version on beta tags, or use an `UpdateCheckMode: Tags <regex>` that excludes beta tags
 (e.g. `Tags ^v[\d.]+$`), or the bot will try to package the beta. [seen]
 
+## How long things take (calibration) [seen]
+
+- Inclusion MR with an engaged author: about 2 weeks of back-and-forth, then waiting for the
+  maintainers' testing queue. Another MR with a heavy stack had been open 2+ months with 100+ commits.
+- After a tag: the bot commits new blocks within about a day; the build server builds within about a
+  day; the index published the new version about five days after the tag in one case. Report each
+  layer; never promise a date.
+- When maintainers say "we'll test it later" they mean the review-requested queue. Helping test other
+  MRs is welcome (`reviewing-others.md`).
+
+## While an MR is open
+
+- If you cut a new release, **update the MR** to it. Reviewers ask for this.
+- Keep a running list of reviewer requests (a comment or your doc) and re-check it before every push.
+- After any rebase or sync, diff against the last reviewed commit.
+- Only the latest versions' blocks belong in a new-app MR; the bot keeps older ones after merge.
+- One MR, one app.
+
+## If F-Droid is slow: a stopgap
+
+You can run your own F-Droid repository (`fdroid update && fdroid deploy` on a static host) and let
+users add it. It uses your signature and your schedule, but not the official index. One author did this
+as a stopgap during review. Don't present it as a replacement. [seen] Docs:
+https://f-droid.org/docs/Setup_an_F-Droid_App_Repo/
+
 ## Commands
 
 ```bash

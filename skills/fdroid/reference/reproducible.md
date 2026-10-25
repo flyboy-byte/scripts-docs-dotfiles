@@ -60,6 +60,57 @@ The first-ever mismatch on a reviewer's MR is usually the last row: the referenc
 some other way (a store build, an EAS/cloud build, Android Studio). The reviewer will say "your
 apk is built from a different source code". [seen]
 
+## Publishing modes
+
+[docs] There are two ways the developer's signature gets used:
+- **Exclusively developer-signed** (what this skill sets up): `Binaries`/`binary:` + `AllowedAPKSigningKeys`.
+  F-Droid publishes your APK only if its own build verifies; otherwise it skips that version.
+- **Both developer-signed and F-Droid-signed**: the developer's signatures are added to fdroiddata
+  (`fdroid signatures <apk>`) so installs from other stores can update from F-Droid and vice versa.
+  Maintainer-level; mention it if a user already has installs signed by F-Droid.
+Either way the unsigned APK F-Droid builds must be byte-identical, apart from the signature, to what
+the signature was made over. v1 (JAR) signatures only cover contents; v2/v3 cover every byte, which
+is why ZIP padding and entry order matter.
+
+## The official catalogue of non-determinism
+
+From https://f-droid.org/docs/Reproducible_Builds/ (checked 2026-10-25). Use after `apk-diff.sh` names
+the class. Source for each: [docs] unless marked.
+
+- **Embedded timestamps**: "the most common source". Set `SOURCE_DATE_EPOCH` for native builds.
+- **Embedded build paths** (Flutter, python-for-android, Rust, C/C++): build in the same directory as
+  the server: `/home/vagrant/build/<appid>` (build server), `/builds/fdroid/fdroiddata/build/<appid>` (CI);
+  strip debug info (correct NDK version, `-s`, `llvm-strip`).
+- **NDK build-id / hash style / clang comment**: different paths give different build-ids that survive
+  stripping; `--build-id=none` removes them. `--hash-style=gnu` where LLVM defaults differ. NDK r26+
+  has a platform-specific clang version string.
+- **Native library stripping**: use the exact NDK; `packagingOptions { doNotStrip '**/*.so' }` can help
+  as a diagnostic.
+- **Concurrency**: output can depend on CPU count (dex rarely, native/Rust more). Single-thread the
+  build (`org.gradle.parallel=false`, `workers.max=1`); Rust `codegen-units = 1`.
+- **`baseline.prof` / `baseline.profm`**: rerun the build, match the CPU count, or disable the tasks:
+  `tasks.whenTaskAdded { if (name.contains("ArtProfile")) enabled = false }`.
+- **R8**: some optimizations are non-deterministic (ServiceLoader order); add `-keep` rules, update R8
+  (≥ 8.6.33 / 8.7.20 / 8.8 for the CPU-count issue); test repeatedly. See `size-abis-r8.md`.
+- **Resource shrinker**: may pick the unshrunk APK nondeterministically; avoid unless it saves a lot.
+- **PNG crunching**: `cruncherEnabled = false` / `android.enablePngCrunchInReleaseBuilds=false`.
+- **VCS info** (AGP 8.3+): `META-INF/version-control-info.textproto` embeds the commit/path;
+  build the release from a clean tree at the tagged commit, or `vcsInfo.include false` as a last resort.
+- **DEX class order**: seen for APKs as well as bundles; update AGP first (fixed for bundles in 8.8).
+- **coreLibraryDesugaring**: fixed in R8 ≥ 3.0.69.
+- **Mismatched toolchains**: more than one JDK in play changes dex; remove unused JDKs. The JDK 17→21
+  seds exist so only one is used.
+- **ZIP metadata and line endings**: Windows vs Linux newlines change bytes; ZIP extensions (unix
+  attributes, extra fields) differ; the signing step must not add or rewrite them
+  (`--alignment-preserved true`).
+- **Android Studio builds** have non-deterministic ZIP ordering. Never use one for a reference.
+- **Rust** (extra care): pin the toolchain with `rustup-init.sh -y --default-toolchain <version>`; trim paths
+  (`--remap-path-prefix`, unstable `trim-paths`); `CARGO_TARGET_DIR` to a fixed absolute path;
+  `CARGO_HOME` identical between builds (it ends up in the binaries); link the NDK to the same path;
+  vendored OpenSSL needs `SOURCE_DATE_EPOCH`.
+- **Python/Chaquopy wheels**: pip writes `direct_url.json` with the build path; build in a fixed path
+  and let the wheels build in the `build:` phase. [seen on another author's MR; not verified here]
+
 ## Building it yourself (only when you need to debug locally)
 
 Use F-Droid's own image and a fresh clone of the tagged commit, never the working tree:

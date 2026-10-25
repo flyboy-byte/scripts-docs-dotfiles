@@ -104,6 +104,39 @@ Because prebuild regenerates `android/`:
   manifest, or `apk-inspect.sh` on the CI's unsigned APK. A CI check that fails on any
   permission outside an allowlist catches regressions. [seen]
 
+## Monorepos and package managers in practice
+
+- A repo whose app lives in a subfolder (`app/`) uses `subdir: app/android/app`, `cd ../..` becomes
+  `cd ../../..` or `cd ../../app`, and every path in `scanignore` / `scandelete` carries the prefix
+  (`app/node_modules/...`). A second Expo app moved from the first app's recipe to this layout with
+  only those path edits. [seen]
+- npm: `npm install --ignore-scripts` in `init`. pnpm: hoisted linker so scanner paths are plain
+  `node_modules/...`; reviewers rejected `.pnpm/...` paths. Yarn: the template shows both. [seen]
+- Hermes's compiler is flagged by the scanner (`hermesc`): `scanignore` that **one** file as the
+  template does; Hermes is explicitly allowed as a prebuilt. Don't swap engines to avoid the scan:
+  one MR packaged JavaScriptCore instead, and a tester reported a launch crash on RN 0.81 where the
+  `isHermesEnabled` override is deprecated. [reported]
+- SDK versions: Expo SDK 54 / RN 0.81 and SDK 57 / RN 0.86 both worked with this recipe shape. Pin
+  `ndk:` to what the project's Gradle expects; the build server installs it. [seen]
+
+## Config that must survive `expo prebuild --clean`
+
+Hand edits in `android/` are discarded on F-Droid. Observed to revert: manifest permission removals
+and `allowBackup`, the release `versionCode`, signing config, minify/shrink flags, JVM args. [seen]
+
+| Need | Mechanism |
+| --- | --- |
+| Remove a merged permission | `android.blockedPermissions` in `app.json` (writes `tools:node="remove"`, which also cancels a permission another library re-adds) |
+| `allowBackup="false"`, other manifest attributes | a local config plugin using `withAndroidManifest` |
+| Minify / resource shrinking | a config plugin using `withGradleProperties` (`size-abis-r8.md`) |
+| `versionCode` for each ABI block | recipe sed with `$$VERCODE$$` |
+| JVM args, PNG crunch, caching | recipe seds on `android/gradle.properties` (template) |
+| Release signing | recipe removes `signingConfig`; F-Droid builds unsigned |
+
+Verify what really ships by running `npx expo prebuild -p android --clean` and reading the merged
+manifest, or `scripts/apk-inspect.sh` on the CI's unsigned APK. A CI job that fails on any permission
+outside an allowlist catches regressions. [seen]
+
 ## Native code of your own
 
 A local Expo module in `modules/` (Kotlin only) autolinks through prebuild with no recipe change
