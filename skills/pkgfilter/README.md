@@ -4,7 +4,7 @@ Find what is eating your disk. Three pieces:
 
 | | What | Needs |
 |---|---|---|
-| [`../../scripts/pkgfilter.py`](../../scripts/pkgfilter.py) | The original: interactive Arch package bloat hunter. Strip keywords and small packages, step by step, then optionally scan a folder for the biggest files. | Python 3, Arch (`pacman`) |
+| [`../../linux/pkgfilter.py`](../../linux/pkgfilter.py) | The original: interactive Arch package bloat hunter. Strip keywords and small packages, step by step, then optionally scan a folder for the biggest files. | Python 3, Arch (`pacman`) |
 | `scripts/agentpkgfilter.py` | The same tool made scriptable: `--scan`, `--scan --children` (drill down a level), `--top-packages`, `--orphans`, `--cache-report`, `--state-dir`, `--reset`, and a memory of what you want kept (below). It never asks questions and never deletes anything. | Python 3. `--scan` works on any Linux; the package modes need `pacman` |
 | this folder | A [Claude Code](https://claude.com/claude-code) skill that runs the agent version and walks you through your home directory: it measures, explains what each big folder is and how safe it is to clear, and leaves the deleting to you. | Claude Code |
 

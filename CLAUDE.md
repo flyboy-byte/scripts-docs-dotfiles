@@ -2,17 +2,19 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Last updated 2026-10-23 (pcb-design: placement by net length, routing finisher; dotfiles/claude-code added). Public repo `flyboy-byte/toolbox`, branch `master`.
+Last updated 2026-10-25 (renamed to toolbox; tools/ + scripts/ regrouped into linux/, study/, utils/). Public repo `flyboy-byte/toolbox`, branch `master`.
 
 ## Layout
 
 - `skills/<name>/`: Claude Code skills, each a complete installable folder. Read `skills/README.md` before adding or
   changing one.
-- `tools/<name>/`: anything more than one file, each with its own `README.md` (`wallpaper-kde` and `whitepaper-formatter` still lack one).
-- `scripts/`: single-file scripts.
+- Everything else is grouped by topic, not by file count: `linux/` (fixes and desktop tools), `study/` (class
+  visualizers and calculators), `utils/` (one-file utilities). Each topic folder has a `README.md` holding the details
+  (usage, flags); a multi-file tool inside it (`linux/vfs0090-rhel/`) has its own. Layout changed 2026-10-25 from
+  `tools/` + `scripts/`.
 - `dotfiles/<machine>/`: desktop setups. `dotfiles/claude-code/` is the owner's `~/.claude/CLAUDE.md` without its private sections;
   refresh it only with `dotfiles/claude-code/publish.sh`, never `cp` (the live file holds a private VPS section).
-- `README.md`: the index. Every skill, tool and script has a row there; keep it in step when adding, moving or removing.
+- `README.md`: the landing page. Every skill, tool and script has a one-line row there and details only in its folder README; keep both in step when adding, moving or removing. `.github/images/` holds its pictures.
 
 ## Commands
 
@@ -31,7 +33,7 @@ There is no build, lint or test suite at the repo root. Each skill and tool is r
 
 ## Conventions
 
-- MIT (root `LICENSE`) unless a folder has its own `LICENSE`. `tools/vfs0090-rhel/` is LGPL-2.1-or-later; keep it so.
+- MIT (root `LICENSE`) unless a folder has its own `LICENSE`. `linux/vfs0090-rhel/` is LGPL-2.1-or-later; keep it so.
   `skills/pcb-design/LICENSE` is MIT under the original author (sidewinderzz); keep that notice.
 - The repo is public: no secrets, personal paths, hostnames or saved preferences in `skills/`. Dotfiles may contain the
   owner's paths; they are one machine's setup.

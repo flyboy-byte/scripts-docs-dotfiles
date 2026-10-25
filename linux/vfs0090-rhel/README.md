@@ -90,7 +90,7 @@ drop-ins and one directory (`uninstall.sh` does this).
 
 ```
 git clone https://github.com/flyboy-byte/toolbox.git
-cd toolbox/tools/vfs0090-rhel
+cd toolbox/linux/vfs0090-rhel
 ./install.sh
 ```
 

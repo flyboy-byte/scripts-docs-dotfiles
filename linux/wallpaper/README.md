@@ -1,8 +1,8 @@
-# wallpaper-niri
+# wallpaper
 
 A live system-info wallpaper for [niri](https://github.com/YaLTeR/niri) (and other Wayland compositors that support layer-shell). Every 15 seconds it checks [`fastfetch`](https://github.com/fastfetch-cli/fastfetch) and, if anything changed, renders the output onto a Catppuccin-style background and cross-fades it in with `awww`.
 
-This is the Wayland/niri port of [`../wallpaper-kde/neofetch_wallpaper_kde.py`](../wallpaper-kde/neofetch_wallpaper_kde.py), which depended on KDE's `plasma-apply-wallpaperimage`.
+This is the Wayland/niri port of [`kde/neofetch_wallpaper_kde.py`](kde/neofetch_wallpaper_kde.py) (see [KDE version](#kde-version) below), which depended on KDE's `plasma-apply-wallpaperimage`.
 
 ![example](example.png)
 
@@ -69,7 +69,7 @@ Colors are in `create_wallpaper()`. The `Terminal` module is left out on purpose
 
 ## Differences from the KDE version
 
-| | `../wallpaper-kde` (KDE) | `wallpaper-niri` |
+| | `kde/` (KDE) | niri |
 |---|---|---|
 | Info source | `neofetch` (unmaintained) | `fastfetch` |
 | Applies wallpaper with | `plasma-apply-wallpaperimage` | `awww` (fade transition) |
@@ -81,3 +81,21 @@ Colors are in `create_wallpaper()`. The `Terminal` module is left out on purpose
 
 - Only tested on niri with a single screen. On a multi-monitor setup the image is sized to the first output niri reports, and `awww img` applies it to every output.
 - On another compositor, `get_screen_size()` is the only niri-specific part. Replace it (e.g. with `wlr-randr`) or rely on the 1366x768 fallback.
+
+## KDE version
+
+The original, in [`kde/`](kde/). It needs `neofetch` (unmaintained) and Pillow.
+
+| File | What it does |
+|---|---|
+| `neofetch_wallpaper_simple.py` | One-shot: renders `neofetch --stdout` onto a 1080p PNG, color-coded by category, with a timestamp. |
+| `neofetch_wallpaper_kde.py` | The same as a loop: every ~15 s, if the output changed, it regenerates the wallpaper and applies it with `plasma-apply-wallpaperimage`. |
+| `wallpaper.service` | systemd user service that runs the loop with `Restart=always`. |
+
+> [!WARNING]
+> `neofetch_wallpaper_kde.py` writes to a hardcoded `/home/logan/Downloads/wallpaper` and **clears that folder on every
+> run**, and `wallpaper.service` has a hardcoded `ExecStart`. Edit both before using them on another machine.
+
+```bash
+python kde/neofetch_wallpaper_simple.py
+```

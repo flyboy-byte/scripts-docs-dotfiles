@@ -11,7 +11,7 @@ Lean and terminal-first: niri, waybar, fuzzel, mako, swayidle/swaylock, Terminol
 | `system/` | Root-owned files, reference only: zram, earlyoom, sysctl, SDDM/GRUB Catppuccin themes, `battctl` + sudoers rule |
 | `terminology-base.cfg.txt` | Decoded Terminology config (the real one is a binary `.eet`) |
 
-The live fastfetch wallpaper is in [`tools/wallpaper-niri/`](../../tools/wallpaper-niri/).
+The live fastfetch wallpaper is in [`linux/wallpaper/`](../../linux/wallpaper/).
 
 ## Install
 ```bash

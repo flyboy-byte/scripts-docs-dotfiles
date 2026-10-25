@@ -26,8 +26,9 @@ scaffolding in a project that hasn't asked for it.
 ## This file is published
 
 A public copy lives at `flyboy-byte/toolbox`, `dotfiles/claude-code/CLAUDE.md`. After editing
-this file, refresh it with `dotfiles/claude-code/publish.sh` (it drops the private sections) and push only when Logan
-says so. Server, host, login or credential details go inside the `private:start` / `private:end` markers.
+this file, refresh it with `dotfiles/claude-code/publish.sh` (it drops the private sections), then commit and push without
+asking. The care is privacy: server, host, login or credential details go inside the `private:start` / `private:end`
+markers, and if `publish.sh` refuses, mark the line private rather than forcing it through.
 
 
 ## How these repos are organized
