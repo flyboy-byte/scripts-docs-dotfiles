@@ -10,12 +10,30 @@ the bot on every release, a second one in review) and from reading a third autho
 Evidence is marked in the reference files: **[seen]** happened to us, **[docs]** from F-Droid's own
 documentation, **[reported]** second-hand. Where we have only tested Expo / React Native, we say so.
 
-**Jump to:** [How F-Droid works](#how-f-droid-works-in-one-minute) ·
-[**My reproducible build / byte comparison fails**](#my-reproducible-build--byte-comparison-fails) ·
-[Find your problem](#find-your-problem) · [New app checklist](#new-app-checklist) ·
-[Releasing an update](#releasing-an-update) · [Common mistakes](#common-mistakes) ·
-[Words you'll meet](#words-youll-meet) · [Using it with Claude](#using-it-with-claude) ·
-[Scripts](#the-scripts-on-their-own)
+## In this guide
+
+**Start here if you're stuck:**
+- [My reproducible build / byte comparison fails](#my-reproducible-build--byte-comparison-fails): what the check does, the usual mistake, the fix step by step, and what happens if you give up
+- [Find your problem](#find-your-problem): a symptom → file table (pipeline failures, reviewer comments, size, signing, release not showing)
+
+**Learn the basics:**
+- [How F-Droid works in one minute](#how-f-droid-works-in-one-minute)
+- [New app checklist](#new-app-checklist) · [Releasing an update](#releasing-an-update)
+- [Common mistakes](#common-mistakes) · [Words you'll meet](#words-youll-meet)
+
+**Deeper reference** (in [`reference/`](reference/)):
+- [process](reference/process.md): the whole lifecycle, how long things take, what to do while an MR is open
+- [metadata](reference/metadata.md): every recipe field, version codes, store text limits
+- [reproducible](reference/reproducible.md): how verification works, the catalogue of non-determinism
+- [signing-keys](reference/signing-keys.md): one key across stores, and the choice you can't undo
+- [size-abis-r8](reference/size-abis-r8.md): APK size, ABI splits, R8
+- [react-native-expo](reference/react-native-expo.md) · [other-stacks](reference/other-stacks.md)
+- [policy](reference/policy.md): what's allowed, anti-features, permissions
+- [troubleshooting](reference/troubleshooting.md) · [local-testing](reference/local-testing.md)
+- [reviewing-others](reference/reviewing-others.md): testing someone else's MR
+- [casebook](reference/casebook.md): three real submissions, mistakes included
+
+**Tools:** [Using it with Claude](#using-it-with-claude) · [The scripts on their own](#the-scripts-on-their-own)
 
 ---
 
