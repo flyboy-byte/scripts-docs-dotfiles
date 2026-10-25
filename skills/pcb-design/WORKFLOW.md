@@ -90,6 +90,10 @@ drives a heater or a motor). Findings come back as input to verify, never as fac
 `AUDIT.md`. The release gate refuses while a BLOCKER or BUG is open. Write `AGENTS.md` for any model, so the same repo
 works for Claude, Codex or a person.
 
+Brief the reviewer with `review/TASKS.md` (numbered tasks, each with a question, files, how to check and a "done" line)
+and `review/FINDINGS-TEMPLATE.md` (one coverage row per task), from `templates/review/`. Rewrite the task list each
+round for what changed; `reference/fab-files-audit-order.md` has what made an outside agent useful and what didn't.
+
 ## The tools that carry it (in `scripts/`)
 
 | Script | Role in the loop |

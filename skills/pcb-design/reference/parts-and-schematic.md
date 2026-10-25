@@ -75,6 +75,22 @@ over 10 minutes per run), and don't trust `.op` on these models; read a slow tra
 When the load is unknown (another maker's ECU input), sweep it: pull-downs and pull-ups across the
 plausible range, and say which corners the stage does not cover.
 
+Make the wrapper prove each run finished `[reported: wideband carrier, 2026-10-25]`. ngspice can abort a transient
+part-way, exit 0, and still print finite numbers (zeros) for a measurement window it never reached. Have each deck
+print its last time point (`let tend = time[length(time)-1]`, `echo "END $&tend"`), and pass a case only when that
+reaches the stop time and no abort message appears. Let the circuit settle before a step: a step taken off a baseline
+that is still moving gives the wrong overshoot (28 % reported where the settled figure was 22 %). When a vendor model
+can't solve its operating point through a supply resistor, start with `uic` and the supply capacitor charged (`.ic`).
+
+## Budget every part on a clamped rail `[reported: wideband carrier, 2026-10-25]`
+
+Parts between a TVS-protected rail and a clamp (a series resistor into a zener, say) see the TVS's **clamping**
+voltage for the whole surge, not the nominal rail: for an automotive load dump that is tens of volts for about
+400 ms, long enough to treat as steady. A 1k 1206 into an 18 V zener behind an SMCJ24CA (38.9 V clamp) takes
+(38.9 - 17.1)^2 / 1k = 0.48 W, which is 190 % of a general-purpose 250 mW part. A pulse-proof resistor in the same footprint
+(0.66-0.75 W) fixed it. Write the sum as a check that reads the part numbers from the board, so a "basic part"
+swap at the quote can't undo it.
+
 ## Schematic as code
 
 Generating the schematic and netlist from a Python table (`gen_sch.py`)

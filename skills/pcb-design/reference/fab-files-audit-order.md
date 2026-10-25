@@ -64,6 +64,27 @@ Numbers and tool details here are `[reported]` by the skill's author from their 
    checks from a fresh clone, what not to change, where the raw report
    goes) and this skill's public link, and keep their raw output as its own
    file.
+   **Brief the reviewer so it actually helps** `[reported: wideband carrier, 2026-10-24/25]`. An agent given a
+   loose brief waited for a go-ahead, stopped after one pass, and ran out of credits before writing up its best
+   finding. What fixed it, in the next round:
+   - a numbered task list (`templates/review/TASKS.md`), in order of value: each task has one yes/no question, the
+     files, how to check it with a shell and without one, and a "done" line;
+   - a report template with one coverage row per task (`templates/review/FINDINGS-TEMPLATE.md`), filled in as it
+     goes, so a cut-off review still shows what it covered;
+   - three rules stated first: start without waiting, write up and commit after every task, and stop starting tasks
+     with a quarter of the budget left;
+   - for an agent with the repo: its own `git worktree` and branch (one ran in the designer's checkout and left it on
+     the review branch), and `run_all.py --report DIR`, so its runs don't rewrite `STATE.md` or tracked reports;
+   - for a chat model with uploads only: one zip from `audit_pack.py`, with plain-text part and net lists exported
+     from the board, because it can't open KiCad files.
+   Each round, rewrite the task list for what changed and keep a check that the review docs agree with the repo
+   (check count, task IDs, file names): stale numbers in a brief mislead the reviewer.
+
+   **Test your checkers against a known failure.** A checker that can print PASS on a failure is worse than none,
+   because everything else leans on it. Outside reviews on the wideband carrier found two: a static stack-depth
+   checker that "cut loops through indirect calls as artefacts" hid real recursion through a function pointer, and
+   sim wrappers that checked "exit 0 and the numbers parse" passed a transient that had aborted part-way. Give every
+   checker a regression that feeds it the failure and must fail.
 3. Report format: ID, severity (BLOCKER = don't order / BUG = wrong but
    workable / RISK = could bite, with the condition / NOTE), location (file
    and line, or ref and coordinates), evidence in numbers, smallest fix.

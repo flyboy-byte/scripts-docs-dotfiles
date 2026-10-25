@@ -74,7 +74,8 @@ copy them and fill them in, don't redesign them.
    are drafts. Say which is which and how you know; ask when it isn't clear.
 2. **Copy the templates** into the project root: `CLAUDE.md` (merge into an existing one as a
    section, don't overwrite), `STATE.md`, `REQUIREMENTS.md`, `parts_research.md`, `AUDIT.md`,
-   `ORDERS.md`, `LESSONS.md`, `pinmap.csv`, `review.html`, `fab/README.md`, `archive/README.md`. Copy every file in
+   `ORDERS.md`, `LESSONS.md`, `pinmap.csv`, `review.html`, `fab/README.md`, `archive/README.md`, and `templates/review/`
+   to `review/` (the outside reviewer's task list, report template and prompt). Copy every file in
    `scripts/` into the project's `checks/` and `templates/checks.json` to `checks/checks.json`, replace
    `BOARD.kicad_pcb` / `BOARD.kicad_sch` with the project's files (or drop those entries until they exist), then add
    the project's own checks to it (see "Checks and the money gate"). Create `renders/` and `firmware/`.
@@ -103,13 +104,13 @@ Shipped scripts (copied to the project's `checks/` at scaffold time; Python 3, n
 | Script | What it does |
 | --- | --- |
 | `kicad_check.py` | DRC (`drc BOARD.kicad_pcb`) or ERC (`erc BOARD.kicad_sch`) through `kicad-cli`, error level by default, one-line count by type; SKIPPED without KiCad |
-| `run_all.py` | Runs every check in `checks/checks.json`, writes the checks table in `STATE.md` and `checks/last_run.json`. A check whose command isn't installed is SKIPPED, never passed |
+| `run_all.py` | Runs every check in `checks/checks.json`, writes the checks table in `STATE.md` and `checks/last_run.json`. A check whose command isn't installed is SKIPPED, never passed; one marked `"advisory"` may fail without blocking `release.py`. `--report DIR` (for a reviewer) writes there and leaves the designer's files alone |
 | `cpl_vs_board.py` | CPL positions and rotations against the `.kicad_pcb`; tested on a real board |
 | `gerber_outline.py` | Board size from the Edge_Cuts Gerber (arcs included) and a drawing with part positions to look at |
 | `pinmap.py` | `pinmap.csv` -> firmware `pins.h` / `pins.py`; checks headers are current, no pin used twice, every net is on the board |
 | `drift.py` | `record` after generating KiCad files; `check` lists footprints and nets the owner changed by hand |
 | `release.py` | **The money gate.** Copies fab files to `fab/<rev>/` only if the tree is committed, every check passed on the current design files, no hand edits are waiting, the last audit round covers the current design with no open BLOCKER or BUG, and the revision is new |
-| `audit_pack.py` | Read-only folder plus a paste-ready prompt for a second model or a person to audit |
+| `audit_pack.py` | Read-only folder plus a paste-ready prompt (`review/PROMPT.md` if present) and `INDEX.md` for a second model or a person to audit; `FILE=NAME` renames, and two files with one name are refused |
 | `drc_vs_baseline.py` | DRC minus a baseline board's own violations (`git:<ref>:<path>` or a file), plus unconnected items; for extending an existing board |
 | `via_in_pad.py` | Vias whose drill lands in an SMD pad (DRC doesn't flag it); baseline vias listed, not failed. Needs pcbnew |
 | `finish_routes.py` | A module for the PCB generator, not a check: `negotiate()` routes a dense group of nets together (PathFinder) before the autorouter; `finish()` routes what the autorouter leaves. Needs pcbnew |
