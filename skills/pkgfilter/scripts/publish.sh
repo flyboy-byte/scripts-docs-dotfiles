@@ -18,7 +18,7 @@ DEST="skills/$NAME"; cd "$WORK/repo"; git sparse-checkout set "$DEST" >/dev/null
 cp "$SKILL_DIR/SKILL.md" "$DEST/SKILL.md"
 find "$SKILL_DIR/scripts" -maxdepth 1 -type f ! -name "*.pyc" -exec cp -t "$DEST/scripts/" {} +
 # Nothing personal may go public: the user name, the home path, and the prefs themselves.
-if grep -rnIE "$(id -un)|$HOME" "$DEST" | grep -v "flyboy-byte/scripts-docs-dotfiles" >/dev/null; then
+if grep -rnIE "$(id -un)|$HOME" "$DEST" | grep -v "flyboy-byte/toolbox" >/dev/null; then
   echo "Refusing to publish: a personal string (user name or home path) is in the skill files:"; grep -rnIE "$(id -un)|$HOME" "$DEST" | head -5; exit 1
 fi
 git add -A "$DEST"

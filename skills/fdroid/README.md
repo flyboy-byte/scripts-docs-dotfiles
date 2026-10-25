@@ -225,9 +225,9 @@ Once the app is in and on `AutoUpdateMode: Version` + `UpdateCheckMode: Tags`:
 ## Using it with Claude
 
 ```sh
-git clone https://github.com/flyboy-byte/scripts-docs-dotfiles.git
+git clone https://github.com/flyboy-byte/toolbox.git
 mkdir -p ~/.claude/skills
-cp -r scripts-docs-dotfiles/skills/fdroid ~/.claude/skills/
+cp -r toolbox/skills/fdroid ~/.claude/skills/
 ```
 
 Then, in your app repo: "get this on F-Droid", "release 1.4.0 to F-Droid", "why did the F-Droid pipeline

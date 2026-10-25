@@ -89,8 +89,8 @@ drop-ins and one directory (`uninstall.sh` does this).
 ## Usage
 
 ```
-git clone https://github.com/flyboy-byte/scripts-docs-dotfiles.git
-cd scripts-docs-dotfiles/tools/vfs0090-rhel
+git clone https://github.com/flyboy-byte/toolbox.git
+cd toolbox/tools/vfs0090-rhel
 ./install.sh
 ```
 

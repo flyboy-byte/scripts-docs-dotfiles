@@ -1,4 +1,4 @@
-# scripts-docs-dotfiles
+# toolbox
 
 Scripts, tools, Claude Code skills, dotfiles and technical docs: one-off utilities, visualizers, fixes and reference
 whitepapers.
@@ -22,8 +22,8 @@ MIT licensed (see `LICENSE`), except where a folder has its own `LICENSE`: `tool
 | [pcb-design](skills/pcb-design/) | Design, place, autoroute, audit and order a custom PCB with KiCad and JLCPCB assembly. Point it at an idea or an existing board folder and it sets the project up: a state file with stages, a requirements interview that picks risk questions from what the board does, check scripts with a release gate that refuses unready fab files, a pin map shared with the firmware, an audit pack for a second model, and a phone review page. It is also a documented workflow ([`WORKFLOW.md`](skills/pcb-design/WORKFLOW.md)): how the assistant works a board on its own for hours, saves the day at a pause point, and hands off to the next session or another model. Worked example: [wideband-work](https://github.com/flyboy-byte/wideband-work). Based on sidewinderzz's skill from a working board (MIT). |
 
 ```bash
-git clone https://github.com/flyboy-byte/scripts-docs-dotfiles.git
-cp -r scripts-docs-dotfiles/skills/<name> ~/.claude/skills/
+git clone https://github.com/flyboy-byte/toolbox.git
+cp -r toolbox/skills/<name> ~/.claude/skills/
 ```
 
 How a skill folder is laid out, and how to add one: [`skills/README.md`](skills/README.md).

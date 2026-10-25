@@ -14,9 +14,9 @@ not leave the filesystem it starts on. Run everything as your own user, not root
 ## Use the skill
 
 ```sh
-git clone https://github.com/flyboy-byte/scripts-docs-dotfiles.git
+git clone https://github.com/flyboy-byte/toolbox.git
 mkdir -p ~/.claude/skills
-cp -r scripts-docs-dotfiles/skills/pkgfilter ~/.claude/skills/
+cp -r toolbox/skills/pkgfilter ~/.claude/skills/
 ```
 
 Then in Claude Code, say something like "what's eating my disk?" or "help me clean up my home

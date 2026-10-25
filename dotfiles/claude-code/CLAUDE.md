@@ -15,17 +15,17 @@ scaffolding in a project that hasn't asked for it.
   stay legible in files rather than only in the transcript.
 - Disk space, "what's eating my storage", home-folder cleanup or package bloat: use the `pkgfilter`
   skill (`~/.claude/skills/pkgfilter`, script `scripts/agentpkgfilter.py`; source repo
-  `flyboy-byte/scripts-docs-dotfiles`, folder `skills/pkgfilter/`). Don't ask where the script is, and never
+  `flyboy-byte/toolbox`, folder `skills/pkgfilter/`). Don't ask where the script is, and never
   delete on Logan's behalf: suggest, he runs it.
 - Circuit boards, PCBs, KiCad, schematics, Gerbers/BOM/CPL, ordering from JLCPCB, or a folder holding a board
-  project: load the `pcb-design` skill (`~/.claude/skills/pcb-design`; source repo `flyboy-byte/scripts-docs-dotfiles`,
+  project: load the `pcb-design` skill (`~/.claude/skills/pcb-design`; source repo `flyboy-byte/toolbox`,
   folder `skills/pcb-design/`). In a folder with no `STATE.md` yet, run its "Scaffold the project first" steps; in a
   scaffolded one, read `STATE.md` first. KiCad 10.0.7 is installed (`kicad-cli`, 2026-10-22). Owner answers for it:
   `~/.config/pcb-design/owner.md`.
 
 ## This file is published
 
-A public copy lives at `flyboy-byte/scripts-docs-dotfiles`, `dotfiles/claude-code/CLAUDE.md`. After editing
+A public copy lives at `flyboy-byte/toolbox`, `dotfiles/claude-code/CLAUDE.md`. After editing
 this file, refresh it with `dotfiles/claude-code/publish.sh` (it drops the private sections) and push only when Logan
 says so. Server, host, login or credential details go inside the `private:start` / `private:end` markers.
 

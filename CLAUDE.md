@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Last updated 2026-10-23 (pcb-design: placement by net length, routing finisher; dotfiles/claude-code added). Public repo `flyboy-byte/scripts-docs-dotfiles`, branch `master`.
+Last updated 2026-10-23 (pcb-design: placement by net length, routing finisher; dotfiles/claude-code added). Public repo `flyboy-byte/toolbox`, branch `master`.
 
 ## Layout
 
