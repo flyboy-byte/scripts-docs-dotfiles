@@ -71,8 +71,32 @@ conduct, and skim recent merged PRs. Check:
   Regression tests go in the existing test file for the area.
 - **Prove the tests.** Revert the fix and confirm each new test fails, then restore it. A test that
   passes without the fix proves nothing. Re-run every test you edited.
+- **Test the reported symptom, not a step on the way.** A test can fail without the fix and still
+  miss the bug: checking that an intermediate value changed (a starting guess, a flag, a helper's
+  output) is not checking that the thing the issue reports (a solve finds nothing, a shape ends in
+  the wrong place, a crash) now goes right. Find an input where the reported failure happens
+  without the fix, and assert on that.
+- **Each part of the fix has a test that catches it.** For a fix with several parts, break one part
+  at a time (put the old line back) and see a test go red each time.
+- **Sweep the neighbourhood.** Run the old and new code over many nearby inputs and assert the fix
+  never loses a case the old code got right. One hand-picked input can hide a regression.
+- **Check the fixed code is reachable** from a real caller today. If nothing can reach it yet (a
+  setter not ported, a feature not wired), say so in the PR instead of implying users are fixed.
 - Never "fix" a failing test by weakening it, and never skip or delete tests to get green.
 - Kill processes you started by exact PID; `pkill -f` patterns can match your own shell.
+
+## Pace: draft until it's proven
+
+Claim with a draft PR and keep it draft until the evidence is in the body: the reported failure
+reproduced and fixed, every part covered, the neighbourhood swept, reachability stated, CI's
+commands run. Marking a PR ready an hour after claiming is a warning sign, not a win.
+
+In agent-heavy repos everyone can produce a plausible fix in minutes, so quick fixes are cheap and
+quality is what stands out. Before marking ready, audit your own PR as a reviewer would: re-read
+the diff against the issue, check every claim in the PR body against what you actually ran, and
+ask whether the test would have caught the bug the issue describes. If the user asks you to slow
+down or audit, do it for real; move a PR back to draft and say why in a comment when the evidence
+falls short.
 
 ## 4. Before every push: the gates
 
@@ -112,10 +136,26 @@ All of these, every time:
   batch merges are often tied to the reviewed commit, and a later push (even a tidy-up the
   maintainer offered to do themselves) can drop the PR from the merge. Suggest the change in a
   comment and let them choose.
+- If you do push after an approval (a reviewer asked for it), say so at once in a comment: which
+  commit the approval covers, what the new commit changes, and what you ran on it.
 - Don't push just to catch up with `main`; every push re-runs CI. Sync (merge or rebase, per the
   project) only when you push anyway or there is a conflict.
+- **Other contributors are colleagues, not rivals.** Many reviews now come from other people's
+  agents; treat a sound finding from them like a maintainer's. When someone offers to take a
+  related piece (a setter, an end-to-end test, a follow-up), agree on the split in the thread, keep
+  your PR to its scope, and don't race them for overlapping work.
 - Waiting is normal. Don't ping maintainers repeatedly; one polite nudge after a week or so is
   plenty.
+
+## Merge queues and stacked work
+
+- A PR can drop out of a merge queue with "failed checks" because `main` moved under it, for
+  example a struct gained a field your new tests build. Read that PR's own queue run
+  (`gh run list --event merge_group`, the `pr-N` branch) before blaming others; fix, rebase if the
+  project allows, push, and say what broke.
+- A PR in an upstream repo can't use a branch on your fork as its base. For work that depends on
+  your open PR, open the second PR against `main` with the first PR's commits included, say so in
+  its body, keep it draft, and rebase it onto `main` once the first merges.
 
 ## 7. After the merge
 

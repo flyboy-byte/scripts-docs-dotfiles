@@ -15,8 +15,13 @@ careful way:
 - **Don't duplicate.** Searches open and merged PRs right before starting and before each push,
   and claims work the way the project wants.
 - **Reproduce, then fix.** Shows the bug first; smallest change, one topic per PR.
-- **Tests that prove something.** Reverts the fix to confirm each new test fails without it;
-  never weakens or skips tests to get green.
+- **Tests that prove something.** Reverts the fix to confirm each new test fails without it, and
+  checks it fails on the bug the issue reports, not just on a step along the way. Breaks each part
+  of a fix in turn, sweeps nearby inputs for regressions, and says when the fixed code isn't
+  reachable yet. Never weakens or skips tests to get green.
+- **Draft until it's proven.** Keeps a PR in draft until the evidence is in its description, and
+  audits its own PR like a reviewer before asking for review. Treats other contributors (and their
+  agents) as colleagues: answers their reviews and agrees scope splits instead of racing.
 - **Run what CI runs**, exactly, before every push.
 - **Your identity.** Commits use your GitHub noreply address; session links stay out unless you
   allow them.

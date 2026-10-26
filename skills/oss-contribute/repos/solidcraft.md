@@ -27,6 +27,16 @@ the app (`cargo run --release -p solidcraft -- --sample --control PORT`, under `
 headless) and drive it over the control channel (`docs/control-protocol.md`). Attach to the PR;
 don't commit them.
 
+## PR description
+Keep the `Changes a default: no` / `Changes a default: yes — <what>, old behaviour kept behind
+preference <name>` line filled in (`pr-checks.yml` checks it).
+
+## Merge queue
+A queued PR can be removed with "failed_checks" when `main` moved under it (2026-10: a new field on
+`Sel::SketchCurve` broke a new test's struct literal). Read the PR's own queue run
+(`gh run list --event merge_group`, branch `gh-readonly-queue/main/pr-N-...`), fix, rebase onto
+`origin/main`, push, comment; a maintainer re-queues it.
+
 ## Sync
 Don't push only to catch up with `main`. When you push anyway or it conflicts: rebase onto
 `origin/main` and `--force-with-lease` your own branch, or merge `main` in once. Don't re-run CI
