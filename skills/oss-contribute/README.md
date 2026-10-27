@@ -1,8 +1,9 @@
 # oss-contribute
 
-A [Claude Code](https://claude.com/claude-code) skill for contributing to **someone else's** GitHub
-project with Claude doing the work, especially large, fast-moving repos where many people and
-agents open PRs every day.
+A [Claude Code](https://claude.com/claude-code) skill for contributing to **someone else's**
+open-source project with Claude doing the work: a docs fix, a good bug report, a tested fix, a
+feature, or reviewing and verifying other people's changes. It works on small solo repos and on
+large, fast-moving ones where many people and agents open PRs every day.
 
 It's for developers who already know git and PRs from their own projects but haven't contributed
 upstream much. Your own repo and a big shared one are different jobs: there, maintainer time is
@@ -29,6 +30,15 @@ careful way:
 - **Reviews.** Reads inline and bot comments, verifies each finding before applying it, and
   doesn't push after an approval (that can knock a PR out of a merge).
 - Asks before anything public: forking, pushing, opening or commenting on PRs.
+
+## What's in it
+
+- `SKILL.md`: the core workflow, tuned for busy GitHub repos.
+- `reference/workflows.md`: the general playbook: choosing a project and a first task, what to do
+  for each kind of contribution, small and solo repos, GitLab/Codeberg/email patches, DCO and CLA,
+  working with maintainers, stalled or closed PRs.
+- `reference/new-repo.md` and `repos/`: per-project profiles.
+- `scripts/contrib-check.sh`: the pre-push checks.
 
 ## Install
 

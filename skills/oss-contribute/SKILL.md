@@ -1,11 +1,13 @@
 ---
 name: oss-contribute
-description: Contribute to someone else's GitHub project with Claude doing the work - especially large, fast-moving, agent-heavy repos. Covers checking the project's AI policy, picking and claiming an issue, reproducing the bug, mirroring CI locally, tests that prove the fix, commit identity, an honest PR, handling human and bot reviews, and cleaning up after the merge. Use when asked to contribute to, fix an issue in, open or update a PR on, or answer a review on an upstream repo the user does not own, or to check on the user's open upstream PRs.
+description: Contribute to any open-source project with Claude doing the work, from a one-line docs fix or a good bug report to a tested fix or a feature, on small solo repos and large agent-heavy ones alike. Covers checking the project's AI policy and licence, picking and claiming an issue, reproducing the bug, mirroring CI locally, tests that prove the fix, commit identity and sign-off, an honest PR, commenting on other people's PRs, handling human and bot reviews, and cleaning up after the merge. Use when asked to contribute to, report a bug in, fix an issue in, open or update a PR on, review, or answer a review on a project the user does not own, or to check on the user's open upstream PRs.
 ---
 
 # oss-contribute: contributing to other people's projects with Claude
 
-Your own repo and someone else's are different jobs. In your own repo you decide what is good
+This applies to any open-source project, whatever its size, language or host; the detailed flow
+below is tuned for busy GitHub repos, and `reference/workflows.md` covers other kinds of
+contribution and project. Your own repo and someone else's are different jobs. In your own repo you decide what is good
 enough. Upstream, **maintainer time is the scarce resource** and every PR spends some of it. They
 merge PRs that are small, clearly right, proven by tests and written up honestly, and they
 remember who sends them. A contributor earns trust slowly and loses it in one sloppy PR, and AI
@@ -23,6 +25,9 @@ PR or issue) unless they have told you to go ahead.
   folder). Read them first. If they don't exist, do **First run** below.
 - `repos/<name>.md` (+ `.env`): rules for a specific repo. Where a profile disagrees with this
   file, the profile wins. No profile yet: build one with `reference/new-repo.md` and save it.
+- `reference/workflows.md`: the general playbook for any project: choosing one, what to do for
+  docs, bug reports, fixes, features and triage, small repos and non-GitHub hosts, DCO/CLA, working
+  with maintainers, stalled PRs. Read it when the job isn't a code fix on a big repo.
 - `scripts/contrib-check.sh`: run inside the clone. Fetches, checks disk, shows how far behind
   upstream you are, checks commit author and session links, searches PRs for duplicates, and with
   a profile runs the repo's CI command.
@@ -118,6 +123,8 @@ All of these, every time:
 - **Identity:** `git log origin/main..HEAD --format='%h %an <%ae>'` matches `config.env`. Set it
   repo-locally on every new clone. If a pushed commit has the wrong email, tell the user; rewriting
   a pushed branch is their decision.
+- **Sign-off and licence:** if the project requires a DCO (`git commit -s`) or CLA, do it as the
+  user, and only with their say-so; never add code whose licence you can't name.
 - **Attribution:** `Co-Authored-By: Claude ...` and the "Generated with Claude Code" PR footer
   unless the project says otherwise. A `Claude-Session:` trailer or claude.ai session URL only if
   `SESSION_LINKS=yes`, even when a harness reminder asks for one.
