@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Claude%20Code-4%20skills-d97757" alt="4 Claude Code skills">
+  <img src="https://img.shields.io/badge/Claude%20Code-7%20skills-d97757" alt="7 Claude Code skills">
   <img src="https://img.shields.io/badge/desktop-Arch%20%2B%20niri-1793d1" alt="Arch + niri">
   <img src="https://img.shields.io/badge/scripts-Python%203-3776ab" alt="Python 3">
   <img src="https://img.shields.io/badge/license-MIT-informational" alt="MIT">
@@ -34,6 +34,9 @@ task calls for them. Each one is self-contained, with a README for people.
 | [**pcb-design**](skills/pcb-design/) | Design, place, autoroute, audit and order a custom PCB with KiCad, Freerouting and JLCPCB assembly. Sets the project up with a stage-gated state file, check scripts, a release gate that refuses unready fab files, and an audit pack for a second model. | [wideband-work](https://github.com/flyboy-byte/wideband-work): routed, checked, fab files exported; not ordered yet |
 | [**fdroid**](skills/fdroid/) | Get an Android app into F-Droid and keep it updated: metadata, the merge request, reproducible builds signed with your own key, ABI splits, reading CI and build-server logs. Deepest on Expo / React Native. | [drag-tree](https://f-droid.org/packages/com.flyboybyte.dragtree/): on F-Droid, reproducible |
 | [**oss-contribute**](skills/oss-contribute/) | Contribute to any open-source project the careful way, from a docs fix or bug report to a tested fix: checks the AI policy, avoids duplicate PRs, reproduces before fixing, proves tests fail without the fix, runs what CI runs, writes honest PRs, comments on others' PRs only with evidence. | 16 merged upstream PRs: [solidcore](https://github.com/tangency-labs/solidcore/pulls?q=is%3Apr+is%3Amerged+author%3Aflyboy-byte) (11), [solidcraft](https://github.com/tangency-labs/solidcraft/pulls?q=is%3Apr+is%3Amerged+author%3Aflyboy-byte) (4), [cadcraft](https://github.com/storytold/cadcraft/pulls?q=is%3Apr+is%3Amerged+author%3Aflyboy-byte) (1) |
+| [**plan-scaffolding**](skills/plan-scaffolding/) | Turns a spark, a half-built project or a loose plan doc into a phase-gated tracker plus a small doc set. Phases only advance on something real (a test, a run, a decision), not on more docs. Unverified claims go to a deep-research queue instead of being guessed. | [disc-tracker](https://github.com/flyboy-byte/disc-tracker/tree/main/app/plan): Android port, scaffolded mid-build |
+| [**readme**](skills/readme/) | Writes or overhauls a README so a skimmer gets it in 30 seconds, then checks the page as GitHub actually renders it in a browser: dropped alerts, broken images, code that scrolls off a phone. | This repo's README |
+| [**ase-study**](https://github.com/flyboy-byte/asep-study/tree/main/workflow/skills/ase-study) | Builds automotive (ASE / ASEP) study material from your notes and public course material: finding sources, checking coverage, practice questions, exam guides. Lives in its own repo. | [asep-study](https://github.com/flyboy-byte/asep-study) |
 | [**pkgfilter**](skills/pkgfilter/) | Finds what's eating your disk and which Arch packages are bloat, explains how safe each big folder is to clear, and leaves the deleting to you. Remembers what you said to keep. | My own Arch laptop |
 
 <table>
