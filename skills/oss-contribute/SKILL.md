@@ -59,6 +59,10 @@ conduct, and skim recent merged PRs. Check:
   merged PRs and recent `main` commits for the issue number and its keywords
   (`contrib-check.sh --no-ci <keywords>`). Fixes often land without mentioning the issue.
 - Claim the way the project says. If someone else already has it, leave it or ask on the issue.
+- **Stay inside the issue's scope.** Fix what the issue reports and nothing broader; a wider
+  cleanup you noticed is a separate issue, raised in the thread first. A PR is not worth opening
+  just to have opened one: it spends a maintainer's review time, and one that merges because it
+  fixes something real is worth more than five that add noise.
 - Respect `MAX_OPEN_PRS`. A pile of open PRs from one person reads as spam.
 
 ## 3. Do the work
@@ -147,6 +151,22 @@ All of these, every time:
 - Waiting is normal. Don't ping maintainers repeatedly; one polite nudge after a week or so is
   plenty.
 
+## Commenting on other people's PRs and issues
+
+Only when it adds something the thread doesn't have, and never to be seen. Good reasons: you
+reproduced a bug and can narrow it, you checked a claim and it is wrong (or confirmed with
+evidence), you hit the same failure, or you were asked. Not reasons: "looks good", restating
+what the diff says, or filling a quiet thread.
+- **Label how you know.** Say "reproduced on `<version>`" or "found by reading the diff, not run".
+  Don't present a code reading as a test. If you verify someone's claim, check it against the
+  code or a run first; most turn out right, and then there is nothing to add.
+- **Ask, don't instruct,** on someone else's PR, and keep your comment to one question or one
+  finding with its evidence. Credit the person whose point you build on.
+- If a thread is already in good hands (a maintainer is on it, the claim holds, CI is green),
+  leave it. Silence is a fine review.
+- If reviewing and issue-hunting keep turning up nothing, that is the answer: say so and stop,
+  rather than look harder for something to post.
+
 ## Merge queues and stacked work
 
 - A PR can drop out of a merge queue with "failed checks" because `main` moved under it, for
@@ -162,6 +182,9 @@ All of these, every time:
 - Confirm with `gh pr view N --json state,mergedAt`; never report a merge you didn't check.
 - Clean up local branches and build dirs only with the user's OK on the exact list, after checking
   the commits are in a freshly fetched `origin/main`.
+- When there is nothing open and nothing is waiting on you, stop. Check back on threads you
+  commented on, answer anyone who asks you something, and take new work only when there is a
+  real issue to fix, not to keep a count going.
 - Write down what you learned about the repo in its profile, and the PR state in `me.md`.
 
 ## Never

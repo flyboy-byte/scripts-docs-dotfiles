@@ -62,3 +62,7 @@ look at the other queue runs before assuming it's your PR.
 
 ## Cleanup
 `bin/` grows to 4-6 GB after the C++ and Rust difftest builds; delete it once your PRs merge.
+
+## Claim commit and "Run failed" emails
+The empty `claim: #N` commit triggers a CI run that reports "Run failed ... No jobs were run" by
+email. It is harmless (no code changed); judge by the real runs on the PR's later commits.
