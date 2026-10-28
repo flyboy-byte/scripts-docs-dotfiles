@@ -10,7 +10,8 @@ Last updated 2026-10-25 (renamed to toolbox; tools/ + scripts/ regrouped into li
   changing one.
 - Everything else is grouped by topic, not by file count: `linux/` (fixes and desktop tools), `study/` (class
   visualizers and calculators), `utils/` (one-file utilities). Each topic folder has a `README.md` holding the details
-  (usage, flags); a multi-file tool inside it (`linux/vfs0090-rhel/`) has its own. Layout changed 2026-10-25 from
+  (usage, flags); a multi-file tool inside it (`linux/vfs0090-rhel/`, `windows/windash/`) has its own.
+  `archive/` holds retired repos kept for history (imported with `git subtree`, 2026-10-28). Layout changed 2026-10-25 from
   `tools/` + `scripts/`.
 - `dotfiles/<machine>/`: desktop setups. `dotfiles/claude-code/` is the owner's `~/.claude/CLAUDE.md` without its private sections;
   refresh it only with `dotfiles/claude-code/publish.sh`, never `cp` (the live file holds a private VPS section).

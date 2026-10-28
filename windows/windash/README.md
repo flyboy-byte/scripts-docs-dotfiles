@@ -39,11 +39,13 @@ winget install Git.Git
 Reopen the terminal again, then:
 
 ```powershell
-git clone https://github.com/flyboy-byte/WinDash
-cd WinDash
+git clone --depth 1 --filter=blob:none --sparse https://github.com/flyboy-byte/toolbox
+cd toolbox
+git sparse-checkout set windows/windash
+cd windows\windash
 ```
 
-(No Git? Click **Code → Download ZIP** on GitHub, extract it, and `cd` into the folder.)
+(No Git? Click **Code → Download ZIP** on [the toolbox repo](https://github.com/flyboy-byte/toolbox), extract it, and `cd` into its `windows\windash` folder.)
 
 **4. Start Claude in the repo**
 

@@ -16,6 +16,7 @@
 <p align="center">
   <a href="#skills"><b>Skills</b></a> •
   <a href="#linux"><b>Linux</b></a> •
+  <a href="#windows"><b>Windows</b></a> •
   <a href="#study"><b>Study</b></a> •
   <a href="#utils"><b>Utils</b></a> •
   <a href="#dotfiles"><b>Dotfiles</b></a> •
@@ -80,6 +81,16 @@ Fixes and desktop tools. Details in [`linux/README.md`](linux/README.md).
 | [`mouse-jiggler.py`](linux/mouse-jiggler.py) | Keeps the screen awake on KDE, X11 or Wayland. |
 | [`pkgfilter.py`](linux/pkgfilter.py) | The original interactive Arch bloat hunter that the skill grew out of. |
 
+## Windows
+
+Details in [`windows/README.md`](windows/README.md).
+
+| | What it does |
+|---|---|
+| [**windash**](windows/windash/) | Toggle dashboard for Windows 11 / ReviOS tweaks (power, privacy, services, look) with a Rainmeter desktop widget, a PowerShell terminal makeover, and a `CLAUDE.md` so Claude Code can walk you through it all. |
+
+---
+
 ## Study
 
 Visualizers and calculators from automotive and ham radio classes. Details in [`study/README.md`](study/README.md).
@@ -123,6 +134,13 @@ Technical papers, hosted on my site.
 | [HP LaserJet P1005 on Arch Linux](https://logannightingale.com/papers/hp-p1005-arch.html) | Linux · Arch · CUPS |
 | [T1D Field Management and Insulin Pen Survival Guide v2](https://logannightingale.com/papers/t1d-field-guide.pdf) | Medical · Field guide |
 | [Evaluating Common AI APIs and Models](https://logannightingale.com/papers/ai-apis-report.pdf) | AI · LLMs · APIs |
+
+---
+
+## Archive
+
+[`archive/flyboy.github.io`](archive/flyboy.github.io/): my first landing page, from before
+[logannightingale.com](https://logannightingale.com). Kept for history; no longer hosted.
 
 ---
 
