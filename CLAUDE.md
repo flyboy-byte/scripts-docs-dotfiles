@@ -39,5 +39,7 @@ There is no build, lint or test suite at the repo root. Each skill and tool is r
   owner's paths; they are one machine's setup.
 - The live copy of a skill is in `~/.claude/skills/<name>/`. Edit there and publish back (see `skills/README.md`), or
   keep both in step; don't let this repo drift ahead of the installed copy without saying so.
+- Never in this repo: Claude Panel (the CrossLight usage display) or the `claude-usage` skill and its bridge API.
+  They stay private.
 - Commit messages start with the folder name (`pkgfilter: ...`, `field-mode: ...`).
 - Absolute dates in docs.
