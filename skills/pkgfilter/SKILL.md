@@ -77,6 +77,12 @@ you have not looked inside):
 - `--orphans`: packages nothing needs any more, with sizes and KEEP/CAUTION marks, and the total that is not protected.
   Orphans are not automatically junk: toolchains installed once for a project show up here, which is what
   CAUTION rules are for. Check each unfamiliar one with `pacman -Qi` before suggesting removal.
+- `--orphans-detail` (`--orphans-sort size|date`): the same list with install date, repo or AUR, a rough class
+  (debug/docs, python lib, library, other) and description, then what `pacman -Rns` on all the unprotected ones
+  would *also* remove. Read that heads-up line before suggesting anything: if removing the batch drags extra
+  packages, never suggest the whole batch; suggest only the orphans that take nothing else with them, and treat
+  the dragged ones as a separate decision. KEEP and CAUTION orphans stay out of any suggested command. Sorting by
+  date groups orphans installed together, usually for one project.
 - `--cache-report`: the pacman and AUR (yay) caches and what `paccache` could reclaim (keep 2 versions, keep 1, drop
   uninstalled packages). Most of the pacman cache is current versions of installed packages, the user's way to
   downgrade, so say that before suggesting to empty it.

@@ -11,6 +11,7 @@ or an AI agent can drive it one command at a time:
   --state-dir DIR          where the revisionN.txt package lists are kept
   --reset                  forget the revisions and start from pacman again
   --orphans                packages nothing needs any more, with sizes (read-only)
+  --orphans-detail         the same with install date, repo/AUR, class, description and what removal would also take
   --cache-report           what the pacman and yay caches hold and what paccache could reclaim (read-only)
   -k WORD / -s SIZE        as in pkgfilter.py: strip a keyword / drop packages under a size
 
@@ -352,6 +353,56 @@ def orphans():
     print(f"  Not marked KEEP or CAUTION: {len(free)} packages, {bytes_to_human(sum(sizes.get(n, 0) for n in free))}")
     print("  Remove with:  sudo pacman -Rns <names>   (your terminal; check each with pacman -Qi first)\n")
 
+def orphans_detail(sort="size"):
+    """Orphans with what a decision needs: size, install date, repo or AUR, a rough class, description,
+    and what `pacman -Rns` would actually remove with them (read-only)."""
+    run = lambda cmd: subprocess.run(cmd, capture_output=True, text=True)
+    try:
+        names = [l.strip() for l in run(["pacman", "-Qdtq"]).stdout.splitlines() if l.strip()]
+    except FileNotFoundError:
+        print("  pacman not found (package modes need Arch)."); return
+    if not names:
+        print("  No orphans."); return
+    foreign = set(run(["pacman", "-Qmq"]).stdout.split())
+    info = {}
+    exp = run(["expac", "--timefmt=%Y-%m-%d", "-Q", "%n\t%m\t%l\t%d"] + names)
+    if exp.returncode == 0:
+        for line in exp.stdout.splitlines():
+            n, size, date, desc = (line.split("\t") + ["", "", ""])[:4]
+            info[n] = (int(size or 0), date, desc)
+    else:  # no expac: fall back to the plain sizes
+        for n, sz in query_sizes(names).items():
+            info[n] = (sz, "?", "")
+    def klass(n):
+        if n.endswith("-debug") or n.endswith("-docs") or n.endswith("-doc"):
+            return "debug/docs"
+        if n.startswith("python-") or n.startswith("python3-"):
+            return "python lib"
+        if n.startswith("lib") or n.endswith("-libs"):
+            return "library"
+        return "other"
+    rows = sorted(names, key=(lambda n: info.get(n, (0, "", ""))[1]) if sort == "date" else (lambda n: -info.get(n, (0, "", ""))[0]))
+    print(f"\n  {len(names)} orphans, sorted by {sort}. Installed as dependencies; nothing installed needs or optionally uses them.")
+    print(f"  {'package':32} {'size':>10}  {'installed':10}  {'src':4}  {'class':10}  description")
+    for n in rows:
+        sz, date, desc = info.get(n, (0, "?", ""))
+        tag = pkg_tag(n)
+        print(f"  {n:32} {bytes_to_human(sz):>10}  {date:10}  {'AUR' if n in foreign else 'repo':4}  {klass(n):10}  {(('[' + tag + '] ') if tag else '') + desc[:60]}")
+    # what removing the unprotected ones would really take with it
+    free = [n for n in rows if not pkg_tag(n)]
+    pr = run(["pacman", "-Rs", "--print", "--print-format", "%n"] + free)
+    would = [l.strip() for l in pr.stdout.splitlines() if l.strip()] if pr.returncode == 0 else []
+    extra = [n for n in would if n not in names]
+    print(f"\n  Unprotected: {len(free)} packages, {bytes_to_human(sum(info.get(n, (0,))[0] for n in free))}.")
+    if pr.returncode != 0:
+        print("  (pacman -Rns --print failed; check the names by hand: " + (pr.stderr.strip().splitlines() or ["no error text"])[-1][:100] + ")")
+    elif extra:
+        print(f"  Heads-up: `pacman -Rns` on all of them would ALSO remove {len(extra)} package(s) not in this list: {', '.join(extra[:12])}")
+    else:
+        print("  `pacman -Rns` on all of them removes only these (nothing extra).")
+    print("  Orphans installed close together in date usually came from one project: use --orphans-sort date to see the groups.")
+    print("  Why one was installed is not recorded by pacman; check `pacman -Qi <name>` and `pacman -Qo $(which <tool>)` if unsure. Remove in your terminal.\n")
+
 def cache_report():
     cache = "/var/cache/pacman/pkg"
     print(f"\n  pacman cache {cache}: {bytes_to_human(dir_bytes(cache)) if os.path.isdir(cache) else 'missing'}")
@@ -391,6 +442,8 @@ def main():
     parser.add_argument("--reset", action="store_true",
                         help="delete every revisionN.txt in the state dir, so the next run starts from pacman again")
     parser.add_argument("--orphans", action="store_true", help="packages nothing needs any more, with sizes (read-only)")
+    parser.add_argument("--orphans-detail", action="store_true", help="orphans with install date, repo/AUR, class and what removing them would also take (read-only)")
+    parser.add_argument("--orphans-sort", choices=["size", "date"], default="size", help="sort for --orphans-detail")
     parser.add_argument("--cache-report", action="store_true", help="pacman and yay cache sizes and what paccache could reclaim (read-only)")
     parser.add_argument("--keep", metavar="PATH", help="never touch PATH (saved in the prefs file)")
     parser.add_argument("--caution", metavar="PATH", help="only obvious bloat inside PATH (saved in the prefs file)")
@@ -422,6 +475,9 @@ def main():
         return
     if args.orphans:
         orphans()
+        return
+    if args.orphans_detail:
+        orphans_detail(args.orphans_sort)
         return
     global STATE_DIR
     if args.state_dir:
