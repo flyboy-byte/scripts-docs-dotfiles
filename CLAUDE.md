@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Last updated 2026-10-25 (renamed to toolbox; tools/ + scripts/ regrouped into linux/, study/, utils/). Public repo `flyboy-byte/toolbox`, branch `master`.
+Last updated 2026-10-28 (oss-contribute moved to flyboy-byte/oss and is only linked here; WinDash and flyboy.github.io folded in as `windows/windash/` and `archive/`). Public repo `flyboy-byte/toolbox`, branch `master`.
 
 ## Layout
 
